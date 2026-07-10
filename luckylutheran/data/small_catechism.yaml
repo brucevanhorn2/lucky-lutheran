@@ -1,0 +1,113 @@
+# Portions of Luther's Small Catechism for the daily devotion slot, rotated
+# by day of year. English text follows the public-domain 1921 Triglot
+# Concordia translation tradition.
+#
+# !! VERIFY: transcribed from memory — proofread against the Triglot
+# Concordia (1921) before publishing. Do NOT swap in the 1986/1991 CPH
+# translation ("You shall...") — that one is copyrighted.
+#
+# TO DO: complete the set — all Ten Commandments, full Table of Duties,
+# Christian Questions with Their Answers.
+
+portions:
+  - id: commandment-1
+    title: "The First Commandment"
+    text: >-
+      Thou shalt have no other gods.
+    meaning: >-
+      What does this mean? We should fear, love, and trust in God above all
+      things.
+
+  - id: commandment-2
+    title: "The Second Commandment"
+    text: >-
+      Thou shalt not take the name of the Lord, thy God, in vain.
+    meaning: >-
+      What does this mean? We should fear and love God that we may not curse,
+      swear, use witchcraft, lie, or deceive by His name, but call upon it in
+      every trouble, pray, praise, and give thanks.
+
+  - id: commandment-3
+    title: "The Third Commandment"
+    text: >-
+      Thou shalt sanctify the holy day.
+    meaning: >-
+      What does this mean? We should fear and love God that we may not
+      despise preaching and His Word, but hold it sacred and gladly hear and
+      learn it.
+
+  - id: creed-1
+    title: "The First Article of the Creed: Of Creation"
+    text: >-
+      I believe in God the Father Almighty, Maker of heaven and earth.
+    meaning: >-
+      What does this mean? I believe that God has made me and all creatures;
+      that He has given me my body and soul, eyes, ears, and all my members,
+      my reason and all my senses, and still preserves them; also clothing
+      and shoes, meat and drink, house and home, wife and children, fields,
+      cattle, and all my goods; that He richly and daily provides me with all
+      that I need to support this body and life; that He defends me against
+      all danger and guards and protects me from all evil; and all this
+      purely out of fatherly, divine goodness and mercy, without any merit or
+      worthiness in me; for all which it is my duty to thank and praise, to
+      serve and obey Him. This is most certainly true.
+
+  - id: creed-2
+    title: "The Second Article of the Creed: Of Redemption"
+    text: >-
+      I believe in Jesus Christ, His only Son, our Lord, who was conceived by
+      the Holy Ghost, born of the Virgin Mary, suffered under Pontius Pilate,
+      was crucified, dead, and buried; He descended into hell; the third day
+      He rose again from the dead; He ascended into heaven and sitteth on the
+      right hand of God the Father Almighty; from thence He shall come to
+      judge the quick and the dead.
+    meaning: >-
+      What does this mean? I believe that Jesus Christ, true God, begotten of
+      the Father from eternity, and also true man, born of the Virgin Mary,
+      is my Lord, who has redeemed me, a lost and condemned creature,
+      purchased and won me from all sins, from death, and from the power of
+      the devil, not with gold or silver, but with His holy, precious blood
+      and with His innocent suffering and death, that I may be His own and
+      live under Him in His kingdom and serve Him in everlasting
+      righteousness, innocence, and blessedness, even as He is risen from the
+      dead, lives and reigns to all eternity. This is most certainly true.
+
+  - id: creed-3
+    title: "The Third Article of the Creed: Of Sanctification"
+    text: >-
+      I believe in the Holy Ghost; the holy Christian Church, the communion
+      of saints; the forgiveness of sins; the resurrection of the body; and
+      the life everlasting. Amen.
+    meaning: >-
+      What does this mean? I believe that I cannot by my own reason or
+      strength believe in Jesus Christ, my Lord, or come to Him; but the Holy
+      Ghost has called me by the Gospel, enlightened me with His gifts,
+      sanctified and kept me in the true faith; even as He calls, gathers,
+      enlightens, and sanctifies the whole Christian Church on earth and
+      keeps it with Jesus Christ in the one true faith; in which Christian
+      Church He daily and richly forgives all sins to me and all believers,
+      and will at the Last Day raise up me and all the dead, and give unto me
+      and all believers in Christ eternal life. This is most certainly true.
+
+  - id: baptism-1
+    title: "The Sacrament of Holy Baptism: The Nature of Baptism"
+    text: >-
+      What is Baptism? Baptism is not simple water only, but it is the water
+      comprehended in God's command and connected with God's Word.
+    meaning: >-
+      Which is that word of God? Christ, our Lord, says in the last chapter
+      of Matthew: Go ye into all the world and teach all nations, baptizing
+      them in the name of the Father and of the Son and of the Holy Ghost.
+
+  - id: lords-supper-1
+    title: "The Sacrament of the Altar: The Nature of the Sacrament"
+    text: >-
+      What is the Sacrament of the Altar? It is the true body and blood of
+      our Lord Jesus Christ under the bread and wine, for us Christians to
+      eat and to drink, instituted by Christ Himself.
+    meaning: >-
+      Where is this written? The holy Evangelists Matthew, Mark, Luke, and
+      Saint Paul write thus: Our Lord Jesus Christ, the same night in which
+      He was betrayed, took bread; and when He had given thanks, He brake it
+      and gave it to His disciples and said, Take, eat; this is My body,
+      which is given for you. This do in remembrance of Me.

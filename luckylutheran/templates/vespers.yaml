@@ -1,0 +1,177 @@
+# The Order of Vespers — after The Lutheran Hymnal (1941), p. 41 (public domain).
+#
+# !! VERIFY: liturgical texts transcribed from memory of TLH; proofread every
+# line against a printed copy before publishing.
+
+office: vespers
+title: Vespers
+tagline: "The evening office of the Church"
+
+sections:
+  - id: greeting
+    title: Welcome
+    lines:
+      - speaker: liturgist
+        text: >-
+          {greeting} This is Vespers, the evening office of the Church, for
+          {date_spoken}, {season_phrase}. As the day draws to a close, let
+          us come into the presence of God, in the name of the Father and of
+          the Son and of the Holy Ghost.
+      - speaker: congregation
+        text: "Amen."
+    pause_after: 2.0
+
+  - id: versicles
+    title: Opening Versicles
+    lines:
+      - {speaker: liturgist, text: "O Lord, open Thou my lips."}
+      - {speaker: congregation, text: "And my mouth shall show forth Thy praise."}
+      - {speaker: liturgist, text: "Make haste, O God, to deliver me."}
+      - {speaker: congregation, text: "Make haste to help me, O Lord."}
+      - speaker: all
+        text: >-
+          Glory be to the Father and to the Son and to the Holy Ghost; as it
+          was in the beginning, is now, and ever shall be, world without end.
+          Amen. Hallelujah!
+    pause_after: 2.0
+
+  - id: psalm
+    title: Psalmody
+    slot: psalm
+    pause_after: 2.0
+
+  - id: reading
+    title: The Lesson
+    slot: reading
+    pause_after: 1.0
+
+  - id: responsory
+    title: Responsory
+    lines:
+      - {speaker: liturgist, text: "But Thou, O Lord, have mercy upon us."}
+      - {speaker: congregation, text: "Thanks be to Thee, O Lord!"}
+    pause_after: 2.0
+
+  - id: hymn
+    title: Office Hymn
+    slot: hymn
+    pause_after: 2.0
+
+  - id: devotion
+    title: "Daily Catechism"
+    slot: catechism
+    pause_after: 2.0
+
+  - id: versicle_incense
+    title: Versicle
+    lines:
+      - speaker: liturgist
+        text: "Let my prayer be set forth before Thee as incense."
+      - speaker: congregation
+        text: "And the lifting up of my hands as the evening sacrifice."
+    pause_after: 1.5
+
+  - id: magnificat
+    title: "The Magnificat — the Song of Mary"
+    lines:
+      - speaker: all
+        text: >-
+          My soul doth magnify the Lord: and my spirit hath rejoiced in God,
+          my Savior. For He hath regarded: the low estate of His handmaiden.
+          For, behold, from henceforth: all generations shall call me
+          blessed. For He that is mighty hath done to me great things: and
+          holy is His name. And His mercy is on them that fear Him: from
+          generation to generation. He hath showed strength with His arm: He
+          hath scattered the proud in the imagination of their hearts. He
+          hath put down the mighty from their seats: and exalted them of low
+          degree. He hath filled the hungry with good things: and the rich He
+          hath sent empty away. He hath helped His servant Israel: in
+          remembrance of His mercy; as He spake to our fathers: to Abraham
+          and to his seed forever. Glory be to the Father and to the Son: and
+          to the Holy Ghost; as it was in the beginning, is now, and ever
+          shall be: world without end. Amen.
+    pause_after: 2.0
+
+  - id: kyrie
+    title: The Kyrie
+    lines:
+      - speaker: all
+        text: >-
+          Lord, have mercy upon us. Christ, have mercy upon us. Lord, have
+          mercy upon us.
+    pause_after: 1.0
+
+  - id: lords_prayer
+    title: The Lord's Prayer
+    lines:
+      - speaker: all
+        text: >-
+          Our Father who art in heaven, hallowed be Thy name; Thy kingdom
+          come; Thy will be done on earth as it is in heaven; give us this
+          day our daily bread; and forgive us our trespasses, as we forgive
+          those who trespass against us; and lead us not into temptation, but
+          deliver us from evil. For Thine is the kingdom and the power and
+          the glory forever and ever. Amen.
+    pause_after: 1.5
+
+  - id: salutation
+    title: Salutation
+    lines:
+      - {speaker: liturgist, text: "The Lord be with you."}
+      - {speaker: congregation, text: "And with thy spirit."}
+      - {speaker: liturgist, text: "Let us pray."}
+    pause_after: 2.0
+
+  - id: collect_of_day
+    title: Collect of the Day
+    slot: collect_of_day
+    pause_after: 1.5
+
+  - id: collect_for_peace
+    title: Collect for Peace
+    lines:
+      - speaker: liturgist
+        text: >-
+          O God, from whom all holy desires, all good counsels, and all just
+          works do proceed, give unto Thy servants that peace which the world
+          cannot give, that our hearts may be set to obey Thy commandments
+          and also that by Thee, we, being defended from the fear of our
+          enemies, may pass our time in rest and quietness; through Jesus
+          Christ, Thy Son, our Lord, who liveth and reigneth with Thee and
+          the Holy Ghost, ever one God, world without end.
+      - {speaker: congregation, text: "Amen."}
+    pause_after: 2.0
+
+  - id: luthers_evening_prayer
+    title: "Luther's Evening Prayer"
+    lines:
+      - speaker: liturgist
+        text: >-
+          Let us commend ourselves to God with the evening prayer of Doctor
+          Luther.
+      - speaker: all
+        text: >-
+          I thank Thee, my heavenly Father, through Jesus Christ, Thy dear
+          Son, that Thou hast graciously kept me this day; and I pray Thee
+          that Thou wouldst forgive me all my sins where I have done wrong,
+          and graciously keep me this night. For into Thy hands I commend
+          myself, my body and soul, and all things. Let Thy holy angel be
+          with me, that the wicked Foe may have no power over me. Amen.
+    pause_after: 2.0
+
+  - id: benedicamus
+    title: Benedicamus
+    lines:
+      - {speaker: liturgist, text: "Bless we the Lord."}
+      - {speaker: congregation, text: "Thanks be to God."}
+    pause_after: 1.0
+
+  - id: benediction
+    title: Benediction
+    lines:
+      - speaker: liturgist
+        text: >-
+          The grace of our Lord Jesus Christ, and the love of God, and the
+          communion of the Holy Ghost be with you all.
+      - {speaker: congregation, text: "Amen."}
+    pause_after: 3.0

@@ -1,0 +1,9 @@
+# Pipeline (script assembly, stitching, feed) — this is all it needs:
+PyYAML>=6.0
+
+# Also required on the machine doing audio: ffmpeg on PATH (apt install ffmpeg)
+
+# Only needed for LOCAL synthesis (--engine qwen3) or `lucky serve`.
+# Not needed when using --engine gradio against a running qwen-tts-demo.
+# qwen-tts
+# soundfile

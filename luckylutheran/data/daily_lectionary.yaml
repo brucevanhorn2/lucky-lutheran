@@ -1,0 +1,16 @@
+# Official daily lectionary table — keyed by "MM-DD".
+#
+# TO DO: enter the LCMS daily lectionary here (printed in the hymnal's front
+# matter and published at lcms.org). A lectionary is a list of citations
+# (facts), so entering it involves no copyrighted text.
+#
+# Schema per day:
+#   "MM-DD":
+#     psalm: "Psalm 34"          # optional; omit to use the built-in cycle
+#     morning: "Joshua 24:1-31"  # first reading (used by Matins)
+#     evening: "Acts 15:22-41"   # second reading (used by Vespers/Compline)
+#
+# Any date missing from this table falls back to the built-in sequential
+# plan (Gospels in the morning, Acts/Epistles in the evening).
+
+days: {}

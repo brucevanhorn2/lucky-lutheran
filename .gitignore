@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.cache/
+episodes/
+# audition candidates are disposable; the chosen cast WAVs ARE committed
+# (voice design is nondeterministic — losing them would change the podcast's
+# voices forever)
+assets/voices/candidates/
+*.egg-info/
+build/
+dist/

@@ -1,0 +1,180 @@
+"""Assemble a complete episode script for a given date and office.
+
+Loads the office template, resolves the church calendar, fills the dynamic
+slots (psalm, reading, hymn, catechism, collect of the day), and returns an
+Episode: an ordered list of Segments, each tagged with a speaker so the TTS
+layer can render distinct voices.
+"""
+
+from __future__ import annotations
+
+import datetime as dt
+from dataclasses import dataclass, field
+from importlib import resources
+
+import yaml
+
+from luckylutheran import catechism, collects, lectionary, scripture
+from luckylutheran.churchyear import ChurchDay, church_day
+
+OFFICES = ("matins", "vespers", "compline")
+
+# Default pause between lines within a section, seconds. Versicle and
+# response need room to breathe or the office sounds hard-edited.
+LINE_PAUSE = 1.0
+
+
+@dataclass
+class Segment:
+    section_id: str
+    section_title: str
+    speaker: str  # liturgist | congregation | lector | all
+    text: str
+    pause_after: float = LINE_PAUSE
+
+
+@dataclass
+class Episode:
+    office: str
+    title: str
+    date: dt.date
+    day: ChurchDay
+    readings: lectionary.DailyReadings
+    segments: list[Segment] = field(default_factory=list)
+
+    @property
+    def episode_title(self) -> str:
+        return f"{self.title} for {self.date.strftime('%A, %B %-d, %Y')}"
+
+    @property
+    def slug(self) -> str:
+        return f"{self.date.isoformat()}-{self.office}"
+
+    def transcript(self) -> str:
+        """Human-readable transcript (also the podcast show notes)."""
+        lines = [f"# {self.episode_title}", "",
+                 f"*Season: {self.day.season_name}. "
+                 f"Psalm: {self.readings.psalm}. "
+                 f"Reading: {self.readings.reading}"
+                 f" ({self.readings.source} plan).*", ""]
+        current = None
+        for seg in self.segments:
+            if seg.section_title != current:
+                current = seg.section_title
+                lines += [f"## {current}", ""]
+            label = {"liturgist": "L", "congregation": "C",
+                     "lector": "Lector", "all": "All"}[seg.speaker]
+            lines += [f"**{label}:** {seg.text}", ""]
+        return "\n".join(lines)
+
+
+def _load_template(office: str) -> dict:
+    ref = resources.files("luckylutheran") / "templates" / f"{office}.yaml"
+    return yaml.safe_load(ref.read_text(encoding="utf-8"))
+
+
+def _spoken_date(date: dt.date) -> str:
+    return date.strftime("%A, %B %-d")
+
+
+def _greeting(office: str) -> str:
+    return "Good evening." if office in ("vespers", "compline") else "Good morning."
+
+
+def _passage_segments(section: dict, reference: str, kind: str) -> list[Segment]:
+    """Render a scripture passage (psalm or lesson) as lector segments."""
+    text = scripture.get_passage(reference)
+    intro = {
+        "psalm": f"The psalm appointed for this day is {reference}.",
+        "reading": f"The reading is from {reference}.",
+    }[kind]
+    outro = {"psalm": None, "reading": "Here ends the reading."}[kind]
+
+    segs = [Segment(section["id"], section["title"], "lector", intro, 1.0)]
+    if text is None:
+        segs.append(Segment(
+            section["id"], section["title"], "lector",
+            f"[Text of {reference} unavailable — will be fetched at build "
+            f"time from the KJV.]", 1.0))
+    else:
+        segs.append(Segment(section["id"], section["title"], "lector", text, 1.5))
+        if kind == "psalm":
+            segs.append(Segment(
+                section["id"], section["title"], "all",
+                "Glory be to the Father and to the Son and to the Holy "
+                "Ghost; as it was in the beginning, is now, and ever shall "
+                "be, world without end. Amen.", 1.0))
+    if outro:
+        segs.append(Segment(section["id"], section["title"], "lector", outro, 1.0))
+    return segs
+
+
+def _fill_slot(section: dict, episode: Episode) -> list[Segment]:
+    slot = section["slot"]
+    sid, title = section["id"], section["title"]
+
+    if slot == "psalm":
+        return _passage_segments(section, episode.readings.psalm, "psalm")
+
+    if slot == "reading":
+        return _passage_segments(section, episode.readings.reading, "reading")
+
+    if slot == "collect_of_day":
+        c = collects.collect_of_the_day(episode.day)
+        return [
+            Segment(sid, title, "liturgist", c["text"], 0.4),
+            Segment(sid, title, "congregation", "Amen.", 1.0),
+        ]
+
+    if slot == "catechism":
+        p = catechism.portion_for(episode.date)
+        segs = [
+            Segment(sid, title, "liturgist",
+                    f"From Luther's Small Catechism: {p['title']}.", 1.0),
+            Segment(sid, title, "liturgist", p["text"], 1.0),
+        ]
+        if p["meaning"]:
+            segs.append(Segment(sid, title, "liturgist", p["meaning"], 1.0))
+        return segs
+
+    if slot == "hymn":
+        # v1: no singing. Music beds / organ hymns are wired in audio.py
+        # later; for now the hymn slot is silently omitted from the script.
+        return []
+
+    raise ValueError(f"Unknown slot type: {slot!r}")
+
+
+def build_episode(date: dt.date, office: str) -> Episode:
+    if office not in OFFICES:
+        raise ValueError(f"office must be one of {OFFICES}, got {office!r}")
+
+    template = _load_template(office)
+    day = church_day(date)
+    readings = lectionary.readings_for(date, office)
+    episode = Episode(office=office, title=template["title"], date=date,
+                      day=day, readings=readings)
+
+    season_phrase = ("in the Trinity season" if day.season == "trinity"
+                     else f"in the season of {day.season_name}")
+    variables = {
+        "greeting": _greeting(office),
+        "date_spoken": _spoken_date(date),
+        "season_name": day.season_name,
+        "season_phrase": season_phrase,
+    }
+
+    for section in template["sections"]:
+        if "slot" in section:
+            segs = _fill_slot(section, episode)
+        else:
+            segs = [
+                Segment(section["id"], section["title"], line["speaker"],
+                        " ".join(line["text"].split()).format(**variables))
+                for line in section["lines"]
+            ]
+        if segs:
+            segs[-1].pause_after = float(section.get("pause_after", 1.0))
+            episode.segments.extend(segs)
+
+    return episode

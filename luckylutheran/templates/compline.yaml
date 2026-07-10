@@ -1,0 +1,155 @@
+# The Order of Compline — prayer at the close of the day.
+#
+# TLH (1941) does not include Compline; this order is assembled from the
+# ancient office's public-domain components (its versicles, the Nunc
+# Dimittis, and the historic collects, all long predating any modern
+# copyright).
+#
+# !! VERIFY: proofread against a trusted source (e.g. the Brotherhood Prayer
+# Book's sources or an old Book of Common Prayer) before publishing.
+
+office: compline
+title: Compline
+tagline: "Prayer at the close of the day"
+
+sections:
+  - id: greeting
+    title: Welcome
+    lines:
+      - speaker: liturgist
+        text: >-
+          {greeting} This is Compline, prayer at the close of the day, for
+          {date_spoken}. Before we sleep, let us commit ourselves, one
+          another, and our whole life to Christ our God.
+    pause_after: 2.0
+
+  - id: opening
+    title: Opening
+    lines:
+      - speaker: liturgist
+        text: >-
+          The Lord Almighty grant us a quiet night and peace at the last.
+      - {speaker: congregation, text: "Amen."}
+      - {speaker: liturgist, text: "Our help is in the name of the Lord."}
+      - {speaker: congregation, text: "Who made heaven and earth."}
+    pause_after: 1.5
+
+  - id: confession
+    title: Confession
+    lines:
+      - speaker: liturgist
+        text: >-
+          Let us confess our sins to God, our Father, asking Him in the name
+          of our Lord Jesus Christ to forgive us.
+      - speaker: all
+        text: >-
+          O almighty God, merciful Father, I, a poor, miserable sinner,
+          confess unto Thee all my sins and iniquities with which I have ever
+          offended Thee. I pray Thee of Thy boundless mercy, for the sake of
+          the holy, innocent, bitter sufferings and death of Thy beloved Son,
+          Jesus Christ, be gracious and merciful to me, a poor, sinful being.
+      - speaker: liturgist
+        text: >-
+          The almighty and merciful Lord grant us pardon, forgiveness, and
+          remission of all our sins.
+      - {speaker: congregation, text: "Amen."}
+    pause_after: 2.0
+
+  - id: psalm
+    title: Psalmody
+    slot: psalm
+    pause_after: 2.0
+
+  - id: hymn
+    title: Office Hymn
+    slot: hymn
+    pause_after: 2.0
+
+  - id: reading
+    title: The Reading
+    slot: reading
+    pause_after: 1.5
+
+  - id: versicles
+    title: Versicles
+    lines:
+      - speaker: liturgist
+        text: "Into Thy hands, O Lord, I commend my spirit."
+      - speaker: congregation
+        text: "For Thou hast redeemed me, O Lord, Thou God of truth."
+      - {speaker: liturgist, text: "Keep me as the apple of Thine eye."}
+      - {speaker: congregation, text: "Hide me under the shadow of Thy wings."}
+    pause_after: 1.5
+
+  - id: nunc_dimittis
+    title: "The Nunc Dimittis — the Song of Simeon"
+    lines:
+      - speaker: liturgist
+        text: >-
+          Guide us waking, O Lord, and guard us sleeping, that awake we may
+          watch with Christ and asleep we may rest in peace.
+      - speaker: all
+        text: >-
+          Lord, now lettest Thou Thy servant depart in peace: according to
+          Thy word; for mine eyes have seen Thy salvation, which Thou hast
+          prepared before the face of all people: a light to lighten the
+          Gentiles and the glory of Thy people Israel. Glory be to the Father
+          and to the Son: and to the Holy Ghost; as it was in the beginning,
+          is now, and ever shall be: world without end. Amen.
+      - speaker: liturgist
+        text: >-
+          Guide us waking, O Lord, and guard us sleeping, that awake we may
+          watch with Christ and asleep we may rest in peace.
+    pause_after: 2.0
+
+  - id: kyrie
+    title: The Kyrie
+    lines:
+      - speaker: all
+        text: >-
+          Lord, have mercy upon us. Christ, have mercy upon us. Lord, have
+          mercy upon us.
+    pause_after: 1.0
+
+  - id: lords_prayer
+    title: The Lord's Prayer
+    lines:
+      - speaker: all
+        text: >-
+          Our Father who art in heaven, hallowed be Thy name; Thy kingdom
+          come; Thy will be done on earth as it is in heaven; give us this
+          day our daily bread; and forgive us our trespasses, as we forgive
+          those who trespass against us; and lead us not into temptation, but
+          deliver us from evil. For Thine is the kingdom and the power and
+          the glory forever and ever. Amen.
+    pause_after: 1.5
+
+  - id: collects
+    title: Prayers
+    lines:
+      - {speaker: liturgist, text: "Let us pray."}
+      - speaker: liturgist
+        text: >-
+          Visit, we beseech Thee, O Lord, this habitation and drive far from
+          it all snares of the enemy. Let Thy holy angels dwell herein to
+          preserve us in peace, and let Thy blessing be upon us evermore;
+          through Jesus Christ, our Lord.
+      - {speaker: congregation, text: "Amen."}
+      - speaker: liturgist
+        text: >-
+          Be present, O merciful God, and protect us through the hours of
+          this night, so that we who are wearied by the changes and chances
+          of life may rest in Thy eternal changelessness; through Jesus
+          Christ, our Lord.
+      - {speaker: congregation, text: "Amen."}
+    pause_after: 2.0
+
+  - id: benediction
+    title: Benediction
+    lines:
+      - speaker: liturgist
+        text: >-
+          The almighty and merciful Lord, the Father, the Son, and the Holy
+          Ghost, bless and preserve us.
+      - {speaker: congregation, text: "Amen."}
+    pause_after: 3.0

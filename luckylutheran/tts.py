@@ -1,0 +1,360 @@
+"""Text-to-speech layer, built around Qwen3-TTS (the model on wintermute).
+
+Each liturgical speaker maps to a distinct, consistent voice so the office
+sounds responsive (liturgist / congregation / lector) rather than like an
+audiobook.
+
+Two-step voice workflow (Qwen's recommended pattern):
+
+1. ONE TIME:  `lucky voices` uses the VoiceDesign model to synthesize a
+   reference clip per cast member from the text descriptions below, saved to
+   assets/voices/<speaker>.wav.  (Or drop in your own recordings — any short
+   clean WAV works, just set `ref_text` to its exact transcript.)
+2. EVERY BUILD: the CustomVoice model turns each reference clip into a
+   reusable clone prompt, then renders all ~40 segments with a stable cast.
+
+Requires on wintermute:  pip install -U qwen-tts soundfile
+Models download from Hugging Face on first use.
+"""
+
+from __future__ import annotations
+
+import abc
+import os
+from pathlib import Path
+
+ASSETS = Path(__file__).resolve().parent.parent / "assets" / "voices"
+
+# The voice cast. `design` drives the one-time VoiceDesign generation;
+# `ref_text` is spoken in the reference clip and reused as the clone
+# prompt's transcript, so keep them in sync if you regenerate.
+VOICE_CAST = {
+    # Cast chosen by Bruce 2026-07-09 from designed candidates
+    # (liturgist-b, congregation-c, lector-a in assets/voices/candidates/).
+    "liturgist": {
+        "design": (
+            "A deep, dignified male voice in his sixties, like an old "
+            "cathedral rector. Slow, solemn, deliberate delivery, rich low "
+            "timbre, long unhurried phrases."
+        ),
+        "ref_text": (
+            "O Lord, our heavenly Father, almighty and everlasting God, "
+            "we give Thee thanks for all Thy goodness and tender mercies."
+        ),
+    },
+    "congregation": {
+        "design": (
+            "A young adult male voice, quiet and earnest, plain unadorned "
+            "delivery, like a parishioner speaking a response from the pew."
+        ),
+        "ref_text": (
+            "Glory be to the Father and to the Son and to the Holy Ghost; "
+            "as it was in the beginning, is now, and ever shall be."
+        ),
+    },
+    "lector": {
+        "design": (
+            "A clear, articulate male narrator in his forties, like a "
+            "seasoned audiobook reader of classic literature. Warm but "
+            "precise diction, moderate pace."
+        ),
+        "ref_text": (
+            "In the beginning God created the heaven and the earth. And "
+            "the earth was without form, and void; and darkness was upon "
+            "the face of the deep."
+        ),
+    },
+    # 'All' texts (creeds, canticles, Lord's Prayer) use the congregation
+    # voice; a layered multi-voice mix is a v2 experiment.
+    "all": {"alias": "congregation"},
+}
+
+
+def resolve_speaker(speaker: str) -> str:
+    entry = VOICE_CAST.get(speaker, {})
+    return entry.get("alias", speaker if speaker in VOICE_CAST else "liturgist")
+
+
+def reference_wav(speaker: str) -> Path:
+    return ASSETS / f"{resolve_speaker(speaker)}.wav"
+
+
+class TTSEngine(abc.ABC):
+    """Renders one segment of text in one speaker's voice to a WAV file."""
+
+    name: str = "base"
+
+    @abc.abstractmethod
+    def synthesize(self, text: str, speaker: str, out_path: Path) -> Path | None:
+        """Write audio for `text` to `out_path`; return the path, or None if
+        this engine produces no audio (script-only mode)."""
+
+
+class NullTTS(TTSEngine):
+    """Script-only engine: produces no audio. Lets the whole pipeline run on
+    machines without a speech model (transcript, metadata, feed)."""
+
+    name = "null"
+
+    def synthesize(self, text: str, speaker: str, out_path: Path) -> Path | None:
+        return None
+
+
+class Qwen3TTS(TTSEngine):
+    """Qwen3-TTS CustomVoice engine with a cloned three-voice cast.
+
+    Env overrides:
+      LUCKY_QWEN_MODEL   (default Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice)
+      LUCKY_TTS_DEVICE   (default cuda:0)
+    """
+
+    name = "qwen3"
+
+    def __init__(self) -> None:
+        import torch  # deferred: only needed on the TTS machine
+        from qwen_tts import Qwen3TTSModel
+
+        missing = [s for s in ("liturgist", "congregation", "lector")
+                   if not (ASSETS / f"{s}.wav").exists()]
+        if missing:
+            raise FileNotFoundError(
+                f"Missing reference voices {missing} in {ASSETS}. "
+                "Run `lucky voices` once to design the cast, or drop in "
+                "your own WAVs (and update ref_text in tts.py)."
+            )
+
+        self.model = Qwen3TTSModel.from_pretrained(
+            os.environ.get("LUCKY_QWEN_MODEL",
+                           "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice"),
+            device_map=os.environ.get("LUCKY_TTS_DEVICE", "cuda:0"),
+            dtype=torch.bfloat16,
+        )
+        # Build each speaker's clone prompt once; reused across all segments.
+        self._prompts = {
+            speaker: self.model.create_voice_clone_prompt(
+                ref_audio=str(ASSETS / f"{speaker}.wav"),
+                ref_text=VOICE_CAST[speaker]["ref_text"],
+            )
+            for speaker in ("liturgist", "congregation", "lector")
+        }
+
+    def synth_array(self, text: str, speaker: str):
+        """Render to (numpy_audio, sample_rate) — used by both the local
+        engine path and the wintermute HTTP server."""
+        wavs, sr = self.model.generate_voice_clone(
+            text=text,
+            language="English",
+            voice_clone_prompt=self._prompts[resolve_speaker(speaker)],
+        )
+        return wavs[0], sr
+
+    def synthesize(self, text: str, speaker: str, out_path: Path) -> Path | None:
+        import soundfile as sf
+
+        wav, sr = self.synth_array(text, speaker)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        sf.write(str(out_path), wav, sr)
+        return out_path
+
+
+def design_voice_cast(overwrite: bool = False) -> list[Path]:
+    """One-time cast generation with the Qwen3-TTS VoiceDesign model."""
+    import torch
+    import soundfile as sf
+    from qwen_tts import Qwen3TTSModel
+
+    model = Qwen3TTSModel.from_pretrained(
+        "Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign",
+        device_map=os.environ.get("LUCKY_TTS_DEVICE", "cuda:0"),
+        dtype=torch.bfloat16,
+    )
+    ASSETS.mkdir(parents=True, exist_ok=True)
+    written = []
+    for speaker, cast in VOICE_CAST.items():
+        if "alias" in cast:
+            continue
+        out = ASSETS / f"{speaker}.wav"
+        if out.exists() and not overwrite:
+            print(f"keep existing {out}")
+            continue
+        wavs, sr = model.generate_voice_design(
+            text=cast["ref_text"],
+            language="English",
+            instruct=cast["design"],
+        )
+        sf.write(str(out), wavs[0], sr)
+        written.append(out)
+        print(f"designed {speaker}: {out}")
+    return written
+
+
+class Qwen3RemoteTTS(TTSEngine):
+    """Client for the lucky-lutheran TTS server running on wintermute
+    (see server.py). Keeps the model and GPU over there; this machine only
+    sends text and receives WAV bytes.
+
+    Env: LUCKY_TTS_URL (default http://192.168.1.51:8765)
+    """
+
+    name = "remote"
+
+    def __init__(self) -> None:
+        import json
+        import urllib.request
+
+        self.url = os.environ.get("LUCKY_TTS_URL",
+                                  "http://192.168.1.51:8765").rstrip("/")
+        try:
+            with urllib.request.urlopen(f"{self.url}/health", timeout=10) as r:
+                health = json.loads(r.read().decode("utf-8"))
+        except OSError as exc:
+            raise ConnectionError(
+                f"TTS server not reachable at {self.url} ({exc}). On "
+                "wintermute: python3 -m luckylutheran serve"
+            ) from exc
+        print(f"TTS server ok: {health.get('model', '?')} on "
+              f"{health.get('device', '?')}")
+
+    def synthesize(self, text: str, speaker: str, out_path: Path) -> Path | None:
+        import json
+        import urllib.request
+
+        req = urllib.request.Request(
+            f"{self.url}/synthesize",
+            data=json.dumps({"text": text, "speaker": speaker}).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+        )
+        # Long segments (a full psalm) can take a while on the GPU.
+        with urllib.request.urlopen(req, timeout=600) as resp:
+            wav_bytes = resp.read()
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_bytes(wav_bytes)
+        return out_path
+
+
+class GradioDemoTTS(TTSEngine):
+    """Client for the official `qwen-tts-demo` Gradio server (Base model)
+    running on wintermute:
+
+        qwen-tts-demo Qwen/Qwen3-TTS-12Hz-1.7B-Base --ip 0.0.0.0 --port 8000
+
+    On startup, each cast member's reference WAV in assets/voices/ is
+    uploaded once and turned into a server-side voice prompt via
+    /save_prompt; each segment is then rendered with /load_prompt_and_gen.
+    Stdlib only (multipart upload + Gradio's SSE call protocol).
+
+    Env: LUCKY_TTS_URL (default http://192.168.1.51:8000)
+    """
+
+    name = "gradio"
+
+    def __init__(self) -> None:
+        import json
+        import urllib.request
+
+        self.url = os.environ.get("LUCKY_TTS_URL",
+                                  "http://192.168.1.51:8000").rstrip("/")
+        try:
+            with urllib.request.urlopen(f"{self.url}/config", timeout=10) as r:
+                json.loads(r.read().decode("utf-8"))
+        except OSError as exc:
+            raise ConnectionError(
+                f"Gradio demo not reachable at {self.url} ({exc}). On "
+                "wintermute: qwen-tts-demo Qwen/Qwen3-TTS-12Hz-1.7B-Base "
+                "--ip 0.0.0.0 --port 8000"
+            ) from exc
+
+        missing = [s for s in ("liturgist", "congregation", "lector")
+                   if not (ASSETS / f"{s}.wav").exists()]
+        if missing:
+            raise FileNotFoundError(
+                f"Missing reference voices {missing} in {ASSETS}. Generate "
+                "them once via the VoiceDesign demo (see README) or record "
+                "your own."
+            )
+
+        self._voice_files: dict[str, str] = {}
+        for speaker in ("liturgist", "congregation", "lector"):
+            uploaded = self._upload(ASSETS / f"{speaker}.wav")
+            result = self._call("/save_prompt", [
+                {"path": uploaded, "meta": {"_type": "gradio.FileData"}},
+                VOICE_CAST[speaker]["ref_text"],
+                False,
+            ])
+            self._voice_files[speaker] = result[0]["path"]
+            print(f"voice prompt ready: {speaker}")
+
+    def synthesize(self, text: str, speaker: str, out_path: Path) -> Path | None:
+        import urllib.request
+
+        result = self._call("/load_prompt_and_gen", [
+            {"path": self._voice_files[resolve_speaker(speaker)],
+             "meta": {"_type": "gradio.FileData"}},
+            text,
+            "English",
+        ])
+        audio_url = result[0]["url"]
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        with urllib.request.urlopen(audio_url, timeout=120) as resp:
+            out_path.write_bytes(resp.read())
+        return out_path
+
+    # -- Gradio protocol helpers ------------------------------------------
+
+    def _upload(self, path: Path) -> str:
+        """Multipart-upload a file; return its server-side path."""
+        import json
+        import urllib.request
+        import uuid
+
+        boundary = uuid.uuid4().hex
+        body = (
+            f"--{boundary}\r\n"
+            f'Content-Disposition: form-data; name="files"; '
+            f'filename="{path.name}"\r\n'
+            f"Content-Type: audio/wav\r\n\r\n"
+        ).encode() + path.read_bytes() + f"\r\n--{boundary}--\r\n".encode()
+        req = urllib.request.Request(
+            f"{self.url}/gradio_api/upload", data=body,
+            headers={"Content-Type":
+                     f"multipart/form-data; boundary={boundary}"})
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            return json.loads(resp.read().decode("utf-8"))[0]
+
+    def _call(self, endpoint: str, data: list) -> list:
+        """POST a Gradio call, follow its SSE stream, return the result."""
+        import json
+        import urllib.request
+
+        req = urllib.request.Request(
+            f"{self.url}/gradio_api/call{endpoint}",
+            data=json.dumps({"data": data}).encode("utf-8"),
+            headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            event_id = json.loads(resp.read().decode("utf-8"))["event_id"]
+
+        event = None
+        with urllib.request.urlopen(
+                f"{self.url}/gradio_api/call{endpoint}/{event_id}",
+                timeout=600) as stream:
+            for raw in stream:
+                line = raw.decode("utf-8").strip()
+                if line.startswith("event:"):
+                    event = line.split(":", 1)[1].strip()
+                elif line.startswith("data:") and event == "complete":
+                    return json.loads(line.split(":", 1)[1])
+                elif line.startswith("data:") and event == "error":
+                    raise RuntimeError(
+                        f"Gradio {endpoint} failed: {line[5:].strip()}")
+        raise RuntimeError(f"Gradio {endpoint}: stream ended without result")
+
+
+ENGINES = {"null": NullTTS, "qwen3": Qwen3TTS, "remote": Qwen3RemoteTTS,
+           "gradio": GradioDemoTTS}
+
+
+def get_engine(name: str) -> TTSEngine:
+    try:
+        return ENGINES[name]()
+    except KeyError:
+        raise ValueError(f"Unknown TTS engine {name!r}; known: {list(ENGINES)}")

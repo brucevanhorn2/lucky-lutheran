@@ -1,0 +1,103 @@
+# Seasonal collects (historic Western collects in the public-domain wording of
+# the Common Service tradition, as found in The Lutheran Hymnal, 1941).
+#
+# !! VERIFY: these were transcribed from memory of the historic texts. Before
+# publishing, proofread each against a printed TLH or the Triglot Concordia.
+#
+# This file currently provides one collect per SEASON. The full historic
+# propers assign a collect per SUNDAY; those can be added later under a
+# `sundays:` key without changing the code.
+
+seasons:
+  advent:
+    title: Collect for Advent
+    text: >-
+      Stir up, we beseech Thee, Thy power, O Lord, and come, that by Thy
+      protection we may be rescued from the threatening perils of our sins
+      and saved by Thy mighty deliverance; who livest and reignest with the
+      Father and the Holy Ghost, ever one God, world without end.
+
+  christmas:
+    title: Collect for Christmastide
+    text: >-
+      Grant, we beseech Thee, almighty God, that the new birth of Thine
+      only-begotten Son in the flesh may set us free who are held in the old
+      bondage under the yoke of sin; through the same Jesus Christ, Thy Son,
+      our Lord, who liveth and reigneth with Thee and the Holy Ghost, ever
+      one God, world without end.
+
+  epiphany:
+    title: Collect for Epiphany
+    text: >-
+      O God, who by the leading of a star didst manifest Thine only-begotten
+      Son to the Gentiles, mercifully grant that we, who know Thee now by
+      faith, may after this life have the fruition of Thy glorious Godhead;
+      through the same Jesus Christ, Thy Son, our Lord, who liveth and
+      reigneth with Thee and the Holy Ghost, ever one God, world without end.
+
+  pre_lent:
+    title: Collect for Pre-Lent
+    text: >-
+      O Lord, we beseech Thee favorably to hear the prayers of Thy people,
+      that we, who are justly punished for our offenses, may be mercifully
+      delivered by Thy goodness, for the glory of Thy name; through Jesus
+      Christ, Thy Son, our Lord, who liveth and reigneth with Thee and the
+      Holy Ghost, ever one God, world without end.
+
+  lent:
+    title: Collect for Lent
+    text: >-
+      Almighty and everlasting God, who hatest nothing that Thou hast made
+      and dost forgive the sins of all them that are penitent, create and
+      make in us new and contrite hearts, that we, worthily lamenting our
+      sins and acknowledging our wretchedness, may obtain of Thee, the God of
+      all mercy, perfect remission and forgiveness; through Jesus Christ, our
+      Lord.
+
+  holy_week:
+    title: Collect for Holy Week
+    text: >-
+      Almighty and everlasting God, who hast sent Thy Son, our Savior Jesus
+      Christ, to take upon Him our flesh and to suffer death upon the cross
+      that all mankind should follow the example of His great humility,
+      mercifully grant that we may both follow the example of His patience
+      and also be made partakers of His resurrection; through the same Jesus
+      Christ, our Lord.
+
+  easter:
+    title: Collect for Eastertide
+    text: >-
+      Almighty God, who through Thine only-begotten Son, Jesus Christ, hast
+      overcome death and opened unto us the gate of everlasting life, we
+      humbly beseech Thee that, as Thou dost put into our minds good desires,
+      so by Thy continual help we may bring the same to good effect; through
+      the same Jesus Christ, our Lord, who liveth and reigneth with Thee and
+      the Holy Ghost, ever one God, world without end.
+
+  ascension:
+    title: Collect for Ascensiontide
+    text: >-
+      Grant, we beseech Thee, almighty God, that like as we do believe Thine
+      only-begotten Son, our Lord Jesus Christ, to have ascended into the
+      heavens, so we may also in heart and mind thither ascend and with Him
+      continually dwell; who liveth and reigneth with Thee and the Holy
+      Ghost, ever one God, world without end.
+
+  pentecost:
+    title: Collect for Whitsuntide
+    text: >-
+      O God, who didst teach the hearts of Thy faithful people by sending to
+      them the light of Thy Holy Spirit, grant us by the same Spirit to have
+      a right judgment in all things and evermore to rejoice in His holy
+      comfort; through Jesus Christ, Thy Son, our Lord, who liveth and
+      reigneth with Thee and the same Spirit, ever one God, world without
+      end.
+
+  trinity:
+    title: Collect for the Trinity Season
+    text: >-
+      Almighty and everlasting God, give unto us the increase of faith, hope,
+      and charity; and, that we may obtain that which Thou dost promise, make
+      us to love that which Thou dost command; through Jesus Christ, Thy Son,
+      our Lord, who liveth and reigneth with Thee and the Holy Ghost, ever
+      one God, world without end.

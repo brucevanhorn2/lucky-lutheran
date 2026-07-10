@@ -1,0 +1,25 @@
+[project]
+name = "lucky-lutheran"
+version = "0.1.0"
+description = "Automated daily-office podcast generator: Matins, Vespers, and Compline from public-domain Lutheran sources (TLH 1941, KJV, Small Catechism)."
+requires-python = ">=3.10"
+dependencies = [
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+# for --engine qwen3 / `lucky serve` (local GPU synthesis)
+tts = ["qwen-tts", "soundfile"]
+
+[project.scripts]
+lucky = "luckylutheran.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["luckylutheran*"]
+
+[tool.setuptools.package-data]
+luckylutheran = ["templates/*.yaml", "data/*.yaml"]
