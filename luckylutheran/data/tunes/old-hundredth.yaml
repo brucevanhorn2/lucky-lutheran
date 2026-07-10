@@ -1,0 +1,49 @@
+# OLD HUNDREDTH — Louis Bourgeois, Genevan Psalter (1551). Public domain.
+# The Doxology tune ("Praise God, from whom all blessings flow").
+#
+# Melody transcribed from the Lilypond notation in the Wikipedia article
+# "Old 100th" (original 1551 rhythm, G major, half note = 52).
+# pitch: note name + octave (F#4 etc.); beats: quarter-note beats.
+
+name: old-hundredth
+title: OLD HUNDREDTH
+composer: Louis Bourgeois, 1551
+key: G
+tempo_qpm: 104
+notes:
+  # Phrase 1 — "All people that on earth do dwell"
+  - [G4, 2]
+  - [G4, 1]
+  - [F#4, 1]
+  - [E4, 1]
+  - [D4, 1]
+  - [G4, 2]
+  - [A4, 2]
+  - [B4, 2]
+  # Phrase 2
+  - [B4, 2]
+  - [B4, 1]
+  - [B4, 1]
+  - [A4, 1]
+  - [G4, 1]
+  - [C5, 2]
+  - [B4, 2]
+  - [A4, 2]
+  # Phrase 3
+  - [G4, 2]
+  - [A4, 1]
+  - [B4, 1]
+  - [A4, 1]
+  - [G4, 1]
+  - [E4, 2]
+  - [F#4, 2]
+  - [G4, 2]
+  # Phrase 4
+  - [D5, 2]
+  - [B4, 2]
+  - [G4, 2]
+  - [A4, 1]
+  - [C5, 1]
+  - [B4, 2]
+  - [A4, 2]
+  - [G4, 4]

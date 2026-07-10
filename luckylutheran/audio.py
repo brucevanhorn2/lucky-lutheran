@@ -74,29 +74,44 @@ def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path) -> Path |
         return None
     if not ffmpeg_available():
         print("ffmpeg not found — stitching to WAV with the pure-python "
-              "fallback (install ffmpeg for MP3 + loudness normalization)")
+              "fallback (install ffmpeg for MP3 + loudness normalization; "
+              "bumper music requires ffmpeg and is skipped)")
         return _stitch_wave(rendered, out_dir / f"{episode.slug}.wav")
 
-    return _stitch(rendered, out_dir / f"{episode.slug}.mp3")
+    from luckylutheran import music
+    bumper = music.render_tune(music.tune_for(episode.day.season))
+    return _stitch(rendered, out_dir / f"{episode.slug}.mp3", bumper=bumper)
 
 
-def _stitch(rendered: list[tuple[Path, float]], out_path: Path) -> Path:
-    """Concatenate WAVs with per-segment trailing silence, normalize, encode."""
+def _stitch(rendered: list[tuple[Path, float]], out_path: Path,
+            bumper: Path | None = None) -> Path:
+    """Concatenate WAVs with per-segment trailing silence, normalize, encode.
+    A bumper tune, when given, opens the episode (fading down into the
+    greeting) and closes it after the benediction (fading up, then out)."""
+    clips = list(rendered)
+    if bumper is not None:
+        # Intro: full tune, gentle entrance, 2s breath before the greeting.
+        # Outro: same tune returning after the final silence.
+        clips = [(bumper, 2.0), *clips, (bumper, 0.0)]
+
     inputs: list[str] = []
     filters: list[str] = []
-    for i, (wav, pause) in enumerate(rendered):
+    for i, (wav, pause) in enumerate(clips):
         inputs += ["-i", str(wav)]
         # Per clip: resample to a common rate, fade the head (30 ms) and
         # tail (80 ms, via the areverse trick) so joins never click or cut
         # off abruptly, then pad with the segment's trailing silence.
+        is_bumper = bumper is not None and wav == bumper
+        fade_in, fade_out = (1.5, 3.0) if is_bumper else (0.03, 0.08)
+        gain = ",volume=0.65" if is_bumper else ""
         filters.append(
             f"[{i}:a]aresample=44100,aformat=channel_layouts=mono,"
-            f"afade=t=in:d=0.03,areverse,afade=t=in:d=0.08,areverse,"
-            f"apad=pad_dur={pause}[s{i}]"
+            f"afade=t=in:d={fade_in},areverse,afade=t=in:d={fade_out},"
+            f"areverse{gain},apad=pad_dur={pause}[s{i}]"
         )
-    concat = "".join(f"[s{i}]" for i in range(len(rendered)))
+    concat = "".join(f"[s{i}]" for i in range(len(clips)))
     filters.append(
-        f"{concat}concat=n={len(rendered)}:v=0:a=1,"
+        f"{concat}concat=n={len(clips)}:v=0:a=1,"
         f"loudnorm=I=-16:TP=-1.5:LRA=11[out]"
     )
 

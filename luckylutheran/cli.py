@@ -140,6 +140,13 @@ def cmd_voices(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_music(args: argparse.Namespace) -> int:
+    from luckylutheran import music
+    for name in ([args.tune] if args.tune else music.available_tunes()):
+        print(f"{name}: {music.render_tune(name, force=args.force)}")
+    return 0
+
+
 def cmd_serve(args: argparse.Namespace) -> int:
     try:
         from luckylutheran import server
@@ -208,6 +215,11 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--overwrite", action="store_true",
                    help="regenerate voices that already exist")
     p.set_defaults(func=cmd_voices)
+
+    p = sub.add_parser("music", help="render bumper tunes on the organ synth")
+    p.add_argument("--tune", help="tune name (default: all in data/tunes/)")
+    p.add_argument("--force", action="store_true", help="re-render even if cached")
+    p.set_defaults(func=cmd_music)
 
     p = sub.add_parser(
         "serve", help="run the TTS server (on the GPU machine, e.g. wintermute)")
