@@ -70,6 +70,40 @@ VOICE_CAST = {
 }
 
 
+# --- The congregation crowd -------------------------------------------------
+# Individual parishioners, designed once (see `lucky crowd`) and mixed
+# slightly out of sync by audio.py so congregation lines sound like an
+# actual roomful of people rather than one voice. All speak the same
+# reference line; variety comes from the designs.
+CROWD_DIR = ASSETS / "crowd"
+CROWD_REF_TEXT = (
+    "Glory be to the Father and to the Son and to the Holy Ghost; "
+    "as it was in the beginning, is now, and ever shall be."
+)
+CROWD_DESIGNS = {
+    "parishioner-01": "An older male voice in his seventies, gravelly and "
+                      "devout, praying aloud slowly from long habit.",
+    "parishioner-02": "A middle-aged female voice, warm and steady, "
+                      "speaking prayers in an even, unhurried unison cadence.",
+    "parishioner-03": "A young adult female voice, soft and sincere, "
+                      "slightly hushed, praying along attentively.",
+    "parishioner-04": "A deep male voice in his forties, plainspoken and "
+                      "solid, reciting in a measured, workmanlike way.",
+    "parishioner-05": "An elderly female voice, gentle and a little frail, "
+                      "but sure of every word of the prayer.",
+    "parishioner-06": "A teenage male voice, quiet and slightly flat in "
+                      "delivery, dutifully following the liturgy.",
+    "parishioner-07": "A male voice in his thirties with a light Texas "
+                      "drawl, relaxed but reverent, praying along evenly.",
+}
+
+
+def crowd_reference_wavs() -> list[Path]:
+    if not CROWD_DIR.exists():
+        return []
+    return sorted(CROWD_DIR.glob("*.wav"))
+
+
 def resolve_speaker(speaker: str) -> str:
     entry = VOICE_CAST.get(speaker, {})
     return entry.get("alias", speaker if speaker in VOICE_CAST else "liturgist")
@@ -87,7 +121,14 @@ class TTSEngine(abc.ABC):
     @abc.abstractmethod
     def synthesize(self, text: str, speaker: str, out_path: Path) -> Path | None:
         """Write audio for `text` to `out_path`; return the path, or None if
-        this engine produces no audio (script-only mode)."""
+        this engine produces no audio (script-only mode). `speaker` may be a
+        cast role (liturgist/congregation/lector/all) or an extra voice key
+        from crowd_voices()."""
+
+    def crowd_voices(self) -> list[str]:
+        """Extra voice keys usable as `speaker` for crowd mixing (empty when
+        this engine has no crowd support or no crowd WAVs exist)."""
+        return []
 
 
 class NullTTS(TTSEngine):
@@ -137,14 +178,22 @@ class Qwen3TTS(TTSEngine):
             )
             for speaker in ("liturgist", "congregation", "lector")
         }
+        for wav in crowd_reference_wavs():
+            self._prompts[f"crowd/{wav.stem}"] = \
+                self.model.create_voice_clone_prompt(
+                    ref_audio=str(wav), ref_text=CROWD_REF_TEXT)
+
+    def crowd_voices(self) -> list[str]:
+        return sorted(k for k in self._prompts if k.startswith("crowd/"))
 
     def synth_array(self, text: str, speaker: str):
         """Render to (numpy_audio, sample_rate) — used by both the local
         engine path and the wintermute HTTP server."""
+        key = speaker if speaker in self._prompts else resolve_speaker(speaker)
         wavs, sr = self.model.generate_voice_clone(
             text=text,
             language="English",
-            voice_clone_prompt=self._prompts[resolve_speaker(speaker)],
+            voice_clone_prompt=self._prompts[key],
         )
         return wavs[0], sr
 
@@ -188,10 +237,53 @@ def design_voice_cast(overwrite: bool = False) -> list[Path]:
     return written
 
 
+def design_crowd_via_gradio(url: str | None = None,
+                            overwrite: bool = False) -> list[Path]:
+    """Generate the parishioner reference WAVs through a running
+    qwen-tts-demo serving the VoiceDesign model. One-time (per crowd)."""
+    import json
+    import urllib.request
+
+    url = (url or os.environ.get("LUCKY_TTS_URL",
+                                 "http://192.168.1.51:8000")).rstrip("/")
+    try:
+        with urllib.request.urlopen(f"{url}/config", timeout=10) as r:
+            config = json.loads(r.read().decode("utf-8"))
+    except OSError as exc:
+        raise ConnectionError(
+            f"Gradio demo not reachable at {url} ({exc}). On wintermute: "
+            "qwen-tts-demo Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign "
+            "--ip 0.0.0.0 --port 8000") from exc
+    banner = next((c["props"].get("value", "") for c in config["components"]
+                   if c["type"] == "markdown"), "")
+    if "voice_design" not in banner:
+        raise RuntimeError(
+            "The demo at {} is not serving the VoiceDesign model (banner: "
+            "{!r}). Restart it with Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign, "
+            "design the crowd, then switch back to Base.".format(
+                url, " ".join(banner.split())))
+
+    CROWD_DIR.mkdir(parents=True, exist_ok=True)
+    written = []
+    for name, design in CROWD_DESIGNS.items():
+        out = CROWD_DIR / f"{name}.wav"
+        if out.exists() and not overwrite:
+            print(f"keep existing {out.name}")
+            continue
+        result = _gradio_call(url, "/run_voice_design",
+                              [CROWD_REF_TEXT, "English", design])
+        with urllib.request.urlopen(result[0]["url"], timeout=120) as resp:
+            out.write_bytes(resp.read())
+        written.append(out)
+        print(f"designed {name}: {out}")
+    return written
+
+
 class Qwen3RemoteTTS(TTSEngine):
     """Client for the lucky-lutheran TTS server running on wintermute
     (see server.py). Keeps the model and GPU over there; this machine only
-    sends text and receives WAV bytes.
+    sends text and receives WAV bytes. (No crowd support — the crowd is
+    rendered via the gradio or qwen3 engines.)
 
     Env: LUCKY_TTS_URL (default http://192.168.1.51:8765)
     """
@@ -275,20 +367,30 @@ class GradioDemoTTS(TTSEngine):
 
         self._voice_files: dict[str, str] = {}
         for speaker in ("liturgist", "congregation", "lector"):
-            uploaded = self._upload(ASSETS / f"{speaker}.wav")
-            result = self._call("/save_prompt", [
-                {"path": uploaded, "meta": {"_type": "gradio.FileData"}},
-                VOICE_CAST[speaker]["ref_text"],
-                False,
-            ])
-            self._voice_files[speaker] = result[0]["path"]
-            print(f"voice prompt ready: {speaker}")
+            self._save_prompt(speaker, ASSETS / f"{speaker}.wav",
+                              VOICE_CAST[speaker]["ref_text"])
+        for wav in crowd_reference_wavs():
+            self._save_prompt(f"crowd/{wav.stem}", wav, CROWD_REF_TEXT)
+
+    def _save_prompt(self, key: str, wav: Path, ref_text: str) -> None:
+        uploaded = self._upload(wav)
+        result = self._call("/save_prompt", [
+            {"path": uploaded, "meta": {"_type": "gradio.FileData"}},
+            ref_text,
+            False,
+        ])
+        self._voice_files[key] = result[0]["path"]
+        print(f"voice prompt ready: {key}")
+
+    def crowd_voices(self) -> list[str]:
+        return sorted(k for k in self._voice_files if k.startswith("crowd/"))
 
     def synthesize(self, text: str, speaker: str, out_path: Path) -> Path | None:
         import urllib.request
 
+        key = speaker if speaker in self._voice_files else resolve_speaker(speaker)
         result = self._call("/load_prompt_and_gen", [
-            {"path": self._voice_files[resolve_speaker(speaker)],
+            {"path": self._voice_files[key],
              "meta": {"_type": "gradio.FileData"}},
             text,
             "English",
@@ -299,54 +401,62 @@ class GradioDemoTTS(TTSEngine):
             out_path.write_bytes(resp.read())
         return out_path
 
-    # -- Gradio protocol helpers ------------------------------------------
-
     def _upload(self, path: Path) -> str:
-        """Multipart-upload a file; return its server-side path."""
-        import json
-        import urllib.request
-        import uuid
-
-        boundary = uuid.uuid4().hex
-        body = (
-            f"--{boundary}\r\n"
-            f'Content-Disposition: form-data; name="files"; '
-            f'filename="{path.name}"\r\n'
-            f"Content-Type: audio/wav\r\n\r\n"
-        ).encode() + path.read_bytes() + f"\r\n--{boundary}--\r\n".encode()
-        req = urllib.request.Request(
-            f"{self.url}/gradio_api/upload", data=body,
-            headers={"Content-Type":
-                     f"multipart/form-data; boundary={boundary}"})
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            return json.loads(resp.read().decode("utf-8"))[0]
+        return _gradio_upload(self.url, path)
 
     def _call(self, endpoint: str, data: list) -> list:
-        """POST a Gradio call, follow its SSE stream, return the result."""
-        import json
-        import urllib.request
+        return _gradio_call(self.url, endpoint, data)
 
-        req = urllib.request.Request(
-            f"{self.url}/gradio_api/call{endpoint}",
-            data=json.dumps({"data": data}).encode("utf-8"),
-            headers={"Content-Type": "application/json"})
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            event_id = json.loads(resp.read().decode("utf-8"))["event_id"]
 
-        event = None
-        with urllib.request.urlopen(
-                f"{self.url}/gradio_api/call{endpoint}/{event_id}",
-                timeout=600) as stream:
-            for raw in stream:
-                line = raw.decode("utf-8").strip()
-                if line.startswith("event:"):
-                    event = line.split(":", 1)[1].strip()
-                elif line.startswith("data:") and event == "complete":
-                    return json.loads(line.split(":", 1)[1])
-                elif line.startswith("data:") and event == "error":
-                    raise RuntimeError(
-                        f"Gradio {endpoint} failed: {line[5:].strip()}")
-        raise RuntimeError(f"Gradio {endpoint}: stream ended without result")
+# -- Gradio protocol helpers (stdlib) -----------------------------------------
+
+def _gradio_upload(url: str, path: Path) -> str:
+    """Multipart-upload a file; return its server-side path."""
+    import json
+    import urllib.request
+    import uuid
+
+    boundary = uuid.uuid4().hex
+    body = (
+        f"--{boundary}\r\n"
+        f'Content-Disposition: form-data; name="files"; '
+        f'filename="{path.name}"\r\n'
+        f"Content-Type: audio/wav\r\n\r\n"
+    ).encode() + path.read_bytes() + f"\r\n--{boundary}--\r\n".encode()
+    req = urllib.request.Request(
+        f"{url}/gradio_api/upload", data=body,
+        headers={"Content-Type":
+                 f"multipart/form-data; boundary={boundary}"})
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        return json.loads(resp.read().decode("utf-8"))[0]
+
+
+def _gradio_call(url: str, endpoint: str, data: list) -> list:
+    """POST a Gradio call, follow its SSE stream, return the result."""
+    import json
+    import urllib.request
+
+    req = urllib.request.Request(
+        f"{url}/gradio_api/call{endpoint}",
+        data=json.dumps({"data": data}).encode("utf-8"),
+        headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        event_id = json.loads(resp.read().decode("utf-8"))["event_id"]
+
+    event = None
+    with urllib.request.urlopen(
+            f"{url}/gradio_api/call{endpoint}/{event_id}",
+            timeout=600) as stream:
+        for raw in stream:
+            line = raw.decode("utf-8").strip()
+            if line.startswith("event:"):
+                event = line.split(":", 1)[1].strip()
+            elif line.startswith("data:") and event == "complete":
+                return json.loads(line.split(":", 1)[1])
+            elif line.startswith("data:") and event == "error":
+                raise RuntimeError(
+                    f"Gradio {endpoint} failed: {line[5:].strip()}")
+    raise RuntimeError(f"Gradio {endpoint}: stream ended without result")
 
 
 ENGINES = {"null": NullTTS, "qwen3": Qwen3TTS, "remote": Qwen3RemoteTTS,

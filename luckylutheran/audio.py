@@ -56,16 +56,30 @@ def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path) -> Path |
     work = out_dir / "segments" / episode.slug
     work.mkdir(parents=True, exist_ok=True)
 
+    from luckylutheran.tts import resolve_speaker
+
+    # Crowd: when parishioner voices exist (and ffmpeg can mix them),
+    # congregation lines are rendered once per voice and layered.
+    crowd = engine.crowd_voices() if ffmpeg_available() else []
+
     rendered: list[tuple[Path, float]] = []
     for i, seg in enumerate(episode.segments):
         chunks = _chunk_text(seg.text)
+        in_crowd = crowd and resolve_speaker(seg.speaker) == "congregation"
         for j, chunk in enumerate(chunks):
             suffix = "" if len(chunks) == 1 else f"-{j:02d}"
-            wav = work / f"{i:03d}{suffix}-{seg.section_id}-{seg.speaker}.wav"
-            if wav.exists() and wav.stat().st_size > 44:
-                result: Path | None = wav  # resume: already rendered
+            if in_crowd:
+                wav = work / f"{i:03d}{suffix}-{seg.section_id}-crowd.wav"
+                if wav.exists() and wav.stat().st_size > 44:
+                    result: Path | None = wav
+                else:
+                    result = _render_crowd_chunk(engine, chunk, crowd, wav)
             else:
-                result = engine.synthesize(chunk, seg.speaker, wav)
+                wav = work / f"{i:03d}{suffix}-{seg.section_id}-{seg.speaker}.wav"
+                if wav.exists() and wav.stat().st_size > 44:
+                    result = wav  # resume: already rendered
+                else:
+                    result = engine.synthesize(chunk, seg.speaker, wav)
             if result is not None:
                 last = j == len(chunks) - 1
                 rendered.append((result, seg.pause_after if last else CHUNK_PAUSE))
@@ -81,6 +95,67 @@ def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path) -> Path |
     from luckylutheran import music
     bumper = music.render_tune(music.tune_for(episode.day.season))
     return _stitch(rendered, out_dir / f"{episode.slug}.mp3", bumper=bumper)
+
+
+def _render_crowd_chunk(engine, chunk: str, crowd: list[str],
+                        out_path: Path) -> Path | None:
+    """Render one congregation chunk with every voice (the chosen
+    congregation cast member leads, parishioners join) and layer them
+    slightly out of sync, like a real roomful of people praying.
+
+    Per-voice renders are cached beside the mix, so retries are cheap."""
+    voices = ["congregation", *crowd]
+    part_dir = out_path.parent / "crowd-parts"
+    parts: list[Path] = []
+    for voice in voices:
+        part = part_dir / f"{out_path.stem}-{voice.replace('/', '_')}.wav"
+        if not (part.exists() and part.stat().st_size > 44):
+            if engine.synthesize(chunk, voice, part) is None:
+                return None
+        parts.append(part)
+    return _mix_crowd(parts, chunk, out_path)
+
+
+def _mix_crowd(parts: list[Path], chunk: str, out_path: Path) -> Path:
+    """Time-align the renders to a common phrase length, then mix with
+    small per-voice onset delays and gain differences.
+
+    Different voices take different time over the same words; a few percent
+    of atempo keeps them together phrase-level while staying humanly ragged
+    syllable-level. Randomness is seeded from the text, so re-renders of the
+    same chunk mix identically (resume-friendly)."""
+    import hashlib
+    import random
+    import wave as wave_mod
+
+    def duration(p: Path) -> float:
+        with wave_mod.open(str(p), "rb") as w:
+            return w.getnframes() / w.getframerate()
+
+    durations = sorted(duration(p) for p in parts)
+    target = durations[len(durations) // 2]  # median
+
+    rng = random.Random(hashlib.sha256(chunk.encode()).digest())
+    inputs: list[str] = []
+    filters: list[str] = []
+    for i, part in enumerate(parts):
+        inputs += ["-i", str(part)]
+        tempo = min(max(duration(part) / target, 0.5), 2.0)
+        delay_ms = 0 if i == 0 else rng.randint(15, 70)   # lead voice on time
+        gain = 1.0 if i == 0 else rng.uniform(0.55, 0.85)
+        filters.append(
+            f"[{i}:a]atempo={tempo:.4f},adelay={delay_ms},"
+            f"volume={gain:.2f}[v{i}]")
+    mix = "".join(f"[v{i}]" for i in range(len(parts)))
+    filters.append(
+        f"{mix}amix=inputs={len(parts)}:duration=longest:normalize=0,"
+        f"volume={1.6 / len(parts):.3f}[out]")
+
+    cmd = ["ffmpeg", "-y", *inputs,
+           "-filter_complex", ";".join(filters),
+           "-map", "[out]", str(out_path)]
+    subprocess.run(cmd, check=True, capture_output=True)
+    return out_path
 
 
 def _stitch(rendered: list[tuple[Path, float]], out_path: Path,

@@ -140,6 +140,17 @@ def cmd_voices(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_crowd(args: argparse.Namespace) -> int:
+    try:
+        written = tts.design_crowd_via_gradio(overwrite=args.overwrite)
+    except (ConnectionError, RuntimeError) as exc:
+        print(exc, file=sys.stderr)
+        return 1
+    if not written:
+        print("all parishioner voices already exist (use --overwrite to redo)")
+    return 0
+
+
 def cmd_music(args: argparse.Namespace) -> int:
     from luckylutheran import music
     for name in ([args.tune] if args.tune else music.available_tunes()):
@@ -215,6 +226,13 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--overwrite", action="store_true",
                    help="regenerate voices that already exist")
     p.set_defaults(func=cmd_voices)
+
+    p = sub.add_parser(
+        "crowd",
+        help="one-time: design the congregation crowd (VoiceDesign demo)")
+    p.add_argument("--overwrite", action="store_true",
+                   help="regenerate parishioners that already exist")
+    p.set_defaults(func=cmd_crowd)
 
     p = sub.add_parser("music", help="render bumper tunes on the organ synth")
     p.add_argument("--tune", help="tune name (default: all in data/tunes/)")
