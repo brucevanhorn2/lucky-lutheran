@@ -133,3 +133,17 @@ def test_render_tune_offline_and_midi_generation():
     os.environ["LUCKY_SOUNDFONT"] = "/nonexistent/x.sf2"
     assert music._soundfont() is None
     os.environ.pop("LUCKY_SOUNDFONT")
+
+
+def test_phrase_units_bounds_drift():
+    from luckylutheran.audio import _phrase_units
+    # A short response stays a single unit.
+    assert _phrase_units("Amen.") == ["Amen."]
+    # A long, comma-heavy creed line splits into several short units...
+    creed = ("I believe in God, the Father Almighty, Maker of heaven and "
+             "earth; and in Jesus Christ, His only Son, our Lord.")
+    units = _phrase_units(creed)
+    assert len(units) >= 3
+    assert all(len(u) <= 60 for u in units)
+    # ...and no words are lost or reordered.
+    assert " ".join(units).split() == creed.split()

@@ -97,9 +97,70 @@ def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path) -> Path |
     return _stitch(rendered, out_dir / f"{episode.slug}.mp3", bumper=bumper)
 
 
+def _phrase_units(text: str, max_chars: int = 60) -> list[str]:
+    """Break congregation text into short phrase units so the crowd mix
+    re-syncs frequently. Splits at clause/sentence punctuation, then breaks
+    any still-long piece on word boundaries. Every word is preserved in
+    order."""
+    import re
+    units: list[str] = []
+    for piece in re.split(r"(?<=[,.;:!?])\s+", text.strip()):
+        if len(piece) <= max_chars:
+            if piece:
+                units.append(piece)
+            continue
+        current = ""
+        for word in piece.split():
+            if current and len(current) + 1 + len(word) > max_chars:
+                units.append(current)
+                current = word
+            else:
+                current = f"{current} {word}".strip()
+        if current:
+            units.append(current)
+    return units
+
+
+def _concat_wavs(parts: list[Path], out_path: Path) -> Path:
+    """Concatenate WAV parts in order into one WAV via ffmpeg's concat
+    demuxer (re-encoding to a common PCM format to be safe)."""
+    listfile = out_path.parent / f"{out_path.stem}-concat.txt"
+    listfile.write_text(
+        "".join(f"file '{p.resolve()}'\n" for p in parts), encoding="utf-8")
+    subprocess.run(
+        ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(listfile),
+         "-c:a", "pcm_s16le", str(out_path)],
+        check=True, capture_output=True)
+    return out_path
+
+
 def _render_crowd_chunk(engine, chunk: str, crowd: list[str],
                         out_path: Path) -> Path | None:
-    """Render one congregation chunk with every voice (the chosen
+    """Render a congregation chunk as several short phrase units, mixing each
+    unit's voices independently and concatenating them. Mixing per phrase
+    keeps the crowd tight: onset drift resets at every phrase boundary instead
+    of accumulating across a long passage into an echo chamber.
+
+    Per-unit mixes are cached beside the output, so retries are cheap."""
+    units = _phrase_units(chunk)
+    if len(units) <= 1:
+        return _render_crowd_unit(engine, chunk, crowd, out_path)
+
+    unit_dir = out_path.parent / "crowd-units"
+    unit_dir.mkdir(parents=True, exist_ok=True)
+    parts: list[Path] = []
+    for k, unit in enumerate(units):
+        part = unit_dir / f"{out_path.stem}-u{k:02d}.wav"
+        if not (part.exists() and part.stat().st_size > 44):
+            if _render_crowd_unit(engine, unit, crowd, part) is None:
+                return None
+        parts.append(part)
+    return _concat_wavs(parts, out_path)
+
+
+def _render_crowd_unit(engine, chunk: str, crowd: list[str],
+                       out_path: Path) -> Path | None:
+    """Render one congregation phrase with every voice (the chosen
     congregation cast member leads, parishioners join) and layer them
     slightly out of sync, like a real roomful of people praying.
 
