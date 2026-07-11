@@ -62,6 +62,7 @@ def _build_one(date: dt.date, office: str, out_dir: Path,
         "psalm": episode.readings.psalm,
         "reading": episode.readings.reading,
         "reading_source": episode.readings.source,
+        "reading_optional": episode.readings.optional,
         "summary": (f"{episode.title} for {date.strftime('%B %d, %Y')} — "
                     f"{episode.readings.psalm}; {episode.readings.reading}."),
         "built_at": dt.datetime.now().isoformat(timespec="seconds"),

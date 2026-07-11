@@ -82,30 +82,42 @@ def _greeting(office: str) -> str:
 
 
 def _passage_segments(section: dict, reference: str, kind: str) -> list[Segment]:
-    """Render a scripture passage (psalm or lesson) as lector segments."""
-    text = scripture.get_passage(reference)
-    intro = {
-        "psalm": f"The psalm appointed for this day is {reference}.",
-        "reading": f"The reading is from {reference}.",
-    }[kind]
-    outro = {"psalm": None, "reading": "Here ends the reading."}[kind]
+    """Render a scripture passage (psalm or lesson) as lector segments.
 
-    segs = [Segment(section["id"], section["title"], "lector", intro, 1.0)]
-    if text is None:
-        segs.append(Segment(
-            section["id"], section["title"], "lector",
-            f"[Text of {reference} unavailable — will be fetched at build "
-            f"time from the KJV.]", 1.0))
+    The LSB psalm table appoints two psalms most evenings ("Psalm 42;
+    Psalm 32"): each is read as its own segment, with one Gloria Patri
+    closing the set."""
+    sid, title = section["id"], section["title"]
+    if kind == "psalm":
+        refs = [r.strip() for r in reference.split(";")]
+        names = " and ".join(refs)
+        plural = "psalms appointed for this day are" if len(refs) > 1 \
+            else "psalm appointed for this day is"
+        intro, outro = f"The {plural} {names}.", None
     else:
-        segs.append(Segment(section["id"], section["title"], "lector", text, 1.5))
-        if kind == "psalm":
+        refs = [reference]
+        intro, outro = f"The reading is from {reference}.", "Here ends the reading."
+
+    segs = [Segment(sid, title, "lector", intro, 1.0)]
+    any_text = False
+    for ref in refs:
+        text = scripture.get_passage(ref)
+        if text is None:
             segs.append(Segment(
-                section["id"], section["title"], "all",
-                "Glory be to the Father and to the Son and to the Holy "
-                "Ghost; as it was in the beginning, is now, and ever shall "
-                "be, world without end. Amen.", 1.0))
+                sid, title, "lector",
+                f"[Text of {ref} unavailable — will be fetched at build "
+                f"time from the KJV.]", 1.0))
+        else:
+            segs.append(Segment(sid, title, "lector", text, 1.5))
+            any_text = True
+    if kind == "psalm" and any_text:
+        segs.append(Segment(
+            sid, title, "all",
+            "Glory be to the Father and to the Son and to the Holy "
+            "Ghost; as it was in the beginning, is now, and ever shall "
+            "be, world without end. Amen.", 1.0))
     if outro:
-        segs.append(Segment(section["id"], section["title"], "lector", outro, 1.0))
+        segs.append(Segment(sid, title, "lector", outro, 1.0))
     return segs
 
 

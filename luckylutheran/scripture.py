@@ -25,12 +25,74 @@ def _cache_path(reference: str, translation: str) -> Path:
     return CACHE_DIR / translation / f"{slug}.json"
 
 
+# Books of a single chapter: the lectionary cites them verse-only
+# ("Jude 1-25"), which the API reads as chapters 1-25 unless the chapter
+# is spelled out ("Jude 1:1-25").
+SINGLE_CHAPTER_BOOKS = {"Obadiah", "Philemon", "2 John", "3 John", "Jude"}
+
+
+def _expand_reference(reference: str) -> list[str]:
+    """Break a lectionary citation into simple references the API accepts.
+
+    The LSB writes compound citations — "Exodus 12:29-32; 13:1-16",
+    "Genesis 16:1-9, 15-17:22", "Isaiah 10:12-27a, 33-34" — that
+    bible-api.com cannot parse whole. Semicolons separate chapter-level
+    items (inheriting the book), commas separate verse-level items
+    (inheriting book and chapter), and letter halves ("27a") widen to
+    the full verse.
+    """
+    reference = re.sub(r"(\d)[ab]\b", r"\1", reference)
+    refs: list[str] = []
+    book, chapter = "", ""
+    for part in re.split(r";\s*", reference.strip()):
+        m = re.match(r"^((?:[123]\s+)?[A-Za-z][A-Za-z. ]*?)\s+(\d.*)$", part)
+        if m:
+            book, rest = m.group(1), m.group(2)
+        else:
+            rest = part  # bare "13:1-16" after a semicolon keeps the book
+        for i, item in enumerate(re.split(r",\s*", rest)):
+            if i == 0:
+                if ":" not in item and book in SINGLE_CHAPTER_BOOKS:
+                    item = f"1:{item}"
+                ref = f"{book} {item}"
+            else:
+                ref = f"{book} {chapter}:{item}"
+            refs.append(ref)
+            chapters = re.findall(r"(\d+):", ref)
+            chapter = chapters[-1] if chapters else item
+    return refs
+
+
 def get_passage(reference: str, translation: str = DEFAULT_TRANSLATION) -> str | None:
-    """Return passage text for e.g. 'Psalm 95' or 'John 1:1-14', or None."""
+    """Return passage text for e.g. 'Psalm 95' or 'John 1:1-14', or None.
+
+    Compound lectionary citations are fetched piecewise (_expand_reference)
+    and joined; the whole citation is cached under one entry. If any piece
+    is unavailable, returns None rather than a silently shortened passage.
+    """
     cache = _cache_path(reference, translation)
     if cache.exists():
         return json.loads(cache.read_text(encoding="utf-8"))["text"]
 
+    parts = []
+    for ref in _expand_reference(reference):
+        text = _fetch(ref, translation)
+        if text is None:
+            return None
+        parts.append(text)
+    text = " ".join(parts)
+
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    cache.write_text(
+        json.dumps({"reference": reference, "translation": translation, "text": text},
+                   ensure_ascii=False, indent=1),
+        encoding="utf-8",
+    )
+    return text
+
+
+def _fetch(reference: str, translation: str) -> str | None:
+    """One API call for one simple reference."""
     url = API.format(ref=urllib.parse.quote(reference), translation=translation)
     try:
         with urllib.request.urlopen(url, timeout=15) as resp:
@@ -43,17 +105,7 @@ def get_passage(reference: str, translation: str = DEFAULT_TRANSLATION) -> str |
         raw = " ".join(v.get("text", "").strip() for v in verses)
     else:
         raw = payload.get("text", "")
-    text = _clean(raw)
-    if not text:
-        return None
-
-    cache.parent.mkdir(parents=True, exist_ok=True)
-    cache.write_text(
-        json.dumps({"reference": reference, "translation": translation, "text": text},
-                   ensure_ascii=False, indent=1),
-        encoding="utf-8",
-    )
-    return text
+    return _clean(raw) or None
 
 
 def _clean(text: str) -> str:

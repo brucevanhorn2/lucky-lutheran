@@ -1,28 +1,42 @@
-"""Daily readings.
+"""Daily readings: the LSB daily lectionary, with a deterministic fallback.
 
-Two layers:
+The official table (data/daily_lectionary.yaml, transcribed from the
+Lutheran Service Book's Daily Lectionary, pp. 299-304) keys days two ways,
+per the lectionary's own design:
 
-1. The official table (data/daily_lectionary.yaml), keyed by "MM-DD". This
-   ships nearly empty — the LCMS daily lectionary should be typed in from
-   lcms.org or the hymnal (it is a list of citations, i.e. uncopyrightable
-   facts, but it still has to be entered once).
+  movable: "ash+N" — N days after Ash Wednesday; covers Ash Wednesday
+           through the Saturday after Pentecost (N = 0..101), so the
+           Lent/Easter readings follow the movable church year.
+  days:    "MM-DD" — the civil calendar; covers Nov 27 (the earliest
+           possible eve of Advent) until the beginning of Lent. When both
+           schemes could apply (Lent reaching into the civil range), the
+           movable table wins, as in the book.
 
-2. A deterministic FALLBACK plan used for any date not in the table, so the
-   pipeline always produces a real episode: mornings read sequentially
-   through the Gospels, evenings through Acts and the Epistles, one chapter
-   per day. Clearly labeled as the fallback, not the official lectionary.
+Each day appoints a first (Old Testament) and second (New Testament)
+reading, plus an occasional optional third covering material otherwise
+passed over. Matins reads the first lesson; Vespers/Compline the second.
 
-Psalms follow a simple continuous cycle (Psalm 119 excluded for length):
-one psalm each morning and each evening, walking through the Psalter.
+Psalms come from the Table of Psalms for Daily Prayer (LSB p. 304):
+weekday tables for Lent, Easter, and Advent; date-keyed Christmastide;
+and four "general" weeks repeating through Epiphany and the Time of the
+Church. Evening rows appoint two psalms ("42; 32").
+
+Dates missing from the reading tables (the summer Time-of-the-Church
+stretch is not yet transcribed) fall back to a deterministic plan —
+mornings sequentially through the Gospels, evenings through Acts and the
+Epistles — labeled "fallback", never "official".
 """
 
 from __future__ import annotations
 
 import datetime as dt
 from dataclasses import dataclass
+from functools import cache
 from importlib import resources
 
 import yaml
+
+from luckylutheran.churchyear import advent_start, easter
 
 GOSPEL_CHAPTERS = [("Matthew", 28), ("Mark", 16), ("Luke", 24), ("John", 21)]
 EPISTLE_CHAPTERS = [
@@ -34,8 +48,8 @@ EPISTLE_CHAPTERS = [
     ("2 John", 1), ("3 John", 1), ("Jude", 1), ("Revelation", 22),
 ]
 
-# Psalter cycle, skipping 119 (176 verses is too long for a 10-minute office).
-PSALM_CYCLE = [n for n in range(1, 151) if n != 119]
+# Indexed by date.weekday() (Monday = 0), matching the psalm-table keys.
+WEEKDAYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
 
 
 @dataclass(frozen=True)
@@ -43,12 +57,50 @@ class DailyReadings:
     psalm: str
     reading: str
     source: str  # "official" or "fallback"
+    optional: str | None = None  # the italic third reading (show notes)
 
 
-def _official_table() -> dict:
+@cache
+def _tables() -> dict:
     ref = resources.files("luckylutheran") / "data" / "daily_lectionary.yaml"
-    data = yaml.safe_load(ref.read_text(encoding="utf-8")) or {}
-    return data.get("days") or {}
+    return yaml.safe_load(ref.read_text(encoding="utf-8")) or {}
+
+
+def _days_since_ash_wednesday(date: dt.date) -> int:
+    return (date - (easter(date.year) - dt.timedelta(days=46))).days
+
+
+def _official_entry(date: dt.date) -> dict | None:
+    tables = _tables()
+    n = _days_since_ash_wednesday(date)
+    if 0 <= n <= 101:
+        return (tables.get("movable") or {}).get(f"ash+{n}")
+    return (tables.get("days") or {}).get(date.strftime("%m-%d"))
+
+
+def _psalm_row(date: dt.date) -> dict:
+    """The day's row {morning, evening} from the Table of Psalms."""
+    psalms = _tables()["psalms"]
+    row = psalms["christmas"].get(date.strftime("%m-%d"))
+    if row:
+        return row
+    weekday = WEEKDAYS[date.weekday()]
+    n = _days_since_ash_wednesday(date)
+    if 0 <= n <= 45:  # Ash Wednesday through Holy Saturday
+        return psalms["lent"][weekday]
+    if 46 <= n <= 101:  # Easter through the Saturday after Pentecost
+        return psalms["easter"][weekday]
+    if date >= advent_start(date.year):
+        return psalms["advent"][weekday]
+    # Epiphany and the Time of the Church: the four General weeks repeat,
+    # Sunday-aligned so the row changes at the start of the liturgical week.
+    week = (date.toordinal() - date.isoweekday() % 7) // 7 % 4 + 1
+    return psalms[f"general-{week}"][weekday]
+
+
+def _format_psalms(spec: str) -> str:
+    """Table entry to citation(s): "42; 32" -> "Psalm 42; Psalm 32"."""
+    return "; ".join(f"Psalm {part.strip()}" for part in str(spec).split(";"))
 
 
 def _nth_chapter(books: list[tuple[str, int]], n: int) -> str:
@@ -64,20 +116,18 @@ def _nth_chapter(books: list[tuple[str, int]], n: int) -> str:
 def readings_for(date: dt.date, office: str) -> DailyReadings:
     """Readings for a date and office ('matins' morning, else evening)."""
     morning = office == "matins"
-    doy = date.timetuple().tm_yday
+    psalm = _format_psalms(_psalm_row(date)["morning" if morning else "evening"])
 
-    psalm_index = (doy - 1) * 2 + (0 if morning else 1)
-    psalm = f"Psalm {PSALM_CYCLE[psalm_index % len(PSALM_CYCLE)]}"
-
-    key = date.strftime("%m-%d")
-    entry = _official_table().get(key)
+    entry = _official_entry(date)
     if entry:
-        reading = entry["morning"] if morning else entry["evening"]
-        return DailyReadings(psalm=entry.get("psalm", psalm),
-                             reading=reading, source="official")
+        return DailyReadings(
+            psalm=psalm,
+            reading=entry["first"] if morning else entry["second"],
+            source="official",
+            optional=entry.get("optional"),
+        )
 
-    if morning:
-        reading = _nth_chapter(GOSPEL_CHAPTERS, doy - 1)
-    else:
-        reading = _nth_chapter(EPISTLE_CHAPTERS, doy - 1)
-    return DailyReadings(psalm=psalm, reading=reading, source="fallback")
+    doy = date.timetuple().tm_yday
+    books = GOSPEL_CHAPTERS if morning else EPISTLE_CHAPTERS
+    return DailyReadings(psalm=psalm, reading=_nth_chapter(books, doy - 1),
+                         source="fallback")

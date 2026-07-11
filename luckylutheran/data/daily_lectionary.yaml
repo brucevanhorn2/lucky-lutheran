@@ -1,16 +1,347 @@
-# Official daily lectionary table — keyed by "MM-DD".
+# LSB Daily Lectionary — transcribed from the Lutheran Service Book
+# (pew edition, Kindle), Daily Lectionary, pp. 299-304.
 #
-# TO DO: enter the LCMS daily lectionary here (printed in the hymnal's front
-# matter and published at lcms.org). A lectionary is a list of citations
-# (facts), so entering it involves no copyrighted text.
+# A lectionary is a list of citations (facts, not copyrightable text).
 #
-# Schema per day:
-#   "MM-DD":
-#     psalm: "Psalm 34"          # optional; omit to use the built-in cycle
-#     morning: "Joshua 24:1-31"  # first reading (used by Matins)
-#     evening: "Acts 15:22-41"   # second reading (used by Vespers/Compline)
+# Two keying schemes, per the lectionary's own design:
+#   movable:  keyed by days since Ash Wednesday ("ash+N"). Runs from Ash
+#             Wednesday through the movable seasons (Lent/Easter, into the
+#             Trinity transition).
+#   days:     keyed "MM-DD" (civil calendar). Used following Holy Trinity
+#             Sunday, continuing until the beginning of Lent.
 #
-# Any date missing from this table falls back to the built-in sequential
-# plan (Gospels in the morning, Acts/Epistles in the evening).
+# Per day: first (OT), second (NT), optional (italic third reading, covers
+# material otherwise omitted — we skip it in the 10-minute office but keep
+# it for show notes / a "long" edition).
+#
+# STILL TO TRANSCRIBE: the summer Time-of-the-Church stretch of `days`
+# (after the Saturday following Pentecost until 11-26). In the Kindle
+# edition that table is an unreadably small embedded image; it needs the
+# print LSB or the lcms.org PDF. Those dates use the fallback plan.
 
-days: {}
+movable:
+  "ash+0":  {first: "Genesis 1:1-19",            second: "Mark 1:1-13"}    # Ash Wednesday
+  "ash+1":  {first: "Genesis 1:20-2:3",          second: "Mark 1:14-28"}
+  "ash+2":  {first: "Genesis 2:4-25",            second: "Mark 1:29-45"}
+  "ash+3":  {first: "Genesis 3:1-24",            second: "Mark 2:1-17"}
+  "ash+4":  {first: "Genesis 4:1-26",            second: "Mark 2:18-28"}   # Lent 1
+  "ash+5":  {first: "Genesis 6:1-7:5",           second: "Mark 3:1-19"}
+  "ash+6":  {first: "Genesis 7:11-8:12",         second: "Mark 3:20-35"}
+  "ash+7":  {first: "Genesis 8:13-9:17",         second: "Mark 4:1-20",
+             optional: "Genesis 9:18-11:26"}
+  "ash+8":  {first: "Genesis 11:27-12:20",       second: "Mark 4:21-41"}
+  "ash+9":  {first: "Genesis 13:1-18",           second: "Mark 5:1-20",
+             optional: "Genesis 14:1-24"}
+  "ash+10": {first: "Genesis 15:1-21",           second: "Mark 5:21-43"}
+  "ash+11": {first: "Genesis 16:1-9, 15-17:22",  second: "Mark 6:1-13"}    # Lent 2
+  "ash+12": {first: "Genesis 18:1-15",           second: "Mark 6:14-34",
+             optional: "Genesis 18:16-20:18"}
+  "ash+13": {first: "Genesis 21:1-21",           second: "Mark 6:35-56"}
+  "ash+14": {first: "Genesis 22:1-19",           second: "Mark 7:1-23"}
+  "ash+15": {first: "Genesis 24:1-31",           second: "Mark 7:24-37"}
+  "ash+16": {first: "Genesis 24:32-52, 61-67",   second: "Mark 8:1-21",
+             optional: "Genesis 25:1-26:35"}
+  "ash+17": {first: "Genesis 27:1-29",           second: "Mark 8:22-38"}
+  "ash+18": {first: "Genesis 27:30-45; 28:10-22", second: "Mark 9:1-13"}   # Lent 3
+  "ash+19": {first: "Genesis 29:1-30",           second: "Mark 9:14-32",
+             optional: "Genesis 29:31-34:31"}
+  "ash+20": {first: "Genesis 35:1-29",           second: "Mark 9:33-50"}
+  "ash+21": {first: "Genesis 37:1-36",           second: "Mark 10:1-12"}
+  "ash+22": {first: "Genesis 39:1-23",           second: "Mark 10:13-31"}
+  "ash+23": {first: "Genesis 40:1-23",           second: "Mark 10:32-52"}
+  "ash+24": {first: "Genesis 41:1-27",           second: "Mark 11:1-19"}
+  "ash+25": {first: "Genesis 41:28-57",          second: "Mark 11:20-33"}  # Lent 4
+  "ash+26": {first: "Genesis 42:1-34, 38",       second: "Mark 12:1-12"}
+  "ash+27": {first: "Genesis 43:1-28",           second: "Mark 12:13-27"}
+  "ash+28": {first: "Genesis 44:1-18, 32-34",    second: "Mark 12:28-44"}
+  "ash+29": {first: "Genesis 45:1-20, 24-28",    second: "Mark 13:1-23"}
+  "ash+30": {first: "Genesis 47:1-31",           second: "Mark 13:24-37",
+             optional: "Genesis 48:1-49:28"}
+  "ash+31": {first: "Genesis 49:29-50:7, 14-26", second: "Mark 14:1-11"}
+  "ash+32": {first: "Exodus 1:1-22",             second: "Mark 14:12-31"}  # Lent 5
+  "ash+33": {first: "Exodus 2:1-22",             second: "Mark 14:32-52"}
+  "ash+34": {first: "Exodus 2:23-3:22",          second: "Mark 14:53-72"}
+  "ash+35": {first: "Exodus 4:1-18",             second: "Mark 15:1-15"}
+  "ash+36": {first: "Exodus 4:19-31",            second: "Mark 15:16-32"}
+  "ash+37": {first: "Exodus 5:1-6:1",            second: "Mark 15:33-47"}
+  "ash+38": {first: "Exodus 7:1-25",             second: "Mark 16:1-20"}
+  # Holy Week
+  "ash+39": {first: "Exodus 8:1-32",             second: "Hebrews 1:1-14",
+             optional: "Psalm 118"}                                        # Palm Sunday
+  "ash+40": {first: "Exodus 9:1-28",             second: "Hebrews 2:1-18",
+             optional: "Lamentations 1:1-22"}
+  "ash+41": {first: "Exodus 9:29-10:20",         second: "Hebrews 3:1-19",
+             optional: "Lamentations 2:1-22"}
+  "ash+42": {first: "Exodus 10:21-11:10",        second: "Hebrews 4:1-16",
+             optional: "Lamentations 3:1-66"}
+  "ash+43": {first: "Exodus 12:1-28",            second: "Hebrews 5:1-14",
+             optional: "Lamentations 4:1-22; Psalm 31"}                    # Holy Thursday
+  "ash+44": {first: "Exodus 12:29-32; 13:1-16",  second: "Hebrews 6:1-20",
+             optional: "Lamentations 5:1-22; Psalm 22"}                    # Good Friday
+  "ash+45": {first: "Exodus 13:17-14:9",         second: "Hebrews 7:1-22"} # Holy Saturday
+  # Easter Season
+  "ash+46": {first: "Exodus 14:10-31",           second: "Hebrews 7:23-8:13"}  # Easter Sunday
+  "ash+47": {first: "Exodus 15:1-18",            second: "Hebrews 9:1-28"}
+  "ash+48": {first: "Exodus 15:19-16:12",        second: "Hebrews 10:1-18"}
+  "ash+49": {first: "Exodus 16:13-35",           second: "Hebrews 10:19-39"}
+  "ash+50": {first: "Exodus 17:1-16",            second: "Hebrews 11:1-29"}
+  "ash+51": {first: "Exodus 18:5-27",            second: "Hebrews 12:1-24"}
+  "ash+52": {first: "Exodus 19:1-25",            second: "Hebrews 13:1-21"}
+  "ash+53": {first: "Exodus 20:1-24",            second: "Luke 4:1-15"}    # Easter 2
+  "ash+54": {first: "Exodus 22:20-23:13",        second: "Luke 4:16-30"}
+  "ash+55": {first: "Exodus 23:14-33",           second: "Luke 4:31-44"}
+  "ash+56": {first: "Exodus 24:1-18",            second: "Luke 5:1-16"}
+  "ash+57": {first: "Exodus 25:1-22",            second: "Luke 5:17-39",
+             optional: "Exodus 25:23-30:38"}
+  "ash+58": {first: "Exodus 31:1-18",            second: "Luke 6:1-19"}
+  "ash+59": {first: "Exodus 32:1-14",            second: "Luke 6:20-38"}
+  "ash+60": {first: "Exodus 32:15-35",           second: "Luke 6:39-49"}   # Easter 3
+  "ash+61": {first: "Exodus 33:1-23",            second: "Luke 7:1-17"}
+  "ash+62": {first: "Exodus 34:1-28",            second: "Luke 7:18-35"}
+  "ash+63": {first: "Exodus 34:29-35:21",        second: "Luke 7:36-50",
+             optional: "Exodus 35:22-38:20"}
+  "ash+64": {first: "Exodus 38:21-39:8, 22-23, 27-31", second: "Luke 8:1-21"}
+  "ash+65": {first: "Exodus 39:32-40:16",        second: "Luke 8:22-39"}
+  "ash+66": {first: "Exodus 40:17-38",           second: "Luke 8:40-56",
+             optional: "Leviticus 1:1-7:38"}
+  "ash+67": {first: "Leviticus 8:1-13, 30-36",   second: "Luke 9:1-17"}    # Easter 4
+  "ash+68": {first: "Leviticus 9:1-24",          second: "Luke 9:18-36"}
+  "ash+69": {first: "Leviticus 10:1-20",         second: "Luke 9:37-62",
+             optional: "Leviticus 11:1-15:33"}
+  "ash+70": {first: "Leviticus 16:1-24",         second: "Luke 10:1-22"}
+  "ash+71": {first: "Leviticus 17:1-16",         second: "Luke 10:23-42"}
+  "ash+72": {first: "Leviticus 18:1-7, 20-19:8", second: "Luke 11:1-13"}
+  "ash+73": {first: "Leviticus 19:9-18, 26-37",  second: "Luke 11:14-36"}
+  "ash+74": {first: "Leviticus 20:1-16, 22-27",  second: "Luke 11:37-54"}  # Easter 5
+  "ash+75": {first: "Leviticus 21:1-24",         second: "Luke 12:1-12"}
+  "ash+76": {first: "Leviticus 23:1-22",         second: "Luke 12:13-34"}
+  "ash+77": {first: "Leviticus 23:23-44",        second: "Luke 12:35-53"}
+  "ash+78": {first: "Leviticus 24:1-23",         second: "Luke 12:54-13:17",
+             optional: "Leviticus 25:1-55"}
+  "ash+79": {first: "Leviticus 26:1-20",         second: "Luke 13:18-35"}
+  "ash+80": {first: "Leviticus 26:21-33, 39-44", second: "Luke 14:1-24",
+             optional: "Numbers 1:1-2:34"}
+  "ash+81": {first: "Numbers 3:1-16, 39-48",     second: "Luke 14:25-15:10",
+             optional: "Numbers 4:1-8:4"}                                  # Easter 6
+  "ash+82": {first: "Numbers 8:5-26",            second: "Luke 15:11-32"}
+  "ash+83": {first: "Numbers 9:1-23",            second: "Luke 16:1-18"}
+  "ash+84": {first: "Numbers 10:11-36",          second: "Luke 16:19-31"}
+  "ash+85": {first: "Numbers 11:1-23, 31-35",    second: "Luke 17:1-19"}   # Ascension
+  "ash+86": {first: "Numbers 11:24-29; 12:1-16", second: "Luke 17:20-37"}
+  "ash+87": {first: "Numbers 13:1-3, 17-33",     second: "Luke 18:1-17"}
+  "ash+88": {first: "Numbers 14:1-25",           second: "Luke 18:18-34"}  # Easter 7
+  "ash+89": {first: "Numbers 14:26-45",          second: "Luke 18:35-19:10",
+             optional: "Numbers 15:1-41"}
+  "ash+90": {first: "Numbers 16:1-22",           second: "Luke 19:11-28"}
+  "ash+91": {first: "Numbers 16:23-40",          second: "Luke 19:29-48"}
+  "ash+92": {first: "Numbers 16:41-17:13",       second: "Luke 20:1-18",
+             optional: "Numbers 18:1-19:22"}
+  "ash+93": {first: "Numbers 20:1-21",           second: "Luke 20:19-44"}
+  "ash+94": {first: "Numbers 20:22-21:9",        second: "Luke 20:45-21:19"}
+  "ash+95": {first: "Numbers 21:10-35",          second: "Luke 21:20-38"}  # Pentecost Day
+  "ash+96": {first: "Numbers 22:1-20",           second: "Luke 22:1-23"}
+  "ash+97": {first: "Numbers 22:21-23:3",        second: "Luke 22:24-46"}
+  "ash+98": {first: "Numbers 23:4-28",           second: "Luke 22:47-71"}
+  "ash+99": {first: "Numbers 24:1-25",           second: "Luke 23:1-25"}
+  "ash+100": {first: "Numbers 27:12-23",         second: "Luke 23:26-56"}
+  "ash+101": {first: "Numbers 32:1-6, 16-27",    second: "Luke 24:1-27"}
+
+days:
+  # --- The Time of Christmas: Advent Season ---
+  "11-27": {first: "Isaiah 1:1-28",             second: "1 Peter 1:1-12"}
+  "11-28": {first: "Isaiah 2:1-22",             second: "1 Peter 1:13-25",
+            optional: "Isaiah 3:1-4:6"}
+  "11-29": {first: "Isaiah 5:1-25",             second: "1 Peter 2:1-12",
+            optional: "Amos 1:1-9:15"}
+  "11-30": {first: "Isaiah 6:1-7:9",            second: "1 Peter 2:13-25"}
+  "12-01": {first: "Isaiah 7:10-8:8",           second: "1 Peter 3:1-22"}
+  "12-02": {first: "Isaiah 8:9-9:7",            second: "1 Peter 4:1-19"}
+  "12-03": {first: "Isaiah 9:8-10:11",          second: "1 Peter 5:1-14"}
+  "12-04": {first: "Isaiah 10:12-27a, 33-34",   second: "2 Peter 1:1-21"}
+  "12-05": {first: "Isaiah 11:1-12:6",          second: "2 Peter 2:1-22"}
+  "12-06": {first: "Isaiah 14:1-23",            second: "2 Peter 3:1-18"}
+  "12-07": {first: "Isaiah 24:1-13",            second: "1 John 1:1-2:14"}
+  "12-08": {first: "Isaiah 24:14-25:12",        second: "1 John 2:15-29",
+            optional: "Obadiah 1-21"}
+  "12-09": {first: "Isaiah 26:1-19",            second: "1 John 3:1-24"}
+  "12-10": {first: "Isaiah 26:20-27:13",        second: "1 John 4:1-21"}
+  "12-11": {first: "Isaiah 28:14-29",           second: "1 John 5:1-21",
+            optional: "2 John 1-13; 3 John 1-15"}
+  "12-12": {first: "Isaiah 29:1-14",            second: "Jude 1-25"}
+  "12-13": {first: "Isaiah 29:15-30:14",        second: "Revelation 1:1-20"}
+  "12-14": {first: "Isaiah 30:15-26",           second: "Revelation 2:1-29"}
+  "12-15": {first: "Isaiah 30:27-31:9",         second: "Revelation 3:1-22"}
+  "12-16": {first: "Isaiah 32:1-20",            second: "Revelation 4:1-11"}
+  "12-17": {first: "Isaiah 33:1-24",            second: "Revelation 5:1-14"}
+  "12-18": {first: "Isaiah 34:1-2, 8-35:10",    second: "Revelation 6:1-17",
+            optional: "Micah 1:1-7:20"}
+  "12-19": {first: "Isaiah 40:1-17",            second: "Revelation 7:1-17"}
+  "12-20": {first: "Isaiah 40:18-41:10",        second: "Revelation 8:1-13"}
+  "12-21": {first: "Isaiah 42:1-25",            second: "Revelation 9:1-12"}
+  "12-22": {first: "Isaiah 43:1-24",            second: "Revelation 9:13-10:11"}
+  "12-23": {first: "Isaiah 43:25-44:20",        second: "Revelation 11:1-19"}
+  # --- Christmas Season ---
+  "12-24": {first: "Isaiah 44:21-45:13, 20-25", second: "Revelation 12:1-17",
+            optional: "Daniel 10:1-12:13; Isaiah 48:1-22"}
+  "12-25": {first: "Isaiah 49:1-18",            second: "Matthew 1:1-17"}
+  "12-26": {first: "Isaiah 49:22-26; 50:4-51:8, 12-16", second: "Matthew 1:18-25"}
+  "12-27": {first: "Isaiah 51:17-52:12",        second: "Matthew 2:1-12"}
+  "12-28": {first: "Isaiah 52:13-54:10",        second: "Matthew 2:13-23"}
+  "12-29": {first: "Isaiah 55:1-13",            second: "Luke 1:1-25"}
+  "12-30": {first: "Isaiah 58:1-59:3, 14-21",   second: "Luke 1:26-38"}
+  "12-31": {first: "Isaiah 60:1-22",            second: "Luke 1:39-56"}
+  "01-01": {first: "Isaiah 61:1-11",            second: "Luke 1:57-80"}
+  "01-02": {first: "Isaiah 62:1-12",            second: "Luke 2:1-20"}
+  "01-03": {first: "Isaiah 63:1-14",            second: "Luke 2:21-40"}
+  "01-04": {first: "Isaiah 63:15-65:7",         second: "Luke 2:41-52"}
+  "01-05": {first: "Isaiah 65:8-25",            second: "Luke 3:1-20"}
+  # --- Epiphany Season ---
+  "01-06": {first: "Isaiah 66:1-20",            second: "Luke 3:21-38"}
+  "01-07": {first: "Ezekiel 1:1-14, 22-28",     second: "Romans 1:1-17",
+            optional: "Habakkuk 1:1-3:19"}
+  "01-08": {first: "Ezekiel 2:1-3:11",          second: "Romans 1:18-32"}
+  "01-09": {first: "Ezekiel 3:12-27",           second: "Romans 2:1-16",
+            optional: "Ezekiel 4:1-11:25"}
+  "01-10": {first: "Ezekiel 18:1-4, 19-32",     second: "Romans 2:17-29",
+            optional: "Ezekiel 19:1-24:27"}
+  "01-11": {first: "Ezekiel 33:1-20",           second: "Romans 3:1-18"}
+  "01-12": {first: "Ezekiel 34:1-24",           second: "Romans 3:19-31"}
+  "01-13": {first: "Ezekiel 36:13-28",          second: "Romans 4:1-25"}
+  "01-14": {first: "Ezekiel 36:33-37:14",       second: "Romans 5:1-21"}
+  "01-15": {first: "Ezekiel 37:15-28",          second: "Romans 6:1-23"}
+  "01-16": {first: "Ezekiel 38:1-23",           second: "Romans 7:1-20"}
+  "01-17": {first: "Ezekiel 39:1-10, 17-29",    second: "Romans 7:21-8:17"}
+  "01-18": {first: "Ezekiel 40:1-4; 43:1-12",   second: "Romans 8:18-39",
+            optional: "Ezekiel 40:5-42:20; 43:13-27"}
+  "01-19": {first: "Ezekiel 44:1-16, 23-29",    second: "Romans 9:1-18"}
+  "01-20": {first: "Ezekiel 47:1-14, 21-23",    second: "Romans 9:19-33"}
+  "01-21": {first: "Joel 1:1-20",               second: "Romans 10:1-21"}
+  "01-22": {first: "Joel 2:1-17",               second: "Romans 11:1-24"}
+  "01-23": {first: "Joel 2:18-32",              second: "Romans 11:25-12:13"}
+  "01-24": {first: "Joel 3:1-21",               second: "Romans 12:14-13:14"}
+  "01-25": {first: "Zechariah 1:1-21",          second: "Romans 14:1-23"}
+  "01-26": {first: "Zechariah 2:1-3:10",        second: "Romans 15:1-13"}
+  "01-27": {first: "Zechariah 4:1-5:11",        second: "Romans 15:14-33"}
+  "01-28": {first: "Zechariah 6:1-7:14",        second: "Romans 16:17-27"}
+  "01-29": {first: "Zechariah 8:1-23",          second: "2 Timothy 1:1-18"}
+  "01-30": {first: "Zechariah 9:1-17",          second: "2 Timothy 2:1-26"}
+  "01-31": {first: "Zechariah 10:1-11:3",       second: "2 Timothy 3:1-17"}
+  "02-01": {first: "Zechariah 11:4-17",         second: "2 Timothy 4:1-18"}
+  "02-02": {first: "Zechariah 12:1-13:9",       second: "Titus 1:1-2:6"}
+  "02-03": {first: "Zechariah 14:1-21",         second: "Titus 2:7-3:15"}
+  "02-04": {first: "Job 1:1-22",                second: "John 1:1-18"}
+  "02-05": {first: "Job 2:1-3:10",              second: "John 1:19-34"}
+  "02-06": {first: "Job 3:11-26",               second: "John 1:35-51"}
+  "02-07": {first: "Job 4:1-21",                second: "John 2:1-12"}
+  "02-08": {first: "Job 5:1-27",                second: "John 2:13-25"}
+  "02-09": {first: "Job 6:1-13",                second: "John 3:1-21"}
+  "02-10": {first: "Job 6:14-30",               second: "John 3:22-4:6"}
+  "02-11": {first: "Job 7:1-21",                second: "John 4:7-26"}
+  "02-12": {first: "Job 8:1-22",                second: "John 4:27-45"}
+  "02-13": {first: "Job 9:1-35",                second: "John 4:46-54"}
+  "02-14": {first: "Job 10:1-22",               second: "John 5:1-18"}
+  "02-15": {first: "Job 11:1-20",               second: "John 5:19-29"}
+  "02-16": {first: "Job 12:1-6, 12-25",         second: "John 5:30-47"}
+  "02-17": {first: "Job 13:1-12",               second: "John 6:1-21"}
+  "02-18": {first: "Job 13:13-28",              second: "John 6:22-40"}
+  "02-19": {first: "Job 14:1-22",               second: "John 6:41-59"}
+  "02-20": {first: "Job 15:1-23, 30-35",        second: "John 6:60-71"}
+  "02-21": {first: "Job 16:1-22",               second: "John 7:1-13"}
+  "02-22": {first: "Job 17:1-16",               second: "John 7:14-31"}
+  "02-23": {first: "Job 18:1-21",               second: "John 7:32-53"}
+  "02-24": {first: "Job 19:1-12, 21-27",        second: "John 8:1-20"}
+  "02-25": {first: "Job 20:1-23, 29",           second: "John 8:21-38"}
+  "02-26": {first: "Job 21:1-21",               second: "John 8:39-59",
+            optional: "Job 21:22-30:15"}
+  "02-27": {first: "Job 30:16-31",              second: "John 9:1-23"}
+  "02-28": {first: "Job 31:1-12, 33-40",        second: "John 9:24-41"}
+  "02-29": {first: "Job 32:1-22",               second: "John 10:1-21"}
+  "03-01": {first: "Job 33:1-18",               second: "John 10:22-42"}
+  "03-02": {first: "Job 33:19-34:9",            second: "John 11:1-16"}
+  "03-03": {first: "Job 34:10-33",              second: "John 11:17-37"}
+  "03-04": {first: "Job 36:1-21",               second: "John 11:38-57"}
+  "03-05": {first: "Job 37:1-24",               second: "John 12:1-19"}
+  "03-06": {first: "Job 38:1-18",               second: "John 12:20-36a",
+            optional: "Job 38:19-39:30"}
+  "03-07": {first: "Job 40:1-24",               second: "John 12:36b-50"}
+  "03-08": {first: "Job 41:1-20, 31-34",        second: "John 13:1-20"}
+  "03-09": {first: "Job 42:1-17",               second: "John 13:21-38"}
+
+# Table of Psalms for Daily Prayer (LSB p. 304). Morning is one psalm;
+# evening is typically two. Additionally Psalms 145-150 may be prayed each
+# morning: Sun 150, Mon 145, Tue 146, Wed 147:1-11, Thu 147:12-20, Fri 148,
+# Sat 149. "General" weeks 1-4 cycle during the Time of the Church and
+# Epiphany, repeating as needed.
+psalms:
+  lent:
+    sun: {morning: "84",        evening: "42; 32"}
+    mon: {morning: "119:73-80", evening: "121; 6"}
+    tue: {morning: "34",        evening: "25; 91"}
+    wed: {morning: "5",         evening: "27; 51"}
+    thu: {morning: "38",        evening: "126; 102"}
+    fri: {morning: "22",        evening: "107; 130"}
+    sat: {morning: "43",        evening: "31; 143"}
+  easter:
+    sun: {morning: "93",  evening: "136; 117"}
+    mon: {morning: "97",  evening: "124; 115"}
+    tue: {morning: "98",  evening: "66; 116"}
+    wed: {morning: "99",  evening: "8; 118"}
+    thu: {morning: "47",  evening: "68; 113"}
+    fri: {morning: "96",  evening: "50; 138"}
+    sat: {morning: "92",  evening: "23; 114"}
+  general-1:
+    sun: {morning: "103",     evening: "117; 139"}
+    mon: {morning: "5",       evening: "84; 29"}
+    tue: {morning: "42",      evening: "102; 133"}
+    wed: {morning: "89:1-18", evening: "1; 33"}
+    thu: {morning: "97",      evening: "16; 62"}
+    fri: {morning: "51",      evening: "142; 65"}
+    sat: {morning: "104",     evening: "118; 111"}
+  general-2:
+    sun: {morning: "19",  evening: "81; 113"}
+    mon: {morning: "136", evening: "97; 112"}
+    tue: {morning: "123", evening: "30; 86"}
+    wed: {morning: "15",  evening: "48; 4"}
+    thu: {morning: "36",  evening: "80; 27"}
+    fri: {morning: "130", evening: "32; 139"}
+    sat: {morning: "56",  evening: "100; 62"}
+  general-3:
+    sun: {morning: "67",  evening: "46; 93"}
+    mon: {morning: "51",  evening: "85; 47"}
+    tue: {morning: "54",  evening: "28; 99"}
+    wed: {morning: "65",  evening: "125; 91"}
+    thu: {morning: "143", evening: "81; 116"}
+    fri: {morning: "86",  evening: "6; 19"}
+    sat: {morning: "122", evening: "141; 90"}
+  general-4:
+    sun: {morning: "110", evening: "66; 23"}
+    mon: {morning: "62",  evening: "73; 8"}
+    tue: {morning: "13",  evening: "36; 5"}
+    wed: {morning: "96",  evening: "132; 134"}
+    thu: {morning: "116", evening: "26; 130"}
+    fri: {morning: "85",  evening: "25; 40"}
+    sat: {morning: "61",  evening: "138; 98"}
+  advent:
+    sun: {morning: "24",      evening: "25; 110"}
+    mon: {morning: "122",     evening: "40; 67"}
+    tue: {morning: "33",      evening: "85; 91"}
+    wed: {morning: "50",      evening: "14; 16"}
+    thu: {morning: "18:1-20", evening: "126; 62"}
+    fri: {morning: "102",     evening: "130; 16"}
+    sat: {morning: "90",      evening: "80; 72"}
+  christmas:  # keyed by date; other Christmastide days use General
+    "12-24": {morning: "19",  evening: "132; 114"}
+    "12-25": {morning: "2",   evening: "98; 96"}
+    "12-26": {morning: "116", evening: "119:1-24; 27"}
+    "12-27": {morning: "34",  evening: "19; 121"}
+    "12-28": {morning: "2",   evening: "110; 111"}
+    "12-29": {morning: "96",  evening: "132; 97"}
+    "12-30": {morning: "93",  evening: "89:1-18, 19-52"}
+    "12-31": {morning: "98",  evening: "45; 96"}
+    "01-01": {morning: "97",  evening: "99; 8"}
+    "01-02": {morning: "48",  evening: "45; 29"}
+    "01-03": {morning: "111", evening: "107; 15"}
+    "01-04": {morning: "103", evening: "93; 97"}
+    "01-05": {morning: "99",  evening: "96; 110"}
+    "01-06": {morning: "72",  evening: "100; 67"}
+  epiphany: general  # "See GENERAL above"
