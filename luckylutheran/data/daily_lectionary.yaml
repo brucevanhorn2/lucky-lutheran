@@ -14,10 +14,14 @@
 # material otherwise omitted — we skip it in the 10-minute office but keep
 # it for show notes / a "long" edition).
 #
-# STILL TO TRANSCRIBE: the summer Time-of-the-Church stretch of `days`
-# (after the Saturday following Pentecost until 11-26). In the Kindle
-# edition that table is an unreadably small embedded image; it needs the
-# print LSB or the lcms.org PDF. Those dates use the fallback plan.
+# COMPLETE. The LSB Daily Lectionary's reading tables are exactly these two
+# blocks: the movable Ash Wednesday -> Saturday-after-Pentecost section, and
+# the civil Nov 27 -> Mar 9 section (verified 2026-07-11 against the Kindle
+# edition, which runs the tables straight into the Table of Psalms with no
+# further readings). The book supplies NO daily readings for the long Time
+# of the Church (roughly Mar 10 -> Nov 26): its own note says the four
+# "General" psalm weeks cover that season. So those dates get official
+# psalms but fall back to the sequential reading plan (see lectionary.py).
 
 movable:
   "ash+0":  {first: "Genesis 1:1-19",            second: "Mark 1:1-13"}    # Ash Wednesday

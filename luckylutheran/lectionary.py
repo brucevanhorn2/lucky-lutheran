@@ -21,10 +21,13 @@ weekday tables for Lent, Easter, and Advent; date-keyed Christmastide;
 and four "general" weeks repeating through Epiphany and the Time of the
 Church. Evening rows appoint two psalms ("42; 32").
 
-Dates missing from the reading tables (the summer Time-of-the-Church
-stretch is not yet transcribed) fall back to a deterministic plan —
+Dates outside both reading blocks fall back to a deterministic plan —
 mornings sequentially through the Gospels, evenings through Acts and the
-Epistles — labeled "fallback", never "official".
+Epistles — labeled "fallback", never "official". This is not a gap in the
+transcription: the LSB Daily Lectionary supplies no daily readings for the
+long Time of the Church (roughly Mar 10 - Nov 26); its own rubric covers
+that season with the four "General" psalm weeks only. Psalms therefore stay
+official year-round; only the readings fall back over the summer.
 """
 
 from __future__ import annotations
