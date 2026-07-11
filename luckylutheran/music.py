@@ -30,6 +30,50 @@ ARTICULATION_GAP = 0.02          # silence between repeated notes
 
 _NOTE_INDEX = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
 
+TICKS_PER_QUARTER = 480
+CHURCH_ORGAN_PROGRAM = 19   # General MIDI program (0-indexed): "Church Organ"
+
+
+def _midi_note(pitch: str) -> int:
+    """'F#4' / 'Bb3' / 'G4' -> MIDI note number (A4 = 69)."""
+    name, octave = pitch[:-1], int(pitch[-1])
+    semitone = _NOTE_INDEX[name[0].upper()]
+    semitone += name.count("#") - name.count("b")
+    return 12 * (octave + 1) + semitone
+
+
+def _vlq(value: int) -> bytes:
+    """MIDI variable-length quantity (big-endian, 7 bits per byte)."""
+    out = bytearray([value & 0x7F])
+    value >>= 7
+    while value:
+        out.insert(0, (value & 0x7F) | 0x80)
+        value >>= 7
+    return bytes(out)
+
+
+def _write_midi(tune: dict, path: Path) -> Path:
+    """Render a tune's note list to a format-0 Standard MIDI File on one
+    channel set to Church Organ. Notes are legato (each release meets the
+    next attack), which suits a sustaining pipe organ."""
+    tempo = round(60_000_000 / tune["tempo_qpm"])  # microseconds per quarter
+    track = bytearray()
+    track += _vlq(0) + bytes([0xFF, 0x51, 0x03]) + tempo.to_bytes(3, "big")
+    track += _vlq(0) + bytes([0xC0, CHURCH_ORGAN_PROGRAM])
+    for pitch, beats in tune["notes"]:
+        note = _midi_note(pitch)
+        ticks = round(beats * TICKS_PER_QUARTER)
+        track += _vlq(0) + bytes([0x90, note, 80])      # note on
+        track += _vlq(ticks) + bytes([0x80, note, 0])   # note off after duration
+    track += _vlq(0) + bytes([0xFF, 0x2F, 0x00])        # end of track
+
+    header = (b"MThd" + (6).to_bytes(4, "big") + (0).to_bytes(2, "big")
+              + (1).to_bytes(2, "big") + TICKS_PER_QUARTER.to_bytes(2, "big"))
+    chunk = b"MTrk" + len(track).to_bytes(4, "big") + bytes(track)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(header + chunk)
+    return path
+
 
 def _frequency(pitch: str) -> float:
     """'F#4' / 'Bb3' / 'G4' -> Hz (equal temperament, A4 = 440)."""

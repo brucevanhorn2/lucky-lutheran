@@ -92,3 +92,28 @@ def test_assemble_all_offices():
         assert "Lord's Prayer" in transcript
         speakers = {s.speaker for s in ep.segments}
         assert {"liturgist", "congregation"} <= speakers
+
+
+def test_midi_note_numbers():
+    from luckylutheran.music import _midi_note
+    assert _midi_note("A4") == 69   # concert A
+    assert _midi_note("C4") == 60   # middle C
+    assert _midi_note("G4") == 67
+    assert _midi_note("F#4") == 66
+    assert _midi_note("Bb3") == 58
+
+
+def test_write_midi_bytes(tmp_path=None):
+    import tempfile
+    from pathlib import Path
+    from luckylutheran.music import _write_midi
+    tune = {"tempo_qpm": 120, "notes": [["C4", 1], ["E4", 1], ["G4", 2]]}
+    out = Path(tempfile.mkdtemp()) / "t.mid"
+    _write_midi(tune, out)
+    data = out.read_bytes()
+    assert data[:4] == b"MThd"                      # header chunk
+    assert data[8:10] == b"\x00\x00"                # format 0
+    assert data[10:12] == b"\x00\x01"               # one track
+    assert b"MTrk" in data                          # track chunk present
+    assert bytes([0xC0, 0x13]) in data              # program change: church organ
+    assert data.endswith(bytes([0xFF, 0x2F, 0x00])) # end-of-track meta
