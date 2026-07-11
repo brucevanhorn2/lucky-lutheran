@@ -117,3 +117,19 @@ def test_write_midi_bytes(tmp_path=None):
     assert b"MTrk" in data                          # track chunk present
     assert bytes([0xC0, 0x13]) in data              # program change: church organ
     assert data.endswith(bytes([0xFF, 0x2F, 0x00])) # end-of-track meta
+
+
+def test_render_tune_offline_and_midi_generation():
+    from luckylutheran import music
+    # No fluidsynth on the dev box -> additive fallback still yields a WAV.
+    out = music.render_tune("old-hundredth", force=True)
+    assert out.exists() and out.suffix == ".wav"
+    # MIDI generation from the YAML works with no fluidsynth present.
+    midi = music._tune_midi("old-hundredth")
+    assert midi.suffix == ".mid"
+    assert midi.read_bytes()[:4] == b"MThd"
+    # Soundfont discovery honors the env override and missing files.
+    import os
+    os.environ["LUCKY_SOUNDFONT"] = "/nonexistent/x.sf2"
+    assert music._soundfont() is None
+    os.environ.pop("LUCKY_SOUNDFONT")

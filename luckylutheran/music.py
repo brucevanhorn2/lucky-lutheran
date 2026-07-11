@@ -10,7 +10,10 @@ rendered WAVs are cached in assets/music/rendered/.
 from __future__ import annotations
 
 import math
+import os
+import shutil
 import struct
+import subprocess
 import wave
 from importlib import resources
 from pathlib import Path
@@ -19,6 +22,9 @@ import yaml
 
 RENDER_DIR = Path(__file__).resolve().parent.parent / "assets" / "music" / "rendered"
 SAMPLE_RATE = 44100
+
+TUNES_DIR = Path(__file__).resolve().parent / "data" / "tunes"
+DEFAULT_SOUNDFONT = Path("/usr/share/sounds/sf2/FluidR3_GM.sf2")
 
 # Principal-chorus registration: (harmonic multiple, amplitude).
 # 8' fundamental, 4' octave, 2 2/3' twelfth, 2' fifteenth, faint mixture.
@@ -85,8 +91,11 @@ def _frequency(pitch: str) -> float:
 
 
 def available_tunes() -> list[str]:
-    ref = resources.files("luckylutheran") / "data" / "tunes"
-    return sorted(p.name[:-5] for p in ref.iterdir() if p.name.endswith(".yaml"))
+    """Tune names renderable today: YAML note-lists and any dropped-in
+    .mid files in data/tunes/."""
+    names = {p.stem for p in TUNES_DIR.glob("*.yaml")}
+    names |= {p.stem for p in TUNES_DIR.glob("*.mid")}
+    return sorted(names)
 
 
 def tune_for(season: str) -> str:
@@ -95,12 +104,59 @@ def tune_for(season: str) -> str:
     return "old-hundredth"
 
 
+def _soundfont() -> Path | None:
+    """The organ soundfont to use, or None if none is available.
+
+    Honors $LUCKY_SOUNDFONT, else the apt package's standard path. Returns
+    None when the file is missing so callers fall back to the synth."""
+    override = os.environ.get("LUCKY_SOUNDFONT")
+    candidate = Path(override) if override else DEFAULT_SOUNDFONT
+    return candidate if candidate.is_file() else None
+
+
+def _tune_midi(name: str) -> Path:
+    """A MIDI file for the tune: a hand-dropped data/tunes/{name}.mid if one
+    exists (any public-domain hymn MIDI works), else one generated from the
+    YAML note list into the render cache."""
+    dropped = TUNES_DIR / f"{name}.mid"
+    if dropped.is_file():
+        return dropped
+    tune = yaml.safe_load((TUNES_DIR / f"{name}.yaml").read_text(encoding="utf-8"))
+    return _write_midi(tune, RENDER_DIR / f"{name}.mid")
+
+
+def _render_fluidsynth(name: str, out: Path, soundfont: Path) -> Path:
+    """Render the tune to a WAV with fluidsynth, with a churchy reverb tail."""
+    midi = _tune_midi(name)
+    subprocess.run(
+        ["fluidsynth", "-ni", "-g", "0.8", "-r", str(SAMPLE_RATE),
+         "-o", "synth.reverb.room-size=0.9",
+         "-o", "synth.reverb.level=0.9",
+         "-o", "synth.reverb.width=0.8",
+         "-F", str(out), str(soundfont), str(midi)],
+        check=True, capture_output=True)
+    return out
+
+
 def render_tune(name: str, force: bool = False) -> Path:
-    """Synthesize a tune to a cached WAV; return the path."""
+    """Render a tune to a cached WAV; return the path.
+
+    Uses fluidsynth + a pipe-organ soundfont when both are present (a real
+    recorded organ), and falls back to the pure-python additive synth
+    otherwise (e.g. the dev box), so builds never hard-depend on fluidsynth."""
     out = RENDER_DIR / f"{name}.wav"
     if out.exists() and not force:
         return out
+    RENDER_DIR.mkdir(parents=True, exist_ok=True)
 
+    soundfont = _soundfont()
+    if shutil.which("fluidsynth") and soundfont:
+        return _render_fluidsynth(name, out, soundfont)
+    return _render_additive(name, out)
+
+
+def _render_additive(name: str, out: Path) -> Path:
+    """The pure-python pipe-organ synth (no external tools)."""
     ref = resources.files("luckylutheran") / "data" / "tunes" / f"{name}.yaml"
     tune = yaml.safe_load(ref.read_text(encoding="utf-8"))
     spb = 60.0 / tune["tempo_qpm"]  # seconds per quarter beat
@@ -112,7 +168,6 @@ def render_tune(name: str, force: bool = False) -> Path:
 
     peak = max(abs(s) for s in samples)
     scale = 0.55 / peak if peak else 0.0
-    out.parent.mkdir(parents=True, exist_ok=True)
     with wave.open(str(out), "wb") as w:
         w.setnchannels(1)
         w.setsampwidth(2)
