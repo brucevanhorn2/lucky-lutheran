@@ -84,6 +84,14 @@ def test_catechism_rotates():
     assert len(seen) == 8
 
 
+def test_catechism_covers_a_month_without_repeating():
+    # A 30-day batch must not cycle back to day 1's portion.
+    assert len(catechism._portions()) >= 30
+    seen = {catechism.portion_for(dt.date(2026, 7, day))["title"]
+            for day in range(1, 31)}
+    assert len(seen) == 30
+
+
 def test_assemble_all_offices():
     for office in assemble.OFFICES:
         ep = assemble.build_episode(dt.date(2026, 7, 8), office)
@@ -92,6 +100,59 @@ def test_assemble_all_offices():
         assert "Lord's Prayer" in transcript
         speakers = {s.speaker for s in ep.segments}
         assert {"liturgist", "congregation"} <= speakers
+
+
+def test_kjv_local_index_complete():
+    from luckylutheran import kjv
+    idx = kjv._index()
+    assert sum(len(v) for b in idx.values() for v in b.values()) == 31102
+    assert idx["Genesis"][1][1] == \
+        "In the beginning God created the heaven and the earth."
+    # Regression: the Old/New Testament divider text and a bare "***"
+    # section break used to leak into the preceding book's last verse.
+    assert idx["Malachi"][4][6] == (
+        "And he shall turn the heart of the fathers to the children, and "
+        "the heart of the children to their fathers, lest I come and "
+        "smite the earth with a curse.")
+
+
+def test_kjv_passage_ranges():
+    from luckylutheran import kjv
+    assert kjv.passage("John 3:16") == (
+        "For God so loved the world, that he gave his only begotten Son, "
+        "that whosoever believeth in him should not perish, but have "
+        "everlasting life.")
+    assert kjv.passage("Psalm 117") == (
+        "O praise the LORD, all ye nations: praise him, all ye people. "
+        "For his merciful kindness is great toward us: and the truth of "
+        "the LORD endureth for ever. Praise ye the LORD.")
+    # Cross-chapter range (the daily lectionary cites these): resolves
+    # cleanly, no leaked boilerplate, no truncation.
+    cross = kjv.passage("Genesis 16:15-17:22")
+    assert cross is not None and len(cross) > 500
+    assert "***" not in cross and "Testament" not in cross
+    assert kjv.passage("Nonexistent Book 1:1") is None
+
+
+def test_scripture_uses_local_kjv_offline():
+    """get_passage() must resolve KJV text from the local index without
+    ever touching the network — batches render ahead on a machine that's
+    about to be powered off, so this can't have a live dependency."""
+    from luckylutheran import scripture
+
+    def boom(*a, **k):
+        raise AssertionError("network fetch used for a local KJV lookup")
+
+    original = scripture._fetch
+    scripture._fetch = boom
+    try:
+        text = scripture.get_passage("John 3:16")
+    finally:
+        scripture._fetch = original
+    assert text == (
+        "For God so loved the world, that he gave his only begotten Son, "
+        "that whosoever believeth in him should not perish, but have "
+        "everlasting life.")
 
 
 def test_midi_note_numbers():

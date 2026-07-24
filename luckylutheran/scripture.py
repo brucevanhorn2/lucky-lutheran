@@ -15,6 +15,8 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+from luckylutheran import kjv
+
 DEFAULT_TRANSLATION = "kjv"  # public domain; "web" (World English Bible) also PD
 CACHE_DIR = Path(__file__).resolve().parent.parent / ".cache" / "scripture"
 API = "https://bible-api.com/{ref}?translation={translation}"
@@ -69,7 +71,17 @@ def get_passage(reference: str, translation: str = DEFAULT_TRANSLATION) -> str |
     Compound lectionary citations are fetched piecewise (_expand_reference)
     and joined; the whole citation is cached under one entry. If any piece
     is unavailable, returns None rather than a silently shortened passage.
+
+    For the default "kjv" translation, resolved first from the local,
+    offline King James text (kjv.py) — no network, no cache file needed.
+    Falls back to the bible-api.com path below only for whatever the local
+    index can't resolve (e.g. a different translation).
     """
+    if translation == "kjv":
+        local = _local_passage(reference)
+        if local is not None:
+            return local
+
     cache = _cache_path(reference, translation)
     if cache.exists():
         return json.loads(cache.read_text(encoding="utf-8"))["text"]
@@ -89,6 +101,18 @@ def get_passage(reference: str, translation: str = DEFAULT_TRANSLATION) -> str |
         encoding="utf-8",
     )
     return text
+
+
+def _local_passage(reference: str) -> str | None:
+    """Resolve a whole (possibly compound) reference from the local KJV
+    index; None if any piece of it isn't found there."""
+    parts = []
+    for ref in _expand_reference(reference):
+        text = kjv.passage(ref)
+        if text is None:
+            return None
+        parts.append(text)
+    return " ".join(parts)
 
 
 def _fetch(reference: str, translation: str) -> str | None:

@@ -140,11 +140,11 @@ def _fill_slot(section: dict, episode: Episode) -> list[Segment]:
 
     if slot == "catechism":
         p = catechism.portion_for(episode.date)
-        segs = [
-            Segment(sid, title, "liturgist",
-                    f"From Luther's Small Catechism: {p['title']}.", 1.0),
-            Segment(sid, title, "liturgist", p["text"], 1.0),
-        ]
+        segs = [Segment(sid, title, "liturgist",
+                        f"From Luther's Small Catechism: {p['title']}.", 1.0)]
+        if p["citation"]:
+            segs.append(Segment(sid, title, "liturgist", p["citation"], 0.6))
+        segs.append(Segment(sid, title, "liturgist", p["text"], 1.0))
         if p["meaning"]:
             segs.append(Segment(sid, title, "liturgist", p["meaning"], 1.0))
         return segs
