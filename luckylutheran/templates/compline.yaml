@@ -1,12 +1,22 @@
 # The Order of Compline — prayer at the close of the day.
 #
-# TLH (1941) does not include Compline; this order is assembled from the
-# ancient office's public-domain components (its versicles, the Nunc
-# Dimittis, and the historic collects, all long predating any modern
-# copyright).
-#
-# !! VERIFY: proofread against a trusted source (e.g. the Brotherhood Prayer
-# Book's sources or an old Book of Common Prayer) before publishing.
+# No American Lutheran hymnal before TLH (1941) contains a Compline office —
+# confirmed absent from the 1868/1893 "Church Book" (General Council), the
+# 1917/1918 Common Service Book, and the 1881 Missouri Synod Church Liturgy
+# (all three checked directly; none has a "Compline" section). TLH (1941)
+# itself is not PD and was not consulted. So this order, unlike
+# Matins/Vespers, has no single verified Lutheran predecessor text — it is
+# assembled from pieces of the ancient Western monastic Compline (pre-1200s
+# Latin origin, so the underlying prayers are themselves ancient/PD) as
+# commonly rendered into English since the 19th century. Where a piece is
+# shared with Matins/Vespers (Nunc Dimittis, Lord's Prayer, Kyrie, "Our
+# help is in the name of the Lord") it carries the same verification as
+# those offices — see their headers. The confession is now verified against
+# a pre-1930 source of its own (1881; see its note below). The remaining
+# Compline-specific pieces (opening versicle, the two closing collects, and
+# the benediction) could NOT be matched against a specific pre-1930 raw
+# source text; see inline !! VERIFY notes below. Compline is still the
+# least-verified office, but no longer wholly unsourced.
 
 office: compline
 title: Compline
@@ -23,6 +33,11 @@ sections:
           another, and our whole life to Christ our God.
     pause_after: 2.0
 
+  # !! VERIFY: "grant us a quiet night and peace at the last" is the
+  # traditional English rendering of the ancient Compline versicle
+  # ("Noctem quietam... concedat nobis Dominus omnipotens"), widely printed
+  # in 19th-century Anglo-Catholic devotional manuals, but no specific
+  # pre-1930 scan of this exact wording was located to cite directly.
   - id: opening
     title: Opening
     lines:
@@ -34,6 +49,31 @@ sections:
       - {speaker: congregation, text: "Who made heaven and earth."}
     pause_after: 1.5
 
+  # VERIFIED: the confession below is transcribed word-for-word from
+  # "Church Liturgy for Evangelical Lutheran Congregations of the Unaltered
+  # Augsburg Confession" (Evangelical Lutheran Synod of Missouri, Concordia
+  # Publishing House, 1881), archive.org item `churchliturgyfor00evan`,
+  # unrestricted scan. Pre-1930 US publication, so automatically public
+  # domain. The text appears twice in that book, identically: as the
+  # general confession after the sermon in the Morning Service, and in the
+  # Communion of the Sick. This is the Saxon confession recorded in
+  # 16th-century Dresden practice (Sehling I:557) and is the direct
+  # ancestor of the TLH p.15 wording — so we now cite the PD original
+  # rather than the copyrighted 1941 reprint of it.
+  #
+  # Note this restores two clauses the earlier from-memory version had
+  # dropped ("and justly deserved Thy punishment in time and eternity" /
+  # "but I am heartily sorry for them and greatly repent of them"), and
+  # corrects "of Thy boundless mercy" -> "by Thy boundless mercy" and
+  # "sufferings" -> "suffering" (singular in the source).
+  #
+  # !! VERIFY: the liturgist's bidding and the absolution are NOT from the
+  # 1881 book. Its bidding is sermon-specific ("Having heard the word of
+  # God...") and so does not fit Compline, where confession precedes the
+  # reading; its absolution is the declarative ministerial form ("I forgive
+  # you all your sins"), which is inappropriate for a recorded voice. The
+  # precatory form kept below is the ancient Compline absolution (the
+  # ~Indulgentiam~), but no pre-1930 English scan of it has been located.
   - id: confession
     title: Confession
     lines:
@@ -45,9 +85,12 @@ sections:
         text: >-
           O almighty God, merciful Father, I, a poor, miserable sinner,
           confess unto Thee all my sins and iniquities with which I have ever
-          offended Thee. I pray Thee of Thy boundless mercy, for the sake of
-          the holy, innocent, bitter sufferings and death of Thy beloved Son,
-          Jesus Christ, be gracious and merciful to me, a poor, sinful being.
+          offended Thee and justly deserved Thy punishment in time and
+          eternity; but I am heartily sorry for them and greatly repent of
+          them, and I pray Thee by Thy boundless mercy, and by the holy,
+          innocent, bitter suffering and death of Thy beloved Son, Jesus
+          Christ, to be gracious and merciful to me, a poor sinful being.
+          Amen.
       - speaker: liturgist
         text: >-
           The almighty and merciful Lord grant us pardon, forgiveness, and
@@ -77,7 +120,7 @@ sections:
         text: "Into Thy hands, O Lord, I commend my spirit."
       - speaker: congregation
         text: "For Thou hast redeemed me, O Lord, Thou God of truth."
-      - {speaker: liturgist, text: "Keep me as the apple of Thine eye."}
+      - {speaker: liturgist, text: "Keep me as the apple of the eye."}
       - {speaker: congregation, text: "Hide me under the shadow of Thy wings."}
     pause_after: 1.5
 
@@ -102,6 +145,9 @@ sections:
           watch with Christ and asleep we may rest in peace.
     pause_after: 2.0
 
+  # !! VERIFY: the 1912 ELHB's own Vespers order doubles every Kyrie line
+  # ("Lord, have mercy... Lord, have mercy...", etc.) rather than saying
+  # each once as here. Unconfirmed which form is right for Compline.
   - id: kyrie
     title: The Kyrie
     lines:
@@ -124,6 +170,13 @@ sections:
           the glory forever and ever. Amen.
     pause_after: 1.5
 
+  # !! VERIFY: "Visit, we beseech Thee..." and "Be present, O merciful
+  # God..." are the traditional Western Compline collects (translating the
+  # ancient "Visita, quaesumus, Domine" and its companion), reprinted in
+  # many 19th-century PD devotional manuals, but no specific pre-1930 scan
+  # of this exact English wording was located to cite directly in this
+  # pass — not found in either the Common Service Book or the Church Book,
+  # since neither contains a Compline office.
   - id: collects
     title: Prayers
     lines:
@@ -144,6 +197,9 @@ sections:
       - {speaker: congregation, text: "Amen."}
     pause_after: 2.0
 
+  # !! VERIFY: this closing benediction is the traditional Compline
+  # blessing form; not matched against a specific pre-1930 raw source in
+  # this pass (see header note).
   - id: benediction
     title: Benediction
     lines:

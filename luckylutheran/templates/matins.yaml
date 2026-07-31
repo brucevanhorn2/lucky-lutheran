@@ -1,7 +1,17 @@
-# The Order of Matins — after The Lutheran Hymnal (1941), p. 32 (public domain).
+# The Order of Matins — after The Lutheran Hymnal (1941), p. 32. TLH
+# reproduces the Common Service (1888) essentially unchanged for this
+# office, and most of the text below (versicles, invitatory, Venite, Te
+# Deum, salutation, Lord's Prayer, Benedicamus, Collect for Grace) has
+# been verified word-for-word against two confirmed-public-domain
+# predecessor editions: the Evangelical Lutheran Hymn-Book (Concordia
+# Publishing House, 1912, via Project Wittenberg) and the Common Service
+# Book of the Lutheran Church (1917/1918, via archive.org, unrestricted).
+# Both are pre-1930 US publications (automatically PD). TLH (1941) itself
+# was NOT directly consulted — only a copyright-restricted lending scan
+# was found; citing the verified predecessor text instead.
 #
-# !! VERIFY: liturgical texts transcribed from memory of TLH; proofread every
-# line against a printed copy before publishing.
+# !! VERIFY: the Responsory and Kyrie could not be confirmed — period
+# sources disagree with each other and with what's here. See inline notes.
 #
 # Speakers: liturgist (officiant), congregation (responses), lector
 # (readings), all (texts spoken together). Each speaker becomes a distinct
@@ -78,6 +88,10 @@ sections:
     slot: reading
     pause_after: 1.0
 
+  # !! VERIFY: the 1912 Evangelical Lutheran Hymn-Book's Vespers order has
+  # this exact wording, but the 1917/18 Common Service Book's Matins order
+  # instead has "O Lord, have mercy upon us." / "Thanks be to God." — could
+  # be genuinely office-specific; unconfirmed which TLH used here.
   - id: responsory
     title: Responsory
     lines:
@@ -126,6 +140,10 @@ sections:
           Lord, in Thee have I trusted; let me never be confounded.
     pause_after: 2.0
 
+  # !! VERIFY: the 1912 ELHB's Communion order says each Kyrie line once
+  # (as here), but that same book's own Vespers order doubles every line
+  # ("Lord, have mercy... Lord, have mercy...", etc.). Unconfirmed which
+  # form TLH's Matins used.
   - id: kyrie
     title: The Kyrie
     lines:
@@ -176,6 +194,10 @@ sections:
       - {speaker: congregation, text: "Amen."}
     pause_after: 2.0
 
+  # !! VERIFY: "from sin and every evil" — a quick (non-raw-verified) check
+  # against a Book of Concord source suggested "from sin and all evil, and
+  # I pray Thee to keep me" instead of "that Thou wouldst keep me". Found
+  # via a paraphrasing fetch, not confirmed against raw source text.
   - id: luthers_morning_prayer
     title: "Luther's Morning Prayer"
     lines:
@@ -206,7 +228,7 @@ sections:
     lines:
       - speaker: liturgist
         text: >-
-          The grace of our Lord Jesus Christ, and the love of God, and the
+          The grace of the Lord Jesus Christ, and the love of God, and the
           communion of the Holy Ghost be with you all.
       - {speaker: congregation, text: "Amen."}
     pause_after: 3.0

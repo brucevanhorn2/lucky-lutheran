@@ -9,25 +9,27 @@ Catechism, and the collect of the day resolved from the church calendar.
 ## Copyright strategy (this is a public podcast — it matters)
 
 Everything is built from **public-domain sources** so the podcast can be
-published freely, with no licenses:
+published freely, with no licenses. See **[SOURCES.md](SOURCES.md)** for the
+full citation list (title/year/URL/PD basis) and current verification status
+of every piece of content — summary:
 
 | Content | Source | Status |
 |---|---|---|
-| Liturgy (Matins, Vespers) | The Lutheran Hymnal (1941), pp. 32, 41 | public domain |
-| Compline | assembled from the ancient office's PD components | public domain |
-| Scripture | King James Version (via bible-api.com) | public domain |
-| Catechism | 1921 Triglot Concordia translation tradition | public domain |
-| Collects | historic Common Service texts | public domain |
+| Liturgy (Matins, Vespers) | 1912 Evangelical Lutheran Hymn-Book + 1917/18 Common Service Book (verified PD predecessors of TLH 1941, which was not directly consulted) | mostly verified, a few items flagged `!! VERIFY` |
+| Compline | ancient office components; no PD Lutheran predecessor office found. Confession verified from the 1881 Missouri Synod Church Liturgy | partly verified — versicle, collects, benediction still flagged; see SOURCES.md |
+| Scripture | King James Version, local index built from Project Gutenberg eBook #10 (bible-api.com kept only as network fallback) | verified |
+| Catechism core (commandments, Creed, sacraments) | 1921 Triglot Concordia translation tradition | unverified — transcribed from memory, not yet proofread |
+| Catechism Table of Duties / Words of Institution | resolved live from the local KJV, not hand-transcribed | verified |
+| Collects | historic Common Service texts | unverified — transcribed from memory, not yet proofread |
 
 **Do not** substitute LSB (Lutheran Service Book, © CPH), the ESV
 (© Crossway), or the 1986/1991 CPH catechism translation without obtaining
 licenses. The KJV/TLH "Thou" register is a feature, not a bug.
 
-> **⚠️ VERIFY BEFORE PUBLISHING:** the liturgical and catechism texts in
-> `luckylutheran/templates/*.yaml` and `luckylutheran/data/*.yaml` were
-> transcribed from memory of the historic texts. Proofread every line against
-> a printed TLH and the Triglot Concordia. Files needing proofreading carry a
-> `!! VERIFY` comment at the top.
+> **⚠️ VERIFY BEFORE PUBLISHING:** several files still carry a `!! VERIFY`
+> comment marking text not yet checked against a raw primary source. See
+> [SOURCES.md](SOURCES.md) for exactly which lines and what's needed to close
+> each one out.
 
 ## Quick start
 
