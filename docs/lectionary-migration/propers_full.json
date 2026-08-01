@@ -1,0 +1,1636 @@
+[
+ {
+  "pos": 80326,
+  "kind": "EPISTLE",
+  "book": "Romans",
+  "ch": 13,
+  "verses": "11-14",
+  "incipit": "AND that knowing the time that now it is high time to",
+  "status": "corrected",
+  "verified_ref": "Romans 13:11-14",
+  "ocr_chapter": 15
+ },
+ {
+  "pos": 81072,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 21,
+  "verses": "1-9",
+  "incipit": "AND when they drew nigh unto Jeru- salem and were come to",
+  "status": "verified",
+  "verified_ref": "Matthew 21:1-9"
+ },
+ {
+  "pos": 82775,
+  "kind": "EPISTLE",
+  "book": "Romans",
+  "ch": 15,
+  "verses": "4-13",
+  "incipit": "FOR whatsoever things were written aforetime were written for our learning that",
+  "status": "verified",
+  "verified_ref": "Romans 15:4-13"
+ },
+ {
+  "pos": 84294,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 21,
+  "verses": "25-36",
+  "incipit": "AND there shall be signs in the sun and in the moon",
+  "status": "verified",
+  "verified_ref": "Luke 21:25-36"
+ },
+ {
+  "pos": 86322,
+  "kind": "EPISTLE",
+  "book": "1 Corinthians",
+  "ch": 4,
+  "verses": "1-5",
+  "incipit": "LET a man so account of us as of the ministers of",
+  "status": "verified",
+  "verified_ref": "1 Corinthians 4:1-5"
+ },
+ {
+  "pos": 87211,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 11,
+  "verses": "2-10",
+  "incipit": "NOW when John had heard in the prison the works of Christ",
+  "status": "verified",
+  "verified_ref": "Matthew 11:2-10"
+ },
+ {
+  "pos": 88837,
+  "kind": "EPISTLE",
+  "book": "Philippians",
+  "ch": 4,
+  "verses": "4-7",
+  "incipit": "REJOICE in the Lord alway and again I say Rejoice Let your",
+  "status": "verified",
+  "verified_ref": "Philippians 4:4-7"
+ },
+ {
+  "pos": 89513,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 1,
+  "verses": "19-28",
+  "incipit": "AND this is the record of John when the Jews sent priests",
+  "status": "verified",
+  "verified_ref": "John 1:19-28"
+ },
+ {
+  "pos": 92022,
+  "kind": "EPISTLE",
+  "book": "Titus",
+  "ch": 2,
+  "verses": "11-14",
+  "incipit": "FOR the grace of God that bringeth salvation hath appeared to all",
+  "status": "verified",
+  "verified_ref": "Titus 2:11-14"
+ },
+ {
+  "pos": 93884,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 2,
+  "verses": "1-14",
+  "incipit": "AND it came to pass in those days that there went out",
+  "status": "verified",
+  "verified_ref": "Luke 2:1-14"
+ },
+ {
+  "pos": 96072,
+  "kind": "EPISTLE",
+  "book": "Hebrews",
+  "ch": 1,
+  "verses": "1-12",
+  "incipit": "GOD who at sundry times and in divers manners spake in time",
+  "status": "verified",
+  "verified_ref": "Hebrews 1:1-12"
+ },
+ {
+  "pos": 97991,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 1,
+  "verses": "1-14",
+  "incipit": "IN the beginning was the Word and the Word was with God",
+  "status": "verified",
+  "verified_ref": "John 1:1-14"
+ },
+ {
+  "pos": 99219,
+  "kind": "EPISTLE",
+  "book": "Titus",
+  "ch": 3,
+  "verses": "4-7",
+  "incipit": "BUT after that the kindness and love of God our Saviour toward",
+  "status": "verified",
+  "verified_ref": "Titus 3:4-7"
+ },
+ {
+  "pos": 99964,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 2,
+  "verses": "15-20",
+  "incipit": "AND it came to pass as the angels were gone away from",
+  "status": "verified",
+  "verified_ref": "Luke 2:15-20"
+ },
+ {
+  "pos": 101367,
+  "kind": "EPISTLE",
+  "book": "Galatians",
+  "ch": 4,
+  "verses": "1-7",
+  "incipit": "NOW I say That the heir as long as he is a",
+  "status": "verified",
+  "verified_ref": "Galatians 4:1-7"
+ },
+ {
+  "pos": 102427,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 2,
+  "verses": "33-40",
+  "incipit": "AND Joseph and his mother marvelled at those things which were spoken",
+  "status": "verified",
+  "verified_ref": "Luke 2:33-40"
+ },
+ {
+  "pos": 104297,
+  "kind": "EPISTLE",
+  "book": "Galatians",
+  "ch": 3,
+  "verses": "23-29",
+  "incipit": "BUT before faith came we were kept under the law shut up",
+  "status": "verified",
+  "verified_ref": "Galatians 3:23-29"
+ },
+ {
+  "pos": 105368,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 2,
+  "verses": "21",
+  "incipit": "ND when eight days were accom- A plished for the circumcising of",
+  "status": "verified",
+  "verified_ref": "Luke 2:21"
+ },
+ {
+  "pos": 106186,
+  "kind": "EPISTLE",
+  "book": "1 Peter",
+  "ch": 4,
+  "verses": "12-19",
+  "incipit": "BELOVED think it not strange con- cerning the fiery trial which is",
+  "status": "verified",
+  "verified_ref": "1 Peter 4:12-19"
+ },
+ {
+  "pos": 107301,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 2,
+  "verses": "13-23",
+  "incipit": "AND when they were departed be- hold the angel of the Lord",
+  "status": "verified",
+  "verified_ref": "Matthew 2:13-23"
+ },
+ {
+  "pos": 109644,
+  "kind": "EPISTLE",
+  "book": "Isaiah",
+  "ch": 60,
+  "verses": "1-6",
+  "incipit": "ARISE shine for thy light is come and the glory of the",
+  "status": "verified",
+  "verified_ref": "Isaiah 60:1-6"
+ },
+ {
+  "pos": 110916,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 2,
+  "verses": "1-12",
+  "incipit": "NOW when Jesus was born in Bethle- hem of Judaea in the",
+  "status": "verified",
+  "verified_ref": "Matthew 2:1-12"
+ },
+ {
+  "pos": 113252,
+  "kind": "EPISTLE",
+  "book": "Romans",
+  "ch": 12,
+  "verses": "1-5",
+  "incipit": "I BESEECH you therefore brethren by the mercies of God that ye",
+  "status": "verified",
+  "verified_ref": "Romans 12:1-5"
+ },
+ {
+  "pos": 114329,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 2,
+  "verses": "41-52",
+  "incipit": "NOW his parents went to Jerusalem every year at the feast of",
+  "status": "verified",
+  "verified_ref": "Luke 2:41-52"
+ },
+ {
+  "pos": 116578,
+  "kind": "EPISTLE",
+  "book": "Romans",
+  "ch": 12,
+  "verses": "6-16",
+  "incipit": "HAVING then gifts differing accord- ing to the grace that is given",
+  "status": "verified",
+  "verified_ref": "Romans 12:6-16"
+ },
+ {
+  "pos": 117896,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 2,
+  "verses": "1-11",
+  "incipit": "AND the third day there was a mar- riage in Cana of",
+  "status": "verified",
+  "verified_ref": "John 2:1-11"
+ },
+ {
+  "pos": 119769,
+  "kind": "EPISTLE",
+  "book": "Romans",
+  "ch": 12,
+  "verses": "16-21",
+  "incipit": "BE not wise in your own conceits Recompense to no man evil",
+  "status": "verified",
+  "verified_ref": "Romans 12:16-21"
+ },
+ {
+  "pos": 120608,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 8,
+  "verses": "1-13",
+  "incipit": "V HEN he was come down from the VV mountain great multitudes",
+  "status": "unverified",
+  "verified_ref": "Matthew 8:1-13"
+ },
+ {
+  "pos": 122770,
+  "kind": "EPISTLE",
+  "book": "Romans",
+  "ch": 13,
+  "verses": "8-10",
+  "incipit": "OWE no man any thing but to love one another for he",
+  "status": "verified",
+  "verified_ref": "Romans 13:8-10"
+ },
+ {
+  "pos": 123251,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 8,
+  "verses": "23-27",
+  "incipit": "AND when he was entered into a ship his disciples followed him",
+  "status": "verified",
+  "verified_ref": "Matthew 8:23-27"
+ },
+ {
+  "pos": 124253,
+  "kind": "EPISTLE",
+  "book": "Colossians",
+  "ch": 3,
+  "verses": "12-17",
+  "incipit": "PUT on therefore as the elect of God holy and beloved bowels",
+  "status": "verified",
+  "verified_ref": "Colossians 3:12-17"
+ },
+ {
+  "pos": 125045,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 13,
+  "verses": "24-30",
+  "incipit": "ANOTHER parable put he forth unto them saying The kingdom of heaven",
+  "status": "verified",
+  "verified_ref": "Matthew 13:24-30"
+ },
+ {
+  "pos": 126983,
+  "kind": "EPISTLE",
+  "book": "2 Peter",
+  "ch": 1,
+  "verses": "16-21",
+  "incipit": "FOR we have not followed cunningly devised fables when we made known",
+  "status": "verified",
+  "verified_ref": "2 Peter 1:16-21"
+ },
+ {
+  "pos": 128174,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 17,
+  "verses": "1-9",
+  "incipit": "AND after six days Jesus taketh Peter James and John his brother",
+  "status": "verified",
+  "verified_ref": "Matthew 17:1-9"
+ },
+ {
+  "pos": 129876,
+  "kind": "EPISTLE",
+  "book": "1 Corinthians",
+  "ch": 9,
+  "verses": "24\u201410: 5",
+  "incipit": "KNOW ye not that they which run in a race run all",
+  "status": "verified",
+  "verified_ref": "1 Corinthians 9:24"
+ },
+ {
+  "pos": 131275,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 20,
+  "verses": "1-16",
+  "incipit": "FOR the kingdom of heaven is like unto a man that is",
+  "status": "verified",
+  "verified_ref": "Matthew 20:1-16"
+ },
+ {
+  "pos": 133716,
+  "kind": "EPISTLE",
+  "book": "2 Corinthians",
+  "ch": 11,
+  "verses": "19\u201412: 9",
+  "incipit": "FOR ye suffer fools gladly seeing ye yourselves are wise For ye",
+  "status": "verified",
+  "verified_ref": "2 Corinthians 11:19"
+ },
+ {
+  "pos": 136991,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 8,
+  "verses": "4-15",
+  "incipit": "AND when much people were gath- ered together and were come to",
+  "status": "verified",
+  "verified_ref": "Luke 8:4-15"
+ },
+ {
+  "pos": 139133,
+  "kind": "EPISTLE",
+  "book": "1 Corinthians",
+  "ch": 13,
+  "verses": "1-13",
+  "incipit": "THOUGH I speak with the tongues of men and of angels and",
+  "status": "verified",
+  "verified_ref": "1 Corinthians 13:1-13"
+ },
+ {
+  "pos": 140892,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 18,
+  "verses": "31-43",
+  "incipit": "THEN he took unto him the twelve and said unto them Behold",
+  "status": "verified",
+  "verified_ref": "Luke 18:31-43"
+ },
+ {
+  "pos": 143051,
+  "kind": "EPISTLE",
+  "book": "Joel",
+  "ch": 2,
+  "verses": "12-19",
+  "incipit": "THEREFORE also now saith the Lord turn ye even to me with",
+  "status": "verified",
+  "verified_ref": "Joel 2:12-19"
+ },
+ {
+  "pos": 144661,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 6,
+  "verses": "16-21",
+  "incipit": "MOREOVER when ye fast be not as the hypocrites of a sad",
+  "status": "verified",
+  "verified_ref": "Matthew 6:16-21"
+ },
+ {
+  "pos": 146026,
+  "kind": "EPISTLE",
+  "book": "2 Corinthians",
+  "ch": 6,
+  "verses": "1-10",
+  "incipit": "WE then as workers together with him beseech you also that ye",
+  "status": "verified",
+  "verified_ref": "2 Corinthians 6:1-10"
+ },
+ {
+  "pos": 147404,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 4,
+  "verses": "1-11",
+  "incipit": "THEN was Jesus led up of the spirit into the wilderness to",
+  "status": "verified",
+  "verified_ref": "Matthew 4:1-11"
+ },
+ {
+  "pos": 149439,
+  "kind": "EPISTLE",
+  "book": "1 Thessalonians",
+  "ch": 4,
+  "verses": "1-7",
+  "incipit": "FURTHERMORE then we beseech you brethren and exhort you by the Lord",
+  "status": "verified",
+  "verified_ref": "1 Thessalonians 4:1-7"
+ },
+ {
+  "pos": 150445,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 15,
+  "verses": "21-28",
+  "incipit": "THEN Jesus went thence and de- parted into the coasts of Tyre",
+  "status": "verified",
+  "verified_ref": "Matthew 15:21-28"
+ },
+ {
+  "pos": 151992,
+  "kind": "EPISTLE",
+  "book": "Ephesians",
+  "ch": 5,
+  "verses": "1-9",
+  "incipit": "BE ye therefore followers of God as dear children and walk in",
+  "status": "verified",
+  "verified_ref": "Ephesians 5:1-9"
+ },
+ {
+  "pos": 153228,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 11,
+  "verses": "14-28",
+  "incipit": "AND he was casting out a devil and it was dumb And",
+  "status": "verified",
+  "verified_ref": "Luke 11:14-28"
+ },
+ {
+  "pos": 155593,
+  "kind": "EPISTLE",
+  "book": "Galatians",
+  "ch": 4,
+  "verses": "21-31",
+  "incipit": "TELL me ye that desire to be under the law do ye",
+  "status": "verified",
+  "verified_ref": "Galatians 4:21-31"
+ },
+ {
+  "pos": 157045,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 6,
+  "verses": "1-15",
+  "incipit": "AFTER these things Jesus went over the sea of Galilee which is",
+  "status": "verified",
+  "verified_ref": "John 6:1-15"
+ },
+ {
+  "pos": 159255,
+  "kind": "EPISTLE",
+  "book": "Hebrews",
+  "ch": 9,
+  "verses": "11-15",
+  "incipit": "BUT Christ being come an high priest of good things to come",
+  "status": "verified",
+  "verified_ref": "Hebrews 9:11-15"
+ },
+ {
+  "pos": 160526,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 8,
+  "verses": "46-59",
+  "incipit": "WHICH of you convinceth me of sin And if I say the",
+  "status": "verified",
+  "verified_ref": "John 8:46-59"
+ },
+ {
+  "pos": 162838,
+  "kind": "EPISTLE",
+  "book": "Philippians",
+  "ch": 2,
+  "verses": "5-11",
+  "incipit": "LET this mind be in you which was also in Christ Jesus",
+  "status": "verified",
+  "verified_ref": "Philippians 2:5-11"
+ },
+ {
+  "pos": 163892,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 21,
+  "verses": "1-9",
+  "incipit": "AND when they drew nigh unto Jerusalem and were come to Beth-",
+  "status": "verified",
+  "verified_ref": "Matthew 21:1-9"
+ },
+ {
+  "pos": 165644,
+  "kind": "EPISTLE",
+  "book": "Isaiah",
+  "ch": 50,
+  "verses": "5-10",
+  "incipit": "",
+  "status": "unverified",
+  "verified_ref": "Isaiah 50:5-10"
+ },
+ {
+  "pos": 165973,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 12,
+  "verses": "1-23",
+  "incipit": "Euestoaj in olp Mink",
+  "status": "unverified",
+  "verified_ref": "John 12:1-23"
+ },
+ {
+  "pos": 166645,
+  "kind": "EPISTLE",
+  "book": "Jeremiah",
+  "ch": 11,
+  "verses": "18-20",
+  "incipit": "",
+  "status": "unverified",
+  "verified_ref": "Jeremiah 11:18-20"
+ },
+ {
+  "pos": 166916,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 12,
+  "verses": "24-43",
+  "incipit": "Wlttmtsbnv in olp S ieek",
+  "status": "unverified",
+  "verified_ref": "John 12:24-43"
+ },
+ {
+  "pos": 167600,
+  "kind": "EPISTLE",
+  "book": "Isaiah",
+  "ch": 62,
+  "verses": "11 \u2014 63: 7",
+  "incipit": "oob Jfribap",
+  "status": "unverified",
+  "verified_ref": "Isaiah 62:11 \u2014 63: 7"
+ },
+ {
+  "pos": 168016,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 22,
+  "verses": "1 \u2014 23 : 42",
+  "incipit": "tEimrstoap in olj ISKecfe If Introit the same as for the Tuesday",
+  "status": "unverified",
+  "verified_ref": "Luke 22:1 \u2014 23 : 42"
+ },
+ {
+  "pos": 168509,
+  "kind": "EPISTLE",
+  "book": "1 Corinthians",
+  "ch": 11,
+  "verses": "23-32",
+  "incipit": "",
+  "status": "unverified",
+  "verified_ref": "1 Corinthians 11:23-32"
+ },
+ {
+  "pos": 168739,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 13,
+  "verses": "1-15",
+  "incipit": "oob Jfrtbap If Introit the same as for the Tuesday in holy",
+  "status": "unverified",
+  "verified_ref": "John 13:1-15"
+ },
+ {
+  "pos": 169554,
+  "kind": "EPISTLE",
+  "book": "Isaiah",
+  "ch": 52,
+  "verses": "13 \u2014 53: 12",
+  "incipit": "",
+  "status": "unverified",
+  "verified_ref": "Isaiah 52:13 \u2014 53: 12"
+ },
+ {
+  "pos": 169824,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 18,
+  "verses": "1 \u2014 19: 42",
+  "incipit": "Caster OTHER COLLECTS FOR GOOD FRIDAY MERCIFUL and Everlasting God Who hast",
+  "status": "unverified",
+  "verified_ref": "John 18:1 \u2014 19: 42"
+ },
+ {
+  "pos": 172156,
+  "kind": "EPISTLE",
+  "book": "1 Corinthians",
+  "ch": 5,
+  "verses": "6-8",
+  "incipit": "YOUR glorying is not good Know ye not that a little leaven",
+  "status": "verified",
+  "verified_ref": "1 Corinthians 5:6-8"
+ },
+ {
+  "pos": 172901,
+  "kind": "GOSPEL",
+  "book": "Mark",
+  "ch": 16,
+  "verses": "1-8",
+  "incipit": "AND when the sabbath was past Mary Magdalene and Mary the mother",
+  "status": "verified",
+  "verified_ref": "Mark 16:1-8"
+ },
+ {
+  "pos": 174502,
+  "kind": "EPISTLE",
+  "book": "Acts",
+  "ch": 10,
+  "verses": "34-41",
+  "incipit": "THEN Peter opened his mouth and said Of a truth I perceive",
+  "status": "verified",
+  "verified_ref": "Acts 10:34-41"
+ },
+ {
+  "pos": 175465,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 24,
+  "verses": "13-35",
+  "incipit": "AND behold two of them went that same day to a village",
+  "status": "verified",
+  "verified_ref": "Luke 24:13-35"
+ },
+ {
+  "pos": 178787,
+  "kind": "EPISTLE",
+  "book": "1 John",
+  "ch": 5,
+  "verses": "4-12",
+  "incipit": "FOR whatsoever is born of God over- cometh the world and this",
+  "status": "verified",
+  "verified_ref": "1 John 5:4-12"
+ },
+ {
+  "pos": 180225,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 20,
+  "verses": "19-31",
+  "incipit": "THEN the same day at evening being the first day of the",
+  "status": "verified",
+  "verified_ref": "John 20:19-31"
+ },
+ {
+  "pos": 182681,
+  "kind": "EPISTLE",
+  "book": "1 Peter",
+  "ch": 2,
+  "verses": "21-25",
+  "incipit": "FOR even hereunto were ye called because Christ also suffered for us",
+  "status": "verified",
+  "verified_ref": "1 Peter 2:21-25"
+ },
+ {
+  "pos": 183483,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 10,
+  "verses": "11-16",
+  "incipit": "I AM the good shepherd the good shepherd giveth his life for",
+  "status": "verified",
+  "verified_ref": "John 10:11-16"
+ },
+ {
+  "pos": 184979,
+  "kind": "EPISTLE",
+  "book": "1 Peter",
+  "ch": 2,
+  "verses": "11-20",
+  "incipit": "I EARLY beloved I beseech you as J strangers and pilgrims abstain",
+  "status": "unverified",
+  "verified_ref": "1 Peter 2:11-20"
+ },
+ {
+  "pos": 186423,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 16,
+  "verses": "16-23",
+  "incipit": "A LITTLE while and ye shall not see me and again a",
+  "status": "verified",
+  "verified_ref": "John 16:16-23"
+ },
+ {
+  "pos": 188351,
+  "kind": "EPISTLE",
+  "book": "James",
+  "ch": 1,
+  "verses": "16-21",
+  "incipit": "DO not err my beloved brethren Every good gift and every perfect",
+  "status": "verified",
+  "verified_ref": "James 1:16-21"
+ },
+ {
+  "pos": 189222,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 16,
+  "verses": "5-15",
+  "incipit": "BUT now I go my way to him that sent me and",
+  "status": "verified",
+  "verified_ref": "John 16:5-15"
+ },
+ {
+  "pos": 191024,
+  "kind": "EPISTLE",
+  "book": "James",
+  "ch": 1,
+  "verses": "22-27",
+  "incipit": "BUT be ye doers of the word and not hearers only deceiving",
+  "status": "verified",
+  "verified_ref": "James 1:22-27"
+ },
+ {
+  "pos": 192077,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 16,
+  "verses": "23-30",
+  "incipit": "VERILY verily I say unto you Whatsoever ye shall ask the Father",
+  "status": "verified",
+  "verified_ref": "John 16:23-30"
+ },
+ {
+  "pos": 193987,
+  "kind": "EPISTLE",
+  "book": "Acts",
+  "ch": 1,
+  "verses": "1-11",
+  "incipit": "THE former treatise have I made O Theophilus of all that Jesus",
+  "status": "verified",
+  "verified_ref": "Acts 1:1-11"
+ },
+ {
+  "pos": 195784,
+  "kind": "GOSPEL",
+  "book": "Mark",
+  "ch": 16,
+  "verses": "14-20",
+  "incipit": "AFTERWARD he appeared unto the eleven as they sat at meat and",
+  "status": "verified",
+  "verified_ref": "Mark 16:14-20"
+ },
+ {
+  "pos": 197302,
+  "kind": "EPISTLE",
+  "book": "1 Peter",
+  "ch": 4,
+  "verses": "7-11",
+  "incipit": "BE ye therefore sober and watch unto prayer And above all things",
+  "status": "verified",
+  "verified_ref": "1 Peter 4:7-11"
+ },
+ {
+  "pos": 198166,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 15,
+  "verses": "26\u201416: 4",
+  "incipit": "BUT when the Comforter is come whom I will send unto you",
+  "status": "verified",
+  "verified_ref": "John 15:26"
+ },
+ {
+  "pos": 199621,
+  "kind": "EPISTLE",
+  "book": "Acts",
+  "ch": 2,
+  "verses": "1-13",
+  "incipit": "AND when the day of Pentecost was fully come they were all",
+  "status": "verified",
+  "verified_ref": "Acts 2:1-13"
+ },
+ {
+  "pos": 201227,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 14,
+  "verses": "23-31",
+  "incipit": "JESUS answered and said unto him If a man love me he",
+  "status": "verified",
+  "verified_ref": "John 14:23-31"
+ },
+ {
+  "pos": 202825,
+  "kind": "EPISTLE",
+  "book": "Acts",
+  "ch": 10,
+  "verses": "42-48",
+  "incipit": "AND he commanded us to preach unto the people and to testify",
+  "status": "verified",
+  "verified_ref": "Acts 10:42-48"
+ },
+ {
+  "pos": 203615,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 3,
+  "verses": "16-21",
+  "incipit": "FOR God so loved theworld that he gave his only begotten Son",
+  "status": "verified",
+  "verified_ref": "John 3:16-21"
+ },
+ {
+  "pos": 205294,
+  "kind": "EPISTLE",
+  "book": "Romans",
+  "ch": 11,
+  "verses": "33-36",
+  "incipit": "OTHE depth of the riches both of the wisdom and knowledge of",
+  "status": "verified",
+  "verified_ref": "Romans 11:33-36"
+ },
+ {
+  "pos": 206057,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 3,
+  "verses": "1-15",
+  "incipit": "THEBE was a man of the Pharisees named Nicodemus a ruler of",
+  "status": "unverified",
+  "verified_ref": "John 3:1-15"
+ },
+ {
+  "pos": 208493,
+  "kind": "EPISTLE",
+  "book": "1 John",
+  "ch": 4,
+  "verses": "16-21",
+  "incipit": "GOD is love and he that dwelleth in love dwelleth in God",
+  "status": "verified",
+  "verified_ref": "1 John 4:16-21"
+ },
+ {
+  "pos": 209463,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 16,
+  "verses": "19-31",
+  "incipit": "THERE was a certain rich man which was clothed in purple and",
+  "status": "verified",
+  "verified_ref": "Luke 16:19-31"
+ },
+ {
+  "pos": 211666,
+  "kind": "EPISTLE",
+  "book": "1 John",
+  "ch": 3,
+  "verses": "13-18",
+  "incipit": "ARVEL not my brethren if the world hate you We know that",
+  "status": "verified",
+  "verified_ref": "1 John 3:13-18"
+ },
+ {
+  "pos": 212644,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 14,
+  "verses": "16-24",
+  "incipit": "THEN said he unto him A certain man made a great supper",
+  "status": "verified",
+  "verified_ref": "Luke 14:16-24"
+ },
+ {
+  "pos": 214465,
+  "kind": "EPISTLE",
+  "book": "1 Peter",
+  "ch": 5,
+  "verses": "6-11",
+  "incipit": "HUMBLE yourselves therefore under the mighty hand of God that he may",
+  "status": "verified",
+  "verified_ref": "1 Peter 5:6-11"
+ },
+ {
+  "pos": 215409,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 15,
+  "verses": "1-10",
+  "incipit": "THEN drew near unto him all the publicans and sinners for to",
+  "status": "verified",
+  "verified_ref": "Luke 15:1-10"
+ },
+ {
+  "pos": 217292,
+  "kind": "EPISTLE",
+  "book": "Romans",
+  "ch": 8,
+  "verses": "18-23",
+  "incipit": "FOR I reckon that the sufferings of this present time are not",
+  "status": "verified",
+  "verified_ref": "Romans 8:18-23"
+ },
+ {
+  "pos": 218360,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 6,
+  "verses": "36-42",
+  "incipit": "BE ye therefore merciful as your Father also is merciful Judge not",
+  "status": "verified",
+  "verified_ref": "Luke 6:36-42"
+ },
+ {
+  "pos": 220057,
+  "kind": "EPISTLE",
+  "book": "1 Peter",
+  "ch": 3,
+  "verses": "8-15",
+  "incipit": "FINALLY be ye all of one mind having compassion one of another",
+  "status": "verified",
+  "verified_ref": "1 Peter 3:8-15"
+ },
+ {
+  "pos": 221168,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 5,
+  "verses": "1-11",
+  "incipit": "AND it came to pass that as the people pressed upon him",
+  "status": "corrected",
+  "verified_ref": "Luke 5:1-11",
+  "ocr_chapter": 3
+ },
+ {
+  "pos": 223273,
+  "kind": "EPISTLE",
+  "book": "Romans",
+  "ch": 6,
+  "verses": "3-11",
+  "incipit": "KNOW ye not that so many of us as were baptized into",
+  "status": "verified",
+  "verified_ref": "Romans 6:3-11"
+ },
+ {
+  "pos": 224515,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 5,
+  "verses": "20-26",
+  "incipit": "FOR I say unto you That except your righteousness shall exceed the",
+  "status": "verified",
+  "verified_ref": "Matthew 5:20-26"
+ },
+ {
+  "pos": 227192,
+  "kind": "GOSPEL",
+  "book": "Mark",
+  "ch": 8,
+  "verses": "1-9",
+  "incipit": "IN those days the multitude being very great and having nothing to",
+  "status": "verified",
+  "verified_ref": "Mark 8:1-9"
+ },
+ {
+  "pos": 228958,
+  "kind": "EPISTLE",
+  "book": "Romans",
+  "ch": 8,
+  "verses": "12-17",
+  "incipit": "THEREFORE brethren we are debtors not to the flesh to live after",
+  "status": "verified",
+  "verified_ref": "Romans 8:12-17"
+ },
+ {
+  "pos": 229887,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 7,
+  "verses": "15-23",
+  "incipit": "BEWARE of false prophets which come to you in sheep's clothing but",
+  "status": "verified",
+  "verified_ref": "Matthew 7:15-23"
+ },
+ {
+  "pos": 231431,
+  "kind": "EPISTLE",
+  "book": "1 Corinthians",
+  "ch": 10,
+  "verses": "6-13",
+  "incipit": "NOW these things were our examples to the intent we should not",
+  "status": "verified",
+  "verified_ref": "1 Corinthians 10:6-13"
+ },
+ {
+  "pos": 232677,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 16,
+  "verses": "1-9",
+  "incipit": "AND he said also unto his disciples There was a certain rich",
+  "status": "verified",
+  "verified_ref": "Luke 16:1-9"
+ },
+ {
+  "pos": 234754,
+  "kind": "EPISTLE",
+  "book": "1 Corinthians",
+  "ch": 12,
+  "verses": "1-11",
+  "incipit": "NOW concerning spiritual gifts brethren I would not have you ignorant Ye",
+  "status": "verified",
+  "verified_ref": "1 Corinthians 12:1-11"
+ },
+ {
+  "pos": 236204,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 19,
+  "verses": "41-48",
+  "incipit": "AND when he was come near he beheld the city and wept",
+  "status": "verified",
+  "verified_ref": "Luke 19:41-48"
+ },
+ {
+  "pos": 237990,
+  "kind": "EPISTLE",
+  "book": "1 Corinthians",
+  "ch": 15,
+  "verses": "1-10",
+  "incipit": "MOREOVER brethren I declare unto you the gospel which I preached unto",
+  "status": "verified",
+  "verified_ref": "1 Corinthians 15:1-10"
+ },
+ {
+  "pos": 239479,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 18,
+  "verses": "9-14",
+  "incipit": "AND he spake this parable unto certain which trusted in them- selves",
+  "status": "verified",
+  "verified_ref": "Luke 18:9-14"
+ },
+ {
+  "pos": 240946,
+  "kind": "EPISTLE",
+  "book": "2 Corinthians",
+  "ch": 3,
+  "verses": "4-11",
+  "incipit": "AND such trust have we through Christ to God-ward not that we",
+  "status": "verified",
+  "verified_ref": "2 Corinthians 3:4-11"
+ },
+ {
+  "pos": 242196,
+  "kind": "GOSPEL",
+  "book": "Mark",
+  "ch": 7,
+  "verses": "31-37",
+  "incipit": "AND again departing from the coasts of Tyre and Sidon he came",
+  "status": "verified",
+  "verified_ref": "Mark 7:31-37"
+ },
+ {
+  "pos": 243717,
+  "kind": "EPISTLE",
+  "book": "Galatians",
+  "ch": 3,
+  "verses": "15-22",
+  "incipit": "BRETHREN I speak after the manner of men Though it be but",
+  "status": "verified",
+  "verified_ref": "Galatians 3:15-22"
+ },
+ {
+  "pos": 245165,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 10,
+  "verses": "23-37",
+  "incipit": "AND he turned him unto his disciples and said privately Blessed are",
+  "status": "verified",
+  "verified_ref": "Luke 10:23-37"
+ },
+ {
+  "pos": 247750,
+  "kind": "EPISTLE",
+  "book": "Galatians",
+  "ch": 5,
+  "verses": "16-24",
+  "incipit": "THIS I say then Walk in the Spirit and ye shall not",
+  "status": "verified",
+  "verified_ref": "Galatians 5:16-24"
+ },
+ {
+  "pos": 248980,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 17,
+  "verses": "11-19",
+  "incipit": "AND it came to pass as he went to Jerusalem that he",
+  "status": "verified",
+  "verified_ref": "Luke 17:11-19"
+ },
+ {
+  "pos": 250471,
+  "kind": "EPISTLE",
+  "book": "Galatians",
+  "ch": 5,
+  "verses": "25 \u2014 6: 10",
+  "incipit": "IF we Ave in the Spirit let us also walk in the",
+  "status": "unverified",
+  "verified_ref": "Galatians 5:25 \u2014 6: 10"
+ },
+ {
+  "pos": 251973,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 6,
+  "verses": "24-34",
+  "incipit": "NO man can serve two masters for either he will hate the",
+  "status": "verified",
+  "verified_ref": "Matthew 6:24-34"
+ },
+ {
+  "pos": 254067,
+  "kind": "EPISTLE",
+  "book": "Ephesians",
+  "ch": 3,
+  "verses": "13-21",
+  "incipit": "THEBEFOBE I desire that ye faint not at my tribulations for you",
+  "status": "unverified",
+  "verified_ref": "Ephesians 3:13-21"
+ },
+ {
+  "pos": 255244,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 7,
+  "verses": "11-17",
+  "incipit": "AND it came to pass the day after that he went into",
+  "status": "verified",
+  "verified_ref": "Luke 7:11-17"
+ },
+ {
+  "pos": 256667,
+  "kind": "EPISTLE",
+  "book": "Ephesians",
+  "ch": 4,
+  "verses": "1-6",
+  "incipit": "J THEREFORE the prisoner of the Lord beseech you that ye walk",
+  "status": "unverified",
+  "verified_ref": "Ephesians 4:1-6"
+ },
+ {
+  "pos": 257500,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 14,
+  "verses": "1-11",
+  "incipit": "AND it came to pass as he went into the house of",
+  "status": "verified",
+  "verified_ref": "Luke 14:1-11"
+ },
+ {
+  "pos": 259397,
+  "kind": "EPISTLE",
+  "book": "1 Corinthians",
+  "ch": 1,
+  "verses": "4-9",
+  "incipit": "I THANK my God always on your behalf for the grace of",
+  "status": "verified",
+  "verified_ref": "1 Corinthians 1:4-9"
+ },
+ {
+  "pos": 260199,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 22,
+  "verses": "31-46",
+  "incipit": "iUT when the Pharisees had heard that he had put the Sadducees",
+  "status": "unverified",
+  "verified_ref": "Matthew 22:31-46"
+ },
+ {
+  "pos": 261960,
+  "kind": "EPISTLE",
+  "book": "Ephesians",
+  "ch": 4,
+  "verses": "22-28",
+  "incipit": "THAT ye put off concerning the former conversation the old man which",
+  "status": "corrected",
+  "verified_ref": "Ephesians 4:22-28",
+  "ocr_chapter": 1
+ },
+ {
+  "pos": 262853,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 9,
+  "verses": "1-8",
+  "incipit": "AND he entered into a ship and passed over and came into",
+  "status": "verified",
+  "verified_ref": "Matthew 9:1-8"
+ },
+ {
+  "pos": 264387,
+  "kind": "EPISTLE",
+  "book": "Ephesians",
+  "ch": 5,
+  "verses": "15-21",
+  "incipit": "SEE then that ye walk circum- spectly not as fools but as",
+  "status": "corrected",
+  "verified_ref": "Ephesians 5:15-21",
+  "ocr_chapter": 3
+ },
+ {
+  "pos": 265259,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 22,
+  "verses": "1-14",
+  "incipit": "AND Jesus answered and spake unto them again by parables and said",
+  "status": "verified",
+  "verified_ref": "Matthew 22:1-14"
+ },
+ {
+  "pos": 267533,
+  "kind": "EPISTLE",
+  "book": "Ephesians",
+  "ch": 6,
+  "verses": "10-17",
+  "incipit": "FINALLY my brethren be strong in the Lord and in the power",
+  "status": "verified",
+  "verified_ref": "Ephesians 6:10-17"
+ },
+ {
+  "pos": 268773,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 4,
+  "verses": "46-54",
+  "incipit": "AND there was a certain nobleman whose son was sick at Capernaum",
+  "status": "verified",
+  "verified_ref": "John 4:46-54"
+ },
+ {
+  "pos": 270457,
+  "kind": "EPISTLE",
+  "book": "Philippians",
+  "ch": 1,
+  "verses": "3-11",
+  "incipit": "I THANK my God upon every remembrance of you always in every",
+  "status": "verified",
+  "verified_ref": "Philippians 1:3-11"
+ },
+ {
+  "pos": 271688,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 18,
+  "verses": "23-35",
+  "incipit": "THEREFORE is the kingdom of heaven likened unto a certain king which",
+  "status": "verified",
+  "verified_ref": "Matthew 18:23-35"
+ },
+ {
+  "pos": 274062,
+  "kind": "EPISTLE",
+  "book": "Philippians",
+  "ch": 3,
+  "verses": "17-21",
+  "incipit": "BRETHREN be followers together of me and mark them which walk so",
+  "status": "verified",
+  "verified_ref": "Philippians 3:17-21"
+ },
+ {
+  "pos": 274978,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 22,
+  "verses": "15-22",
+  "incipit": "THEN went the Pharisees and took counsel how they might entangle him",
+  "status": "verified",
+  "verified_ref": "Matthew 22:15-22"
+ },
+ {
+  "pos": 276502,
+  "kind": "EPISTLE",
+  "book": "Colossians",
+  "ch": 1,
+  "verses": "9-14",
+  "incipit": "FOR this cause we also since the day we heard it do",
+  "status": "verified",
+  "verified_ref": "Colossians 1:9-14"
+ },
+ {
+  "pos": 277588,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 9,
+  "verses": "18-26",
+  "incipit": "V HILE he spake these things unto W them behold there came",
+  "status": "unverified",
+  "verified_ref": "Matthew 9:18-26"
+ },
+ {
+  "pos": 280370,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 24,
+  "verses": "15-28",
+  "incipit": "HEN ye therefore shall see the abomination of desolation spoken w of",
+  "status": "verified",
+  "verified_ref": "Matthew 24:15-28"
+ },
+ {
+  "pos": 282465,
+  "kind": "EPISTLE",
+  "book": "2 Peter",
+  "ch": 3,
+  "verses": "3-14",
+  "incipit": "KNOWING this first that there shall come in the last days scoffers",
+  "status": "verified",
+  "verified_ref": "2 Peter 3:3-14"
+ },
+ {
+  "pos": 285627,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 25,
+  "verses": "31-46",
+  "incipit": "WHEN the Son of man shall come in his glory and all",
+  "status": "verified",
+  "verified_ref": "Matthew 25:31-46"
+ },
+ {
+  "pos": 289903,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 25,
+  "verses": "1-13",
+  "incipit": "THEN shall the kingdom of heaven be likened unto ten virgins which",
+  "status": "verified",
+  "verified_ref": "Matthew 25:1-13"
+ },
+ {
+  "pos": 295629,
+  "kind": "EPISTLE",
+  "book": "Ephesians",
+  "ch": 1,
+  "verses": "3-6",
+  "incipit": "GOSPEL John L Stephen JUartpr December",
+  "status": "unverified",
+  "verified_ref": "Ephesians 1:3-6"
+ },
+ {
+  "pos": 296562,
+  "kind": "EPISTLE",
+  "book": "Acts",
+  "ch": 6,
+  "verses": "8 \u2014 7: 60",
+  "incipit": "",
+  "status": "unverified",
+  "verified_ref": "Acts 6:8 \u2014 7: 60"
+ },
+ {
+  "pos": 296882,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 23,
+  "verses": "34-39",
+  "incipit": "g L tohn gpostle Cbangeltsit December If For Introit and Gradual see",
+  "status": "unverified",
+  "verified_ref": "Matthew 23:34-39"
+ },
+ {
+  "pos": 297051,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 21,
+  "verses": "19-24. 155",
+  "incipit": "QTfje Annunciation Cfje Connexion of t aul January If For Introit Collect",
+  "status": "unverified",
+  "verified_ref": "John 21:19-24. 155"
+ },
+ {
+  "pos": 297225,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 19,
+  "verses": "27-30",
+  "incipit": "Che Presentation of our liovh February",
+  "status": "unverified",
+  "verified_ref": "Matthew 19:27-30"
+ },
+ {
+  "pos": 298027,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 2,
+  "verses": "22-32",
+  "incipit": "t Jfflatthtas Apostle February If For Introit Collect and Gradual see apostles'",
+  "status": "unverified",
+  "verified_ref": "Luke 2:22-32"
+ },
+ {
+  "pos": 298942,
+  "kind": "EPISTLE",
+  "book": "Isaiah",
+  "ch": 7,
+  "verses": "10-16",
+  "incipit": "GOSPEL Luke g t eter anb g t aul g t jWarfe",
+  "status": "unverified",
+  "verified_ref": "Isaiah 7:10-16"
+ },
+ {
+  "pos": 299125,
+  "kind": "EPISTLE",
+  "book": "Ephesians",
+  "ch": 4,
+  "verses": "7-13",
+  "incipit": "GOSPEL John t f iltp anb t fames gpostle May If For",
+  "status": "unverified",
+  "verified_ref": "Ephesians 4:7-13"
+ },
+ {
+  "pos": 299291,
+  "kind": "EPISTLE",
+  "book": "Ephesians",
+  "ch": 2,
+  "verses": "19-22",
+  "incipit": "GOSPEL John he Jlatibitp of g t SToftn tfjc baptist June",
+  "status": "unverified",
+  "verified_ref": "Ephesians 2:19-22"
+ },
+ {
+  "pos": 300307,
+  "kind": "EPISTLE",
+  "book": "Isaiah",
+  "ch": 40,
+  "verses": "1-5",
+  "incipit": "",
+  "status": "unverified",
+  "verified_ref": "Isaiah 40:1-5"
+ },
+ {
+  "pos": 300849,
+  "kind": "EPISTLE",
+  "book": "Acts",
+  "ch": 12,
+  "verses": "1-11",
+  "incipit": "GOSPEL Matthew L jfWtcfjaei anb SU angels he IrJigttatton July T i",
+  "status": "unverified",
+  "verified_ref": "Acts 12:1-11"
+ },
+ {
+  "pos": 301452,
+  "kind": "EPISTLE",
+  "book": "Isaiah",
+  "ch": 11,
+  "verses": "1-5",
+  "incipit": "GOSPEL Luke t Sames tfje Clber gpostle July If For Introit Collect",
+  "status": "unverified",
+  "verified_ref": "Isaiah 11:1-5"
+ },
+ {
+  "pos": 301629,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 20,
+  "verses": "20-33",
+  "incipit": "H t Bartholomew po tle August H For Introit Collect and Gradual",
+  "status": "unverified",
+  "verified_ref": "Matthew 20:20-33"
+ },
+ {
+  "pos": 301937,
+  "kind": "EPISTLE",
+  "book": "Ephesians",
+  "ch": 4,
+  "verses": "7-14",
+  "incipit": "GOSPEL Matthew t jHtchad anb U gngete September",
+  "status": "unverified",
+  "verified_ref": "Ephesians 4:7-14"
+ },
+ {
+  "pos": 303236,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 18,
+  "verses": "1-11",
+  "incipit": "g t ukt Cbangeltsft October If For Introit Collect and Gradual see",
+  "status": "unverified",
+  "verified_ref": "Matthew 18:1-11"
+ },
+ {
+  "pos": 303558,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 15,
+  "verses": "17-21",
+  "incipit": "GTfie Jfegttual of tfjc Reformation October If The Sunday preceding this Festival",
+  "status": "unverified",
+  "verified_ref": "John 15:17-21"
+ },
+ {
+  "pos": 304943,
+  "kind": "EPISTLE",
+  "book": "Galatians",
+  "ch": 2,
+  "verses": "16-21. 159",
+  "incipit": "arbest",
+  "status": "unverified",
+  "verified_ref": "Galatians 2:16-21. 159"
+ },
+ {
+  "pos": 305357,
+  "kind": "GOSPEL",
+  "book": "John",
+  "ch": 8,
+  "verses": "31-36",
+  "incipit": "U faints' ap November",
+  "status": "unverified",
+  "verified_ref": "John 8:31-36"
+ },
+ {
+  "pos": 306213,
+  "kind": "EPISTLE",
+  "book": "Revelation",
+  "ch": 7,
+  "verses": "2-17",
+  "incipit": "",
+  "status": "unverified",
+  "verified_ref": "Revelation 7:2-17"
+ },
+ {
+  "pos": 306502,
+  "kind": "GOSPEL",
+  "book": "Matthew",
+  "ch": 5,
+  "verses": "1-12",
+  "incipit": "t gnbreto gpostle November If For Introit Collect and Gradual see apostles'",
+  "status": "unverified",
+  "verified_ref": "Matthew 5:1-12"
+ },
+ {
+  "pos": 307622,
+  "kind": "EPISTLE",
+  "book": "2 Corinthians",
+  "ch": 9,
+  "verses": "6-11",
+  "incipit": "",
+  "status": "unverified",
+  "verified_ref": "2 Corinthians 9:6-11"
+ },
+ {
+  "pos": 307992,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 12,
+  "verses": "15-21",
+  "incipit": "J ap of umtltatton ana draper",
+  "status": "unverified",
+  "verified_ref": "Luke 12:15-21"
+ },
+ {
+  "pos": 309175,
+  "kind": "EPISTLE",
+  "book": "Revelation",
+  "ch": 3,
+  "verses": "1-6",
+  "incipit": "",
+  "status": "unverified",
+  "verified_ref": "Revelation 3:1-6"
+ },
+ {
+  "pos": 309474,
+  "kind": "GOSPEL",
+  "book": "Luke",
+  "ch": 15,
+  "verses": "11-32",
+  "incipit": "ap of General or Special Efjanfeggtfatng The proper Service for this Day",
+  "status": "unverified",
+  "verified_ref": "Luke 15:11-32"
+ }
+]
