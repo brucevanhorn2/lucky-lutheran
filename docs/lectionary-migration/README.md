@@ -305,3 +305,35 @@ entries.
 large, re-fetchable from archive.org with the commands above, and not ours to
 redistribute — only our *derived* citation data belongs in the repo.
 
+
+## Sanctorale complete (2026-08-01) — `sanctorale.yaml`
+
+**23 festivals, 46 citations, all resolving against the local KJV.** Produced
+with the hybrid recipe against the full-resolution `_jp2.zip`, plus a direct
+read of printed p.160 to settle three pairings that column order made
+ambiguous (the Reformation gospel, All Saints, St. Andrew).
+
+Running headers are *section* names in blackletter ("Harvest",
+"Thanksgiving", "The Reformation") and will masquerade as festival headings
+if the top ~5.5% of the page is not cropped away.
+
+Rubrics worth preserving if these are ever printed in show notes: several
+festivals say "For Introit, Collect and Gradual see APOSTLES' DAYS, p. 153"
+or "EVANGELISTS' DAYS, p. 154" — the propers are shared from a common rather
+than given in full.
+
+### Two gaps remain in the sanctorale
+
+- **Holy Innocents (December 28)** — not captured. Note that Matthew 2:13-23
+  is already assigned to *Sunday after New Year* in `temporale.yaml` from
+  document order; the historic lectionary uses that pericope for both, so
+  check p.155-156 rather than assuming a conflict.
+- **The Festival of Harvest** — the heading is confirmed on printed p.160 but
+  its Epistle and Gospel fall on the following page and were not read.
+
+### jp2 zip -> page number
+
+The zip entries map one-to-one onto the archive.org BookReader index:
+`commonserviceboo00phil_jp2/commonserviceboo00phil_%04d.jp2` where `%04d` is
+the same N as `page/n<N>.jpg`. In the Propers, printed page = N - 4.
+

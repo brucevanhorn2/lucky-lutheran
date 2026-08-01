@@ -1,0 +1,114 @@
+propers:
+- id: st-thomas
+  title: St. Thomas, Apostle
+  date: December 21
+  epistle: Ephesians 1:3-6
+  gospel: John 20:24-31
+- id: st-stephen
+  title: St. Stephen, Martyr
+  date: December 26
+  epistle: Acts 6:8-7:60
+  gospel: Matthew 23:34-39
+- id: st-john-evangelist
+  title: St. John, Apostle and Evangelist
+  date: December 27
+  epistle: 1 John 1:1-10
+  gospel: John 21:19-24
+- id: conversion-st-paul
+  title: The Conversion of St. Paul
+  date: January 25
+  epistle: Acts 9:1-22
+  gospel: Matthew 19:27-30
+- id: presentation
+  title: The Presentation of Our Lord
+  date: February 2
+  epistle: Malachi 3:1-4
+  gospel: Luke 2:22-32
+- id: st-matthias
+  title: St. Matthias, Apostle
+  date: February 24
+  epistle: Acts 1:15-26
+  gospel: Matthew 11:25-30
+- id: annunciation
+  title: The Annunciation
+  date: March 25
+  epistle: Isaiah 7:10-16
+  gospel: Luke 1:26-38
+- id: st-mark
+  title: St. Mark, Evangelist
+  date: April 25
+  epistle: Ephesians 4:7-13
+  gospel: John 15:1-11
+- id: st-philip-st-james
+  title: St. Philip and St. James, Apostles
+  date: May 1
+  epistle: Ephesians 2:19-22
+  gospel: John 14:1-14
+- id: nativity-st-john-baptist
+  title: The Nativity of St. John the Baptist
+  date: June 24
+  epistle: Isaiah 40:1-5
+  gospel: Luke 1:57-80
+- id: st-peter-st-paul
+  title: St. Peter and St. Paul, Apostles
+  date: June 29
+  epistle: Acts 12:1-11
+  gospel: Matthew 16:13-20
+- id: visitation
+  title: The Visitation
+  date: July 2
+  epistle: Isaiah 11:1-5
+  gospel: Luke 1:39-56
+- id: st-james-elder
+  title: St. James the Elder, Apostle
+  date: July 25
+  epistle: Romans 8:28-39
+  gospel: Matthew 20:20-33
+- id: st-bartholomew
+  title: St. Bartholomew, Apostle
+  date: August 24
+  epistle: 2 Corinthians 4:7-10
+  gospel: Luke 22:24-30
+- id: st-matthew
+  title: St. Matthew, Apostle and Evangelist
+  date: September 21
+  epistle: Ephesians 4:7-14
+  gospel: Matthew 9:9-13
+- id: st-michael-all-angels
+  title: St. Michael and All Angels
+  date: September 29
+  epistle: Revelation 12:7-12
+  gospel: Matthew 18:1-11
+- id: st-luke
+  title: St. Luke, Evangelist
+  date: October 18
+  epistle: 2 Timothy 4:5-11
+  gospel: Luke 10:1-9
+- id: st-simon-st-jude
+  title: St. Simon and St. Jude, Apostles
+  date: October 28
+  epistle: 1 Peter 1:3-9
+  gospel: John 15:17-21
+- id: reformation
+  title: The Festival of the Reformation
+  date: October 31
+  epistle: Galatians 2:16-21
+  gospel: John 8:31-36
+- id: all-saints
+  title: All Saints' Day
+  date: November 1
+  epistle: Revelation 7:2-17
+  gospel: Matthew 5:1-12
+- id: st-andrew
+  title: St. Andrew, Apostle
+  date: November 30
+  epistle: Romans 10:10-18
+  gospel: Matthew 4:18-22
+- id: thanksgiving
+  title: Thanksgiving
+  epistle: 2 Corinthians 9:6-11
+  gospel: Luke 12:15-21
+- id: humiliation-prayer
+  title: A Day of Humiliation and Prayer
+  epistle: Revelation 3:1-6
+  gospel: Luke 15:11-32
