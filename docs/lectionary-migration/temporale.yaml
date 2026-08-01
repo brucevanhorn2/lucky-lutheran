@@ -15,18 +15,20 @@ propers:
   title: Advent 4
   epistle: Philippians 4:4-7
   gospel: John 1:19-28
-- id: christmas-day
-  title: Christmas Day (first service)
+- id: christmas-day-early
+  title: Christmas Day — I. For the Early Service
   epistle: Titus 2:11-14
   gospel: Luke 2:1-14
-- id: christmas-second
-  title: Christmas (second service)
+  additional_lesson: Isaiah 9:2-7
+- id: christmas-day-later
+  title: Christmas Day — II. For the Later Service
   epistle: Hebrews 1:1-12
   gospel: John 1:1-14
-- id: christmas-third
-  title: Christmas (third service)
+- id: christmas-day-second
+  title: The Second Christmas Day (Dec 26)
   epistle: Titus 3:4-7
   gospel: Luke 2:15-20
+  note: Introit and Collect the same as for Christmas Day (per the rubric)
 - id: christmas-sunday
   title: Sunday after Christmas
   epistle: Galatians 4:1-7
