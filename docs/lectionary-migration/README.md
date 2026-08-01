@@ -269,3 +269,39 @@ Reformation. Redo those pages with column cropping, then validate every
 citation against the KJV before adding any of it to `temporale.yaml`
 (or a sibling `sanctorale.yaml`).
 
+
+### Page layout: headings span BOTH columns
+
+Do not naively crop the page in half. The festival headings are **centered
+across the full page width** while the body text is in two columns. Cropping
+at 50-53% cuts the headings in two and makes things worse than no cropping —
+"St. Peter and St. X", "St. Luke, Evar", "St. Philip and St. J".
+
+The working combination is a hybrid:
+
+- **headings** — OCR the *full page* with `--psm 1`. This already reads them
+  correctly; it is what produced the sixteen confident festival names and
+  dates recorded above.
+- **body text and citations** — OCR the columns separately (crop, then
+  `--psm 4`), which is what stops citations being truncated at the gutter.
+- merge the two passes per page.
+
+Pillow is sufficient for the cropping; ImageMagick is not required:
+
+    from PIL import Image
+    im = Image.open(p); W, H = im.size
+    top = int(H * 0.055)                      # drop the running header
+    left  = im.crop((0,           top, int(W*0.53), H))
+    right = im.crop((int(W*0.47), top, W,           H))
+
+The running header must be cropped off regardless — it is itself a festival
+name in blackletter ("St. Peter and St. Paul" at the top of a page about
+St. Mark), and full-page OCR pulls it into the body, producing phantom
+entries.
+
+### The source zip is gitignored
+
+`csb_jp2.zip` (~369 MB) and `*_djvu.txt` are excluded in `.gitignore`. They are
+large, re-fetchable from archive.org with the commands above, and not ours to
+redistribute — only our *derived* citation data belongs in the repo.
+

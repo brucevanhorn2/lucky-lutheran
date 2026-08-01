@@ -10,3 +10,11 @@ assets/music/rendered/
 *.egg-info/
 build/
 dist/
+
+# Source scans pulled from archive.org for the lectionary migration —
+# large, re-fetchable, and not ours to redistribute. See
+# docs/lectionary-migration/README.md for the fetch commands.
+*.jp2.zip
+csb_jp2.zip
+*_djvu.txt
+scans/
