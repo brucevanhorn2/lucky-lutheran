@@ -69,7 +69,7 @@ of every piece of content — summary:
 | Catechism core (commandments, Creed, sacraments) | Concordia Triglotta (CPH, 1921), English column — archive.org `concordiatriglot00unse` | verified word-for-word; 6 of 16 portions corrected |
 | Catechism "Christian Questions" (8 portions) | none — not in the Triglotta; present wording matches the modern CPH translation | 🚨 **copyright risk — do not publish; see SOURCES.md** |
 | Catechism Table of Duties / Words of Institution | resolved live from the local KJV, not hand-transcribed | verified |
-| Collects | historic Common Service texts | unverified — transcribed from memory, not yet proofread |
+| Collects | Propers of the Common Service Book (1917) — archive.org `commonserviceboo00phil` | verified word-for-word; 7 of 10 corrected |
 
 **Do not** substitute LSB (Lutheran Service Book, © CPH), the ESV
 (© Crossway), or the 1986/1991 CPH catechism translation without obtaining

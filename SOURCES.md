@@ -91,10 +91,17 @@ on sale today.
 1. **Ask CPH.** copyrights@cph.org, 1-800-325-3040. A written yes ends the
    question permanently and costs one email. A written no is also valuable
    — it is far better to know before publishing than after.
-2. **Research the specific claim.** Determine whether the LSB daily
-   lectionary's selection is substantially inherited from an older public
-   scheme. If it is, the originality argument weakens considerably in our
-   favor.
+2. **Research whether the selection is inherited.** *Partially done, and the
+   early result is unfavorable.* The LSB daily lectionary is described as
+   **independent of both of LSB's Sunday lectionaries**, running one year
+   from Ash Wednesday, prepared by the LCMS Commission on Worship for the
+   2006 book. That points to an original 2006 compilation rather than a
+   reprint of an older scheme — which is the opposite of what would help us,
+   since originality of selection is exactly what Feist protects. Note the
+   contrast: LSB's *one-year Sunday* lectionary was deliberately retained
+   from the historic set, but the *daily* lectionary was not. Not conclusive
+   — the *LSB Companion to the Services* would settle how the daily table was
+   actually built — but the burden now sits on our side of the argument.
 3. **Substitute a public-domain lectionary.** Two candidates, both already
    trusted sources in this project: the **historic one-year lectionary**
    (the classic Western pericope set, in use for centuries and unambiguously
@@ -156,14 +163,18 @@ down once in a file header.
 
 ## Collects (seasonal, `luckylutheran/data/collects.yaml`)
 
-| Status | ⚠️ **Unverified** — the file's own header states these were transcribed from memory of the historic Western collect texts (Common Service tradition, as printed in TLH) and have not yet been proofread against the Triglot Concordia or a period source. Not addressed in this pass; still open. |
+| Primary source | Propers of the *Common Service Book of the Lutheran Church* (1917), archive.org `commonserviceboo00phil`, unrestricted scan. Pre-1930 US publication → public domain. The same edition already used for Matins and Vespers. TLH (1941) is **not** the source and was not consulted; the Common Service Book prints the same Common Service propers and is free to quote. |
+| Status | ✅ **Verified** — all ten seasonal collects checked word for word. Advent, Christmas, and Trinity were already correct. Seven were corrected. |
+| Material corrections | Two were substantively wrong rather than cosmetic: the **Lent** and **Holy Week** collects had lost their entire trinitarian conclusion, ending at "through Jesus Christ, our Lord" where the source continues "…Thy Son, our Lord, Who liveth and reigneth with Thee and the Holy Ghost, ever One God, world without end." The **Whitsuntide** collect ended "with Thee and *the same Spirit*" where the source reads "with Thee and the Holy Ghost." |
+| Minor corrections | Epiphany and Ascension: "Thy only-begotten" (was "Thine"); Ascension: "so may we also" (was "so we may also"); Easter: "through Jesus Christ, Thy Son, our Lord" (was "through the same Jesus Christ, our Lord"); Lent: "all those who are penitent" (was "all them that are penitent"); Pre-Lent: "offences"; Holy Week: "Saviour". Source spellings retained even where they differ from modern US usage. |
+| Still to come | One collect per *season* only. The historic propers assign one per *Sunday*, and the Common Service Book prints all of them — addable under a `sundays:` key with no code change. |
 
 ## Summary: what's left before "proof of PD" is complete
 
 0. 🚨 **The daily lectionary** — the only unresolved *rights* question in the project, and the only text taken from a live commercial product. Everything below is about text we control; this one is about someone else's property. See the Daily Lectionary section above. **Do not publish publicly without addressing it.** Cheapest resolution is one email to copyrights@cph.org.
 1. Compline is **substantially closed out**: the Confession is verified against the 1881 Missouri Synod Church Liturgy, and both collects plus the benediction against the 1928 Deposited Book's Order for Compline. Four short lines remain flagged (opening versicle, Nunc Dimittis antiphon opening, absolution, pre-confession bidding) — all are PD in substance; none blocks publication.
 2. `small_catechism.yaml`'s 16 chief-part portions are **verified** against the 1921 Concordia Triglotta (six corrected). The **8 Christian Questions portions are a live copyright risk** and are the single highest-priority item on this list — see the Catechism section above. Everything else in the file is safe.
-3. `collects.yaml`'s seasonal collects — never checked against a period source. Now the largest wholly unverified body of text in the project.
+3. `collects.yaml`'s ten seasonal collects are **verified** against the 1917 Common Service Book's Propers (seven corrected, two of them materially — restored trinitarian conclusions). Remaining work here is additive, not corrective: per-Sunday collects, which the same source supplies.
 4. Matins/Vespers: Luther's Morning and Evening Prayers are **verified** against the Triglotta (both earlier flags were correct and are fixed). Two ambiguous items remain (Responsory, Kyrie line-count) plus the incense versicle — sources disagree with each other; these need a judgment call or a tie-breaking source, not more searching.
 
 Everything else — all of scripture, and the bulk of Matins/Vespers liturgy —

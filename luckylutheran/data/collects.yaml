@@ -1,12 +1,32 @@
-# Seasonal collects (historic Western collects in the public-domain wording of
-# the Common Service tradition, as found in The Lutheran Hymnal, 1941).
+# Seasonal collects — the historic Western collects in the Common Service
+# wording.
 #
-# !! VERIFY: these were transcribed from memory of the historic texts. Before
-# publishing, proofread each against a printed TLH or the Triglot Concordia.
+# VERIFIED: every collect below checked word for word against the Propers of
+# the *Common Service Book of the Lutheran Church* (General Synod / General
+# Council / United Synod South, 1917), archive.org `commonserviceboo00phil`,
+# unrestricted scan. Pre-1930 US publication, so public domain. This is the
+# same edition already used to verify Matins and Vespers — see SOURCES.md.
 #
-# This file currently provides one collect per SEASON. The full historic
-# propers assign a collect per SUNDAY; those can be added later under a
-# `sundays:` key without changing the code.
+# TLH (1941) is NOT the source and was not consulted; its only located scan is
+# copyright-restricted. The Common Service Book prints the same Common Service
+# propers and is free to quote.
+#
+# Seven of the ten had drifted and were corrected to the source. Two were
+# materially wrong, not merely cosmetic: the Lent and Holy Week collects had
+# lost their entire trinitarian conclusion, ending at "through Jesus Christ,
+# our Lord" where the source continues "...Thy Son, our Lord, Who liveth and
+# reigneth with Thee and the Holy Ghost, ever One God, world without end."
+# The Whitsuntide collect ended "with Thee and the same Spirit", where the
+# source reads "with Thee and the Holy Ghost". Advent, Christmas, and Trinity
+# were already correct.
+#
+# Source spellings retained even where they differ from modern US usage
+# ("offences", "Saviour"); the source's own "favorably" is likewise kept.
+# Capitalization is normalized to this repo's house style; no words changed.
+#
+# This file provides one collect per SEASON. The full historic propers assign
+# a collect per SUNDAY, and the Common Service Book prints all of them — they
+# can be added later under a `sundays:` key without changing the code.
 
 seasons:
   advent:
@@ -29,7 +49,7 @@ seasons:
   epiphany:
     title: Collect for Epiphany
     text: >-
-      O God, who by the leading of a star didst manifest Thine only-begotten
+      O God, who by the leading of a star didst manifest Thy only-begotten
       Son to the Gentiles, mercifully grant that we, who know Thee now by
       faith, may after this life have the fruition of Thy glorious Godhead;
       through the same Jesus Christ, Thy Son, our Lord, who liveth and
@@ -39,7 +59,7 @@ seasons:
     title: Collect for Pre-Lent
     text: >-
       O Lord, we beseech Thee favorably to hear the prayers of Thy people,
-      that we, who are justly punished for our offenses, may be mercifully
+      that we, who are justly punished for our offences, may be mercifully
       delivered by Thy goodness, for the glory of Thy name; through Jesus
       Christ, Thy Son, our Lord, who liveth and reigneth with Thee and the
       Holy Ghost, ever one God, world without end.
@@ -48,21 +68,23 @@ seasons:
     title: Collect for Lent
     text: >-
       Almighty and everlasting God, who hatest nothing that Thou hast made
-      and dost forgive the sins of all them that are penitent, create and
+      and dost forgive the sins of all those who are penitent, create and
       make in us new and contrite hearts, that we, worthily lamenting our
       sins and acknowledging our wretchedness, may obtain of Thee, the God of
-      all mercy, perfect remission and forgiveness; through Jesus Christ, our
-      Lord.
+      all mercy, perfect remission and forgiveness; through Jesus Christ, Thy
+      Son, our Lord, who liveth and reigneth with Thee and the Holy Ghost,
+      ever one God, world without end.
 
   holy_week:
     title: Collect for Holy Week
     text: >-
-      Almighty and everlasting God, who hast sent Thy Son, our Savior Jesus
+      Almighty and everlasting God, who hast sent Thy Son, our Saviour Jesus
       Christ, to take upon Him our flesh and to suffer death upon the cross
       that all mankind should follow the example of His great humility,
       mercifully grant that we may both follow the example of His patience
       and also be made partakers of His resurrection; through the same Jesus
-      Christ, our Lord.
+      Christ, Thy Son, our Lord, who liveth and reigneth with Thee and the
+      Holy Ghost, ever one God, world without end.
 
   easter:
     title: Collect for Eastertide
@@ -71,15 +93,15 @@ seasons:
       overcome death and opened unto us the gate of everlasting life, we
       humbly beseech Thee that, as Thou dost put into our minds good desires,
       so by Thy continual help we may bring the same to good effect; through
-      the same Jesus Christ, our Lord, who liveth and reigneth with Thee and
+      Jesus Christ, Thy Son, our Lord, who liveth and reigneth with Thee and
       the Holy Ghost, ever one God, world without end.
 
   ascension:
     title: Collect for Ascensiontide
     text: >-
-      Grant, we beseech Thee, almighty God, that like as we do believe Thine
+      Grant, we beseech Thee, almighty God, that like as we do believe Thy
       only-begotten Son, our Lord Jesus Christ, to have ascended into the
-      heavens, so we may also in heart and mind thither ascend and with Him
+      heavens, so may we also in heart and mind thither ascend and with Him
       continually dwell; who liveth and reigneth with Thee and the Holy
       Ghost, ever one God, world without end.
 
@@ -90,7 +112,7 @@ seasons:
       them the light of Thy Holy Spirit, grant us by the same Spirit to have
       a right judgment in all things and evermore to rejoice in His holy
       comfort; through Jesus Christ, Thy Son, our Lord, who liveth and
-      reigneth with Thee and the same Spirit, ever one God, world without
+      reigneth with Thee and the Holy Ghost, ever one God, world without
       end.
 
   trinity:
