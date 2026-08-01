@@ -189,3 +189,83 @@ where the OCR is unusable, so pass A is a cost question, not a feasibility one.
 - Steps 3-6 of the plan above (churchyear proper-day resolution, psalter,
   lectionary.py rewrite, deleting the LSB file) are untouched.
 
+
+---
+
+## OCR breakthrough (2026-08-01): tesseract + Fraktur at full resolution
+
+**The blackletter headings are recoverable.** This removes the main obstacle
+to pass A. Archive.org's own OCR was generic English run on blackletter, which
+is why every festival heading came out as mush.
+
+### The recipe
+
+Fetch **full resolution** — drop the `_medium` suffix. It is 2155x3201 versus
+539x801, roughly 4x linear:
+
+    https://archive.org/download/commonserviceboo00phil/page/n<N>.jpg
+
+Then OCR with the Fraktur model *alongside* English:
+
+    tesseract page.jpg out -l eng+frk --psm 1
+
+`eng+frk` is the setting that matters. Measured against a known heading
+("The Second Christmas Day", printed p.92):
+
+| model | result |
+|---|---|
+| `-l eng` | "The Second Christmas **Dap**." |
+| `-l frk` | correct heading, but roman body text degrades |
+| **`-l eng+frk`** | **correct heading and clean body text** |
+
+Sample gain on the sanctorale:
+
+| archive.org OCR | tesseract eng+frk |
+|---|---|
+| `g t eter anb g t aul` | St. Peter and St. Paul |
+| `t f iltp anb t fames gpostle May` | St. Philip and St. James, Apostles. May 1. |
+| `he Jlatibitp of g t SToftn tfjc ba` | The Nativity of St. John, the Baptist. June 24. |
+| `GTfie Jfegttual of tfjc Reformation` | The Festival of the Reformation. October 31. |
+
+Kraken was considered and is unnecessary — tesseract 5.3.4 with `frk` clears
+the bar.
+
+### Still to fix: two-column layout
+
+`--psm 1` on a full page mixes the two columns and pulls the running header
+into the body, producing artefacts like "St. Peter and St. Paul St. Mark,
+Evangelist" and citations truncated at the column break (`Ephesians 2: 19722`,
+`Acts 12:`). Crop the columns first:
+
+    convert page.jpg -crop 50%x100% +repage col_%d.jpg
+    tesseract col_0.jpg - -l eng+frk --psm 4
+
+### Digit errors persist — validation stays mandatory
+
+OCR still garbles numerals (`Ephesians 2: 19722` for 2:19-22), and those land
+in *citations*, where a wrong digit is invisible. **Always** re-validate every
+citation against the local KJV by incipit. That check has now caught five real
+errors and is independent of OCR quality.
+
+## Sanctorale: partial (2026-08-01)
+
+`sanctorale_ocr_raw.txt` holds the raw OCR of printed pages ~154-159. Sixteen
+festivals now have a confident name, date and at least one citation:
+
+    St. Thomas (Dec 21), St. John Apostle & Evangelist (Dec 27),
+    The Presentation (Feb 2), St. Matthias (Feb 24), The Annunciation (Mar 25),
+    St. Mark (Apr 25), SS. Philip and James (May 1),
+    The Nativity of St. John the Baptist (Jun 24), SS. Peter and Paul (Jun 29),
+    The Visitation (Jul 2), St. James the Elder (Jul 25), St. Matthew (Sep 21),
+    St. Michael and All Angels (Sep 29), St. Luke (Oct 18),
+    SS. Simon and Jude (Oct 28), The Festival of the Reformation (Oct 31)
+
+Still missing or incomplete: **St. Andrew (Nov 30), St. Stephen (Dec 26),
+Holy Innocents (Dec 28), The Conversion of St. Paul (Jan 25), All Saints
+(Nov 1), Harvest, the Day of Humiliation and Prayer, and a general
+Thanksgiving** — plus the Epistles that fell in the column gutter for the
+Presentation, Annunciation, Nativity of St. John, St. Michael, and the
+Reformation. Redo those pages with column cropping, then validate every
+citation against the KJV before adding any of it to `temporale.yaml`
+(or a sibling `sanctorale.yaml`).
+
