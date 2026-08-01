@@ -194,10 +194,14 @@ sections:
       - {speaker: congregation, text: "Amen."}
     pause_after: 2.0
 
-  # !! VERIFY: "from sin and every evil" — a quick (non-raw-verified) check
-  # against a Book of Concord source suggested "from sin and all evil, and
-  # I pray Thee to keep me" instead of "that Thou wouldst keep me". Found
-  # via a paraphrasing fetch, not confirmed against raw source text.
+  # VERIFIED: checked word for word against the English column of Concordia
+  # Triglotta (Concordia Publishing House, 1921), Small Catechism Appendix I
+  # ("How the Head of the Family Should Teach His Household to Bless
+  # Themselves Morning and Evening"), archive.org `concordiatriglot00unse`,
+  # unrestricted scan, pre-1930 US publication. The earlier flag was right:
+  # corrected to "I pray Thee to keep me" (was "that Thou wouldst keep me")
+  # and "from sin and all evil" (was "every evil"); also "Heavenly Father"
+  # and "Wicked Foe" capitalized as in the source.
   - id: luthers_morning_prayer
     title: "Luther's Morning Prayer"
     lines:
@@ -207,12 +211,12 @@ sections:
           Luther.
       - speaker: all
         text: >-
-          I thank Thee, my heavenly Father, through Jesus Christ, Thy dear
+          I thank Thee, my Heavenly Father, through Jesus Christ, Thy dear
           Son, that Thou hast kept me this night from all harm and danger;
-          and I pray Thee that Thou wouldst keep me this day also from sin
-          and every evil, that all my doings and life may please Thee. For
+          and I pray Thee to keep me this day also from sin and all evil,
+          that all my doings and life may please Thee. For
           into Thy hands I commend myself, my body and soul, and all things.
-          Let Thy holy angel be with me, that the wicked Foe may have no
+          Let Thy holy angel be with me, that the Wicked Foe may have no
           power over me. Amen.
     pause_after: 2.0
 

@@ -18,7 +18,8 @@ of every piece of content — summary:
 | Liturgy (Matins, Vespers) | 1912 Evangelical Lutheran Hymn-Book + 1917/18 Common Service Book (verified PD predecessors of TLH 1941, which was not directly consulted) | mostly verified, a few items flagged `!! VERIFY` |
 | Compline | ancient office components; no PD Lutheran predecessor office found. Confession verified from the 1881 Missouri Synod Church Liturgy | partly verified — versicle, collects, benediction still flagged; see SOURCES.md |
 | Scripture | King James Version, local index built from Project Gutenberg eBook #10 (bible-api.com kept only as network fallback) | verified |
-| Catechism core (commandments, Creed, sacraments) | 1921 Triglot Concordia translation tradition | unverified — transcribed from memory, not yet proofread |
+| Catechism core (commandments, Creed, sacraments) | Concordia Triglotta (CPH, 1921), English column — archive.org `concordiatriglot00unse` | verified word-for-word; 6 of 16 portions corrected |
+| Catechism "Christian Questions" (8 portions) | none — not in the Triglotta; present wording matches the modern CPH translation | 🚨 **copyright risk — do not publish; see SOURCES.md** |
 | Catechism Table of Duties / Words of Institution | resolved live from the local KJV, not hand-transcribed | verified |
 | Collects | historic Common Service texts | unverified — transcribed from memory, not yet proofread |
 

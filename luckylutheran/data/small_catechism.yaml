@@ -1,23 +1,53 @@
 # Portions of Luther's Small Catechism for the daily devotion slot, rotated
-# by day of year. English text follows the public-domain 1921 Triglot
-# Concordia translation tradition.
+# by day of year.
 #
-# !! VERIFY: transcribed from memory — proofread against the Triglot
-# Concordia (1921) before publishing. Do NOT swap in the 1986/1991 CPH
-# translation ("You shall...") — that one is copyrighted.
+# VERIFIED (the 16 chief-part portions: all Ten Commandments, their Close,
+# the three Creed articles, Baptism, and the Sacrament of the Altar):
+# checked word for word against the English column of Concordia Triglotta
+# (Concordia Publishing House, St. Louis, 1921), pp. 539-557, archive.org
+# item `concordiatriglot00unse`, unrestricted scan. Pre-1930 US
+# publication, so public domain. Ten of the sixteen were already correct;
+# six carried wording that had drifted toward the familiar TLH (1943)
+# English rather than the Triglotta's, and were corrected to the source:
+#   cmdt 4  "serve, obey, and hold them" (was "serve and obey them, and")
+#   cmdt 9  "craftily seek to get" (was "to gain")
+#   cmdt 10 "anything that is his" (was "that is thy neighbor's");
+#           "man-servant"/"maid-servant" hyphenated as in the source
+#   close   "not act contrary to these commandments" (was "to them")
+#   creed 1 substantially reworded — "limbs" (was "members"), "in addition
+#           thereto" (was "also"), "house and homestead" (was "house and
+#           home"), "provides me richly and daily", "protects me from all
+#           danger, and guards me and preserves me from all evil", "out of
+#           pure, fatherly", "for all which I owe it to Him to thank,
+#           praise, serve, and obey Him"
+#   creed 2 "in order that I may be His own"
+#   creed 3 "one holy Christian Church" (was "the holy"); "He forgives
+#           daily and richly", "at the last day will raise up", "will give
+#           to me and to all believers... everlasting life" (was "eternal")
+# Square-bracketed variants printed in the Triglotta are omitted here
+# except in commandment 8, where the bracketed "[think and]" was already
+# present and is retained.
+#
+# Do NOT swap in the 1986/1991 CPH translation ("You shall...") — that one
+# is copyrighted.
 #
 # Table of Duties entries carry a `reference` (a Bible citation) instead of
 # hand-transcribed `text`; catechism.py resolves those to real KJV text via
 # scripture.get_passage — the same fetch-and-cache path the daily lectionary
 # readings use — so no scripture text is hand-quoted from memory here.
 #
-# Covers: all Ten Commandments + their Close, the Creed, one article each on
-# Baptism and the Sacrament of the Altar, the full Table of Duties, and the
-# Christian Questions with Their Answers (39 portions — no repeats across a
-# 30-day batch). STILL MISSING: the Lord's Prayer and Confession/Office of
-# the Keys chief parts, and the remaining catechetical questions under
-# Baptism and the Sacrament of the Altar (benefits, "how can water/eating
-# do such things", etc.) — a good next batch.
+# Covers: all Ten Commandments + their Close, the Creed, the whole of the
+# Lord's Prayer (introduction, seven petitions, conclusion), one article
+# each on Baptism and the Sacrament of the Altar, the full Table of Duties,
+# and the Christian Questions with Their Answers — 48 portions, comfortably
+# more than the 30 needed for a batch with no repeats. catechism.py indexes
+# by day-of-year modulo len(portions), so the count is free to grow.
+#
+# STILL MISSING: the Confession / Office of the Keys chief part, and the
+# remaining catechetical questions under Baptism and the Sacrament of the
+# Altar (benefits, "how can water/eating do such things", etc.). Both are
+# available in the same verified Triglotta English column — a good next
+# batch.
 
 portions:
   - id: commandment-1
@@ -53,8 +83,8 @@ portions:
       thee and thou mayest live long upon the earth.
     meaning: >-
       What does this mean? We should fear and love God that we may not
-      despise nor anger our parents and masters, but give them honor, serve
-      and obey them, and hold them in love and esteem.
+      despise nor anger our parents and masters, but give them honor, serve,
+      obey, and hold them in love and esteem.
 
   - id: commandment-5
     title: "The Fifth Commandment"
@@ -100,15 +130,15 @@ portions:
       Thou shalt not covet thy neighbor's house.
     meaning: >-
       What does this mean? We should fear and love God that we may not
-      craftily seek to gain our neighbor's inheritance or house, and obtain
+      craftily seek to get our neighbor's inheritance or house, and obtain
       it by a show of right, but help and be of service to him in keeping
       it.
 
   - id: commandment-10
     title: "The Tenth Commandment"
     text: >-
-      Thou shalt not covet thy neighbor's wife, nor his manservant, nor his
-      maidservant, nor his cattle, nor anything that is thy neighbor's.
+      Thou shalt not covet thy neighbor's wife, nor his man-servant, nor his
+      maid-servant, nor his cattle, nor anything that is his.
     meaning: >-
       What does this mean? We should fear and love God that we may not
       estrange, force, or entice away our neighbor's wife, servants, or
@@ -125,9 +155,9 @@ portions:
     meaning: >-
       What does this mean? God threatens to punish all that transgress
       these commandments. Therefore we should dread His wrath and not act
-      contrary to them. But He promises grace and every blessing to all
-      that keep these commandments. Therefore we should also love and trust
-      in Him and gladly do according to His commandments.
+      contrary to these commandments. But He promises grace and every
+      blessing to all that keep these commandments. Therefore we should also
+      love and trust in Him, and gladly do according to His commandments.
 
   - id: creed-1
     title: "The First Article of the Creed: Of Creation"
@@ -135,15 +165,15 @@ portions:
       I believe in God the Father Almighty, Maker of heaven and earth.
     meaning: >-
       What does this mean? I believe that God has made me and all creatures;
-      that He has given me my body and soul, eyes, ears, and all my members,
-      my reason and all my senses, and still preserves them; also clothing
-      and shoes, meat and drink, house and home, wife and children, fields,
-      cattle, and all my goods; that He richly and daily provides me with all
-      that I need to support this body and life; that He defends me against
-      all danger and guards and protects me from all evil; and all this
-      purely out of fatherly, divine goodness and mercy, without any merit or
-      worthiness in me; for all which it is my duty to thank and praise, to
-      serve and obey Him. This is most certainly true.
+      that He has given me my body and soul, eyes, ears, and all my limbs,
+      my reason, and all my senses, and still preserves them; in addition
+      thereto, clothing and shoes, meat and drink, house and homestead, wife
+      and children, fields, cattle, and all my goods; that He provides me
+      richly and daily with all that I need to support this body and life,
+      protects me from all danger, and guards me and preserves me from all
+      evil; and all this out of pure, fatherly, divine goodness and mercy,
+      without any merit or worthiness in me; for all which I owe it to Him
+      to thank, praise, serve, and obey Him. This is most certainly true.
 
   - id: creed-2
     title: "The Second Article of the Creed: Of Redemption"
@@ -160,15 +190,15 @@ portions:
       is my Lord, who has redeemed me, a lost and condemned creature,
       purchased and won me from all sins, from death, and from the power of
       the devil, not with gold or silver, but with His holy, precious blood
-      and with His innocent suffering and death, that I may be His own and
-      live under Him in His kingdom and serve Him in everlasting
+      and with His innocent suffering and death, in order that I may be His
+      own, and live under Him in His kingdom, and serve Him in everlasting
       righteousness, innocence, and blessedness, even as He is risen from the
       dead, lives and reigns to all eternity. This is most certainly true.
 
   - id: creed-3
     title: "The Third Article of the Creed: Of Sanctification"
     text: >-
-      I believe in the Holy Ghost; the holy Christian Church, the communion
+      I believe in the Holy Ghost; one holy Christian Church, the communion
       of saints; the forgiveness of sins; the resurrection of the body; and
       the life everlasting. Amen.
     meaning: >-
@@ -178,9 +208,126 @@ portions:
       sanctified and kept me in the true faith; even as He calls, gathers,
       enlightens, and sanctifies the whole Christian Church on earth and
       keeps it with Jesus Christ in the one true faith; in which Christian
-      Church He daily and richly forgives all sins to me and all believers,
-      and will at the Last Day raise up me and all the dead, and give unto me
-      and all believers in Christ eternal life. This is most certainly true.
+      Church He forgives daily and richly all sins to me and all believers,
+      and at the last day will raise up me and all the dead, and will give
+      to me and to all believers in Christ everlasting life. This is most
+      certainly true.
+
+  # --- The Third Chief Part: The Lord's Prayer -------------------------
+  # VERIFIED: all nine portions below transcribed word for word from the
+  # English column of Concordia Triglotta (CPH, 1921), "III. The Lord's
+  # Prayer", pp. 545-549 — the same verified public-domain source as the
+  # Commandments and Creed above. Square-bracketed variants printed in the
+  # source are omitted. Placed here, between the Creed and Baptism, to
+  # follow the catechism's own order of the chief parts.
+
+  - id: lords-prayer-intro
+    title: "The Lord's Prayer: The Introduction"
+    text: >-
+      Our Father who art in heaven.
+    meaning: >-
+      What does this mean? God would thereby tenderly urge us to believe
+      that He is our true Father, and that we are His true children, so that
+      we may ask Him confidently, with all assurance, as dear children ask
+      their dear father.
+
+  - id: lords-prayer-1
+    title: "The Lord's Prayer: The First Petition"
+    text: >-
+      Hallowed be Thy name.
+    meaning: >-
+      What does this mean? God's name is indeed holy in itself; but we pray
+      in this petition that it may become holy among us also. How is this
+      done? When the Word of God is taught in its truth and purity, and we
+      as the children of God also lead holy lives in accordance with it. To
+      this end help us, dear Father in heaven. But he that teaches and lives
+      otherwise than God's Word teaches profanes the name of God among us.
+      From this preserve us, Heavenly Father.
+
+  - id: lords-prayer-2
+    title: "The Lord's Prayer: The Second Petition"
+    text: >-
+      Thy kingdom come.
+    meaning: >-
+      What does this mean? The kingdom of God comes indeed without our
+      prayer, of itself; but we pray in this petition that it may come unto
+      us also. How is this done? When our heavenly Father gives us His Holy
+      Spirit, so that by His grace we believe His holy Word and lead a godly
+      life here in time and yonder in eternity.
+
+  - id: lords-prayer-3
+    title: "The Lord's Prayer: The Third Petition"
+    text: >-
+      Thy will be done on earth as it is in heaven.
+    meaning: >-
+      What does this mean? The good and gracious will of God is done indeed
+      without our prayer; but we pray in this petition that it may be done
+      among us also. How is this done? When God breaks and hinders every
+      evil counsel and will which would not let us hallow the name of God
+      nor let His kingdom come, such as the will of the devil, the world,
+      and our flesh; but strengthens and keeps us steadfast in His Word and
+      in faith unto our end. This is His gracious and good will.
+
+  - id: lords-prayer-4
+    title: "The Lord's Prayer: The Fourth Petition"
+    text: >-
+      Give us this day our daily bread.
+    meaning: >-
+      What does this mean? God gives daily bread, even without our prayer,
+      to all wicked men; but we pray in this petition that He would lead us
+      to know it, and to receive our daily bread with thanksgiving. What is
+      meant by daily bread? Everything that belongs to the support and wants
+      of the body, such as meat, drink, clothing, shoes, house, homestead,
+      field, cattle, money, goods, a pious spouse, pious children, pious
+      servants, pious and faithful magistrates, good government, good
+      weather, peace, health, discipline, honor, good friends, faithful
+      neighbors, and the like.
+
+  - id: lords-prayer-5
+    title: "The Lord's Prayer: The Fifth Petition"
+    text: >-
+      And forgive us our trespasses, as we forgive those who trespass
+      against us.
+    meaning: >-
+      What does this mean? We pray in this petition that our Father in
+      heaven would not look upon our sins, nor deny such petitions on
+      account of them; for we are worthy of none of the things for which we
+      pray, neither have we deserved them; but that He would grant them all
+      to us by grace; for we daily sin much, and indeed deserve nothing but
+      punishment. So will we verily, on our part, also heartily forgive and
+      also readily do good to those who sin against us.
+
+  - id: lords-prayer-6
+    title: "The Lord's Prayer: The Sixth Petition"
+    text: >-
+      And lead us not into temptation.
+    meaning: >-
+      What does this mean? God, indeed, tempts no one; but we pray in this
+      petition that God would guard and keep us, so that the devil, the
+      world, and our flesh may not deceive us, nor seduce us into misbelief,
+      despair, and other great shame and vice; and though we be assailed by
+      them, that still we may finally overcome and gain the victory.
+
+  - id: lords-prayer-7
+    title: "The Lord's Prayer: The Seventh Petition"
+    text: >-
+      But deliver us from evil.
+    meaning: >-
+      What does this mean? We pray in this petition, as in a summary, that
+      our Father in heaven would deliver us from all manner of evil, of body
+      and soul, property and honor, and at last, when our last hour shall
+      come, grant us a blessed end, and graciously take us from this vale of
+      tears to Himself into heaven.
+
+  - id: lords-prayer-conclusion
+    title: "The Lord's Prayer: The Conclusion"
+    text: >-
+      Amen.
+    meaning: >-
+      What does this mean? That I should be certain that these petitions are
+      acceptable to our Father in heaven and heard; for He Himself has
+      commanded us so to pray, and has promised that He will hear us. Amen,
+      Amen; that is, Yea, yea, it shall be so.
 
   - id: baptism-1
     title: "The Sacrament of Holy Baptism: The Nature of Baptism"
@@ -287,6 +434,34 @@ portions:
   # The Words of Institution portion is resolved from scripture (see
   # `reference` there), not hand-transcribed, for the same reason as the
   # Table of Duties above.
+  #
+  # !!!! COPYRIGHT RISK — DO NOT PUBLISH THESE EIGHT PORTIONS AS THEY STAND.
+  #
+  # These could NOT be verified, and the reason matters. The Concordia
+  # Triglotta does NOT contain the Christian Questions at all — it discusses
+  # them in its historical introduction (p. 88, noting they first appeared
+  # in 1549 and were attributed to Luther in an edition of 1551) but prints
+  # no text: its Small Catechism runs straight from the Sacrament of the
+  # Altar into Appendix I (the Morning and Evening Blessings). So the file
+  # header's old claim that everything here follows the Triglotta was simply
+  # wrong for this section.
+  #
+  # Worse, the wording below is in the modern second person ("Do you believe
+  # that you are a sinner?"), which is the register of the CURRENT CPH
+  # translation — the very thing this project refuses to use. Any pre-1930
+  # English printing would read "Dost thou believe...", matching the Thou
+  # register used everywhere else in this repo. That mismatch is the tell:
+  # this text was recalled from a modern copyrighted source, not a PD one.
+  #
+  # Searched without success: the Triglotta, the 1881 Missouri Synod Church
+  # Liturgy, the 1912 Evangelical Lutheran Hymn-Book (and its 1905/1909
+  # printings), Crull's 1879/1884 hymn books, and five pre-1930 English
+  # Small Catechism editions on archive.org.
+  #
+  # Until a pre-1930 English printing is found, either drop these eight from
+  # the rotation or retranslate them into the Thou register from the German,
+  # which the Triglotta does print. Everything above this line is verified
+  # and safe to publish; this block is not.
 
   - id: christian-questions-1
     title: "Christian Questions: Of Sin"
