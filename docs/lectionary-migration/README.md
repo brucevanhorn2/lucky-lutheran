@@ -138,3 +138,54 @@ Current tallies: **117 verified, 4 corrected, 42 unverified.**
   Extract from the scan and validate against the local KJV, every time.
 - Do not trust a phrase-grep miss on an archive.org OCR file until the text
   has been whitespace-flattened (see above).
+
+---
+
+## Pass B result (2026-08-01): temporale complete
+
+`temporale.yaml` — **71 propers, Advent 1 through Trinity 27**, each with its
+historic Epistle and Gospel. All 142 citations resolve against the local KJV.
+
+Built by mapping the extracted readings (which sit in the book in liturgical
+order) onto the known historic sequence, then confirming the alignment against
+page scans at three points spread across the span:
+
+| page | shows | confirms |
+|---|---|---|
+| 117 | Gospel Luke 24:13-35, then "Quasi Modo Geniti. The First Sunday after Easter" | Easter Monday / Easter 1 boundary |
+| 126 | "The Festival of the Holy Trinity" — Epistle Rom 11:33-36, Gospel John 3:1-15 | Trinity Sunday |
+| 150 | Epistle 1 Thess 4:13-18, Gospel Matt 24:15-28, then "The Twenty-sixth Sunday after Trinity" | Trinity 25 |
+
+No drift at the start, middle or end, so the intervening alignment holds.
+
+Three Epistles that the automated pass missed were recovered by hand and match
+the expected historic readings exactly: Trinity 7 `Romans 6:19-23` (printed
+"EPISTLE" with no full stop), Trinity 25 and Trinity 27 (printed
+"lThessalonians", OCR `l` for `1`).
+
+**Page images are legible — including Fraktur.** This was the unlock. Fetch:
+
+    https://archive.org/download/commonserviceboo00phil/page/n<N>_medium.jpg
+
+where N is roughly the printed page + 3 in the Propers. The scans read cleanly
+where the OCR is unusable, so pass A is a cost question, not a feasibility one.
+
+### Still outstanding
+
+- **The sanctorale (festivals) is NOT done.** Readings 139-162 of
+  `propers_full.json` are the saints' days and festivals — St. Andrew,
+  St. Thomas, St. Stephen, St. John, Holy Innocents, Conversion of St. Paul,
+  Presentation, St. Matthias, Annunciation, St. Mark, SS. Philip and James,
+  Nativity of St. John the Baptist, SS. Peter and Paul, St. James the Elder,
+  St. Bartholomew, St. Matthew, St. Michael and All Angels, St. Luke,
+  SS. Simon and Jude, Reformation, All Saints, Harvest, Day of Humiliation and
+  Prayer, and a general Thanksgiving. Their extraction is unreliable because
+  the Fraktur headings bled into the incipit capture, so both citations *and*
+  day assignment need reading off the page images. This is the first job for
+  pass A.
+- **The three Christmas services** (`christmas-day`, `christmas-second`,
+  `christmas-third`) are ordered as printed but their exact titles were not
+  read off the page. Worth confirming in pass A.
+- Steps 3-6 of the plan above (churchyear proper-day resolution, psalter,
+  lectionary.py rewrite, deleting the LSB file) are untouched.
+
