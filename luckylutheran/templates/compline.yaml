@@ -83,8 +83,12 @@ sections:
   # !! VERIFY: the liturgist's bidding and the absolution are NOT from the
   # 1881 book. Its bidding is sermon-specific ("Having heard the word of
   # God...") and so does not fit Compline, where confession precedes the
-  # reading; its absolution is the declarative ministerial form ("I forgive
-  # you all your sins"), which is inappropriate for a recorded voice. The
+  # reading; its absolution is the declarative ministerial form ("I, by
+  # virtue of my office, as a called and ordained servant of the Word...
+  # I forgive you all your sins"), which presupposes a call from the church
+  # (AC XIV) and so is doubly unavailable here — this is a household office
+  # led by a layman, and it is besides a recording. See the README's
+  # household-office section for the principle. The
   # precatory form kept below is the ancient Compline absolution (the
   # ~Indulgentiam~), but no pre-1930 English scan of it has been located.
   - id: confession

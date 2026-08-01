@@ -6,6 +6,53 @@ or **Compline** in the evening — after the historic Lutheran liturgy, with the
 day's psalm, scripture reading, a rotating portion of Luther's Small
 Catechism, and the collect of the day resolved from the church calendar.
 
+## What this is: a household office, not a service
+
+This is daily prayer as a layman leads it in his own house — a father with
+his family — not a recording of a church service and not a substitute for
+one. That isn't a compromise forced by circumstance. It is what the Small
+Catechism was written to enable, and the source text says so on every
+chief part:
+
+> **I. THE TEN COMMANDMENTS, as the Head of the Family Should Teach Them in
+> a Simple Way to His Household.**
+
+Not *as the pastor should teach*. The Commandments, the Creed, the Lord's
+Prayer, Baptism, the Sacrament — every one carries that rubric, and the
+Daily Prayers appendix is headed *"How the Head of the Family Should Teach
+His Household to Bless Themselves Morning and Evening."* The modern church
+tends to convene on Sunday; the catechism assumes the office continues at
+home the rest of the week, led by whoever is there to lead it.
+
+**What that changes in the text.** The boundary is Augsburg Confession XIV
+(*rite vocatus*): the preaching office, administering the sacraments, and
+absolving in the stead of Christ require a call from the church. A father
+has a genuine vocation — Luther's three estates make the household a
+divine station — but it is not the *Predigtamt*, and the language marks the
+difference. Concretely:
+
+- **No declarative absolution.** Compline uses the precatory form, *"The
+  almighty and merciful Lord grant us pardon, forgiveness, and remission of
+  all our sins."* The 1881 Missouri Synod liturgy's own absolution — *"I,
+  by virtue of my office, as a called and ordained servant of the Word...
+  I forgive you all your sins"* — was deliberately **not** adopted, though
+  it was right there in a verified public-domain source. A layman cannot
+  say it, and neither can a recording.
+- **The salutation and benediction stay.** *"The Lord be with you / And
+  with thy spirit"* is a dialogue, not a reserved formula, and *"the
+  communion of the Holy Ghost be with you all"* is 2 Corinthians 13:14
+  spoken to four people who are actually in the room. Neither claims the
+  office.
+- **Nothing in the repo claims ordination.** Audited: no "called and
+  ordained," no "by virtue of my office," no "in the stead and by the
+  command," no "I forgive you."
+
+**Why everything sounds old.** The Thou register began as a consequence of
+using only public-domain sources — the pre-1930 books are what is free to
+publish. It stayed because it turned out to be the right voice for this.
+It is now a deliberate choice, not a workaround, and it is permanent. See
+[SOURCES.md](SOURCES.md) for where every line comes from.
+
 ## Copyright strategy (this is a public podcast — it matters)
 
 Everything is built from **public-domain sources** so the podcast can be
