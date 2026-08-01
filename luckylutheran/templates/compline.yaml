@@ -11,12 +11,19 @@
 # commonly rendered into English since the 19th century. Where a piece is
 # shared with Matins/Vespers (Nunc Dimittis, Lord's Prayer, Kyrie, "Our
 # help is in the name of the Lord") it carries the same verification as
-# those offices — see their headers. The confession is now verified against
-# a pre-1930 source of its own (1881; see its note below). The remaining
-# Compline-specific pieces (opening versicle, the two closing collects, and
-# the benediction) could NOT be matched against a specific pre-1930 raw
-# source text; see inline !! VERIFY notes below. Compline is still the
-# least-verified office, but no longer wholly unsourced.
+# those offices — see their headers.
+#
+# Two Compline-specific sources have since been found and are cited inline:
+#   - the confession, from the 1881 Missouri Synod Church Liturgy;
+#   - the two collects and the closing benediction, from the Order for
+#     Compline in the 1928 English Deposited Book (a complete Compline
+#     office in a public-domain book, which no Lutheran service book of the
+#     period provides).
+# Still flagged !! VERIFY, all minor: the opening versicle (a conflation of
+# two PD texts rather than a quotation of either), the Nunc Dimittis
+# antiphon's opening clause, the absolution, and the bidding before the
+# confession. Compline remains the least-verified office, but its substance
+# is now sourced.
 
 office: compline
 title: Compline
@@ -33,11 +40,17 @@ sections:
           another, and our whole life to Christ our God.
     pause_after: 2.0
 
-  # !! VERIFY: "grant us a quiet night and peace at the last" is the
-  # traditional English rendering of the ancient Compline versicle
-  # ("Noctem quietam... concedat nobis Dominus omnipotens"), widely printed
-  # in 19th-century Anglo-Catholic devotional manuals, but no specific
-  # pre-1930 scan of this exact wording was located to cite directly.
+  # !! VERIFY: this line is a conflation of two separate texts, both of
+  # which ARE public-domain-attested, but which no single source joins.
+  # The 1928 Deposited Book's Compline opens: "The Lord Almighty grant us a
+  # quiet night and A PERFECT END. Amen." The phrase "peace at the last"
+  # occurs elsewhere in that same book, in Newman's evening prayer ("O Lord,
+  # support us all the day long of this troublous life... grant us safe
+  # lodging, a holy rest, and peace at the last"). So there is no copyright
+  # concern here — both halves are PD — but as printed this quotes nothing
+  # verbatim. To make it citable, change "peace at the last" to "a perfect
+  # end" and it matches the 1928 Compline exactly. Left as-is pending a
+  # decision, since this is a wording preference, not a rights problem.
   - id: opening
     title: Opening
     lines:
@@ -124,6 +137,16 @@ sections:
       - {speaker: congregation, text: "Hide me under the shadow of Thy wings."}
     pause_after: 1.5
 
+  # The canticle itself is verified (shared with Vespers — see that file).
+  # !! VERIFY: the surrounding antiphon is not. The 1928 Deposited Book's
+  # Compline prints it as "Preserve us, O Lord, while waking, and guard us
+  # while sleeping, that awake we may watch with Christ, and asleep we may
+  # rest in peace" — the second half matches ours word for word, but its
+  # opening is "Preserve us... while waking", not "Guide us waking". The
+  # "Guide us waking" recension is the one in common modern use; no
+  # pre-1930 printing of it has been located. Switching to the 1928 opening
+  # would make the whole antiphon citable from the same source as the
+  # collects below.
   - id: nunc_dimittis
     title: "The Nunc Dimittis — the Song of Simeon"
     lines:
@@ -170,36 +193,56 @@ sections:
           the glory forever and ever. Amen.
     pause_after: 1.5
 
-  # !! VERIFY: "Visit, we beseech Thee..." and "Be present, O merciful
-  # God..." are the traditional Western Compline collects (translating the
-  # ancient "Visita, quaesumus, Domine" and its companion), reprinted in
-  # many 19th-century PD devotional manuals, but no specific pre-1930 scan
-  # of this exact English wording was located to cite directly in this
-  # pass — not found in either the Common Service Book or the Church Book,
-  # since neither contains a Compline office.
+  # VERIFIED: both collects are transcribed word-for-word from the Order
+  # for Compline in "The Book of Common Prayer with the Additions and
+  # Deviations Proposed in 1928" (the English "Deposited Book"),
+  # archive.org item `bookofcommonpray00chur_20`, unrestricted scan
+  # released under CC0. Published 1928, so public domain in the US on the
+  # pre-1930 rule; the CC0 dedication on the scan removes any residual UK
+  # Crown-copyright question, the same reasoning already applied to the KJV
+  # (see SOURCES.md). This is the first Compline *office* located in any
+  # public-domain book — the Lutheran service books checked (1868/1893
+  # Church Book, 1917/18 Common Service Book, 1881 Missouri Synod Church
+  # Liturgy) contain no Compline at all.
+  #
+  # Pronoun capitalization (Thee/Thy) is normalized to match the rest of
+  # this file; the source prints them lowercase. No words changed.
+  #
+  # Corrections this makes to the earlier from-memory text:
+  #   collect 1: "this place" (was "this habitation"), "drive from it all
+  #     the snares" (was "drive far from it all snares"), "may Thy blessing"
+  #     (was "let Thy blessing").
+  #   collect 2: restored "silent" hours; "this fleeting world" (was "of
+  #     life"); "repose upon" (was "rest in").
+  # If "habitation" is preferred over "place", that variant is itself PD-
+  # attested — St Dominic's Hymn-Book (1885), Office of Compline,
+  # archive.org `StDominicsHymnBook` — but its surrounding clauses differ
+  # ("to keep us in peace", "may thy blessing be always upon us"), so
+  # taking the word alone would rebuild the hybrid this edit removed.
   - id: collects
     title: Prayers
     lines:
       - {speaker: liturgist, text: "Let us pray."}
       - speaker: liturgist
         text: >-
-          Visit, we beseech Thee, O Lord, this habitation and drive far from
-          it all snares of the enemy. Let Thy holy angels dwell herein to
-          preserve us in peace, and let Thy blessing be upon us evermore;
-          through Jesus Christ, our Lord.
+          Visit, we beseech Thee, O Lord, this place, and drive from it all
+          the snares of the enemy; let Thy holy angels dwell herein to
+          preserve us in peace; and may Thy blessing be upon us evermore;
+          through Jesus Christ our Lord.
       - {speaker: congregation, text: "Amen."}
       - speaker: liturgist
         text: >-
-          Be present, O merciful God, and protect us through the hours of
-          this night, so that we who are wearied by the changes and chances
-          of life may rest in Thy eternal changelessness; through Jesus
-          Christ, our Lord.
+          Be present, O merciful God, and protect us through the silent
+          hours of this night, so that we who are wearied by the changes and
+          chances of this fleeting world, may repose upon Thy eternal
+          changelessness; through Jesus Christ our Lord.
       - {speaker: congregation, text: "Amen."}
     pause_after: 2.0
 
-  # !! VERIFY: this closing benediction is the traditional Compline
-  # blessing form; not matched against a specific pre-1930 raw source in
-  # this pass (see header note).
+  # VERIFIED: exact match, word for word, with the closing blessing of the
+  # 1928 Deposited Book's Order for Compline ("The Almighty and merciful
+  # Lord, the Father, the Son, and the Holy Ghost, bless and preserve us.
+  # Amen.") — same source as the collects above. No change needed.
   - id: benediction
     title: Benediction
     lines:
