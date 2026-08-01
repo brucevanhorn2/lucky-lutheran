@@ -337,3 +337,55 @@ The zip entries map one-to-one onto the archive.org BookReader index:
 `commonserviceboo00phil_jp2/commonserviceboo00phil_%04d.jp2` where `%04d` is
 the same N as `page/n<N>.jpg`. In the Propers, printed page = N - 4.
 
+
+## Table of Lessons extracted (2026-08-01) — `table_of_lessons_raw.json`
+
+**295 day-rows, 294 fully resolvable against the local KJV (99.7%).** Printed
+pages 303-312 = scan pages n308-n316. Morning is New Testament, Evening is Old
+Testament — the reverse of what one might assume.
+
+`extract_lessons.py` is the extractor. Three things it had to solve:
+
+**1. The Days column poisons everything to its right.** Its dotted leaders
+bleed across the table rule and corrupt the Morning book names — "eloaike",
+"iEuke" and "Mlenike" are all *Luke* — and sometimes its digits too
+(`Luke 3:10-11` where the page reads `3:10-14`). Cropping the Days column away
+fixes both. The day is then recovered from row order, since each week block
+runs Monday..Saturday.
+
+**2. The crop point moves page to page.** A fixed fraction works on one page
+and fails on the next. The extractor auto-tunes per page, trying offsets from
+0.24 to 0.38 and keeping whichever yields the most *valid book names* — the
+winning offset ranged 0.30-0.36 and scored 88-100%.
+
+**3. A one-letter OCR error silently dropped a whole page.** Page 314 came
+through as "TA**P**LE OF LESSONS", so a strict `"TABLE OF LESSONS" in text`
+filter skipped it entirely — losing the 11th Sunday after Trinity onward with
+no error and no warning. The filter is now a tolerant regex. **This is the
+failure mode to watch for in any further table work: a page that is silently
+absent looks exactly like a page that had nothing on it.**
+
+### Validation without incipits
+
+This table prints citations and no scripture text, so the incipit check that
+caught five errors in the Propers does not apply. Two checks replace it:
+every citation must resolve in the local KJV, and chapters must not run
+backwards within a book (the table reads each book in course, so a digit slip
+breaks monotonicity). The resolvability check alone caught `2 Peter 4:12-19` —
+2 Peter has only three chapters, so it must be *1 Peter*.
+
+### Caveats before this is wired in
+
+- **13 rows are context-inferred, not OCR-verified.** Where OCR gave an
+  unrecoverable book name inside an obvious run ("Gor 7:1-40" amid a stretch of
+  1 Corinthians), the book was inferred from context and the chapter:verse kept
+  as printed. Each is marked `"inferred"` in the JSON. They resolve, but they
+  have not been read off the page.
+- **One row is still wrong**: p310, 2d Sunday in Lent, Monday evening reads
+  `Deuteronomy 103:1`, which is impossible — Deuteronomy has 34 chapters. The
+  surrounding evening readings are in Exodus, so this needs a visual read.
+- **Week labels are missing on some groups** (`"week": null`) where the label
+  did not OCR. They can be filled by position, since the weeks run in order.
+- The **Table of Proper Psalms** (printed p.312) is **not yet extracted** — it
+  is printed sideways as a landscape table and must be rotated before OCR.
+
