@@ -1,7 +1,24 @@
 # LSB Daily Lectionary — transcribed from the Lutheran Service Book
 # (pew edition, Kindle), Daily Lectionary, pp. 299-304.
 #
-# A lectionary is a list of citations (facts, not copyrightable text).
+# !!!! RIGHTS QUESTION — UNRESOLVED. DO NOT PUBLISH PUBLICLY WITHOUT READING
+# SOURCES.md, "Daily Lectionary". This file was formerly justified by the
+# single line "A lectionary is a list of citations (facts, not copyrightable
+# text)." That is a real argument but an untested one, and it is a much lower
+# bar than the standard applied to every other source in this project. Three
+# things cut against it: Feist protects original SELECTION AND ARRANGEMENT,
+# which is precisely what a lectionary table is; the Revised Common
+# Lectionary's daily readings are licensed as copyrighted property by the
+# Consultation on Common Texts; and CPH grants free-use allowances for the
+# 1986 Small Catechism and the Book of Concord but says nothing about
+# lectionary tables, leaving them under LSB's blanket reservation. The
+# counter-arguments (functional/systematic schemes are unprotectable; much of
+# any lectionary is inherited) are genuine but unresearched.
+#
+# LSB is a current, in-print, commercially sold product. Cheapest resolution
+# is one email: copyrights@cph.org. Public-domain fallbacks if needed: the
+# historic one-year lectionary, or the 1917/18 Common Service Book tables
+# (already a verified source in this repo).
 #
 # Two keying schemes, per the lectionary's own design:
 #   movable:  keyed by days since Ash Wednesday ("ash+N"). Runs from Ash
