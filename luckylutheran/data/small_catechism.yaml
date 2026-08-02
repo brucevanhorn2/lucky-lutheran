@@ -36,19 +36,27 @@
 # scripture.get_passage — the same fetch-and-cache path the daily lectionary
 # readings use — so no scripture text is hand-quoted from memory here.
 #
-# Covers FOUR of the six chief parts complete — the Ten Commandments with
-# their Close, the Creed, the whole Lord's Prayer (introduction, seven
-# petitions, conclusion), and Confession — plus one article each on Baptism
-# and the Sacrament of the Altar, the full Table of Duties, and the Words of
-# Institution. 43 portions, comfortably more than the 30 needed for a batch
-# with no repeats. catechism.py indexes by day-of-year modulo len(portions),
-# so the count is free to grow.
+# ALL SIX CHIEF PARTS ARE NOW COMPLETE, in the catechism's own order:
+#   I.   The Ten Commandments (10 + the Close)
+#   II.  The Creed (3 articles)
+#   III. The Lord's Prayer (introduction, 7 petitions, conclusion)
+#   IV.  Holy Baptism (4: its nature, what it gives, how water does such
+#        great things, what baptizing signifies)
+#   V.   Confession (3 catechetical questions; the Brief Form of Confession
+#        is deliberately omitted — see its note below)
+#   VI.  The Sacrament of the Altar (4: its nature, the benefit, how bodily
+#        eating does such things, who receives worthily)
+# plus the full Table of Duties and the Words of Institution. 49 portions,
+# comfortably more than the 30 a repeat-free batch needs. catechism.py
+# indexes by day-of-year modulo len(portions), so the count is free to grow.
 #
-# STILL MISSING: the remaining catechetical questions under Baptism and the
-# Sacrament of the Altar (their benefits, "how can water do such great
-# things", "how can bodily eating and drinking do such great things", who
-# receives worthily). All are in the same verified Triglotta English column —
-# a good next batch, and pure transcription with no rights question.
+# Scripture quoted inside a chief part (Mark 16:16 under Baptism, Titus 3,
+# Romans 6) is transcribed as the Triglotta prints it rather than resolved
+# from the KJV index, because Luther's proof texts are part of the
+# catechetical text and his wording is occasionally his own — baptism-1's
+# "Go ye into all the world and teach all nations" is his conflation, not
+# Matthew verbatim. Standalone scripture (the Table of Duties, the Words of
+# Institution) still resolves from the KJV via `reference`.
 
 portions:
   - id: commandment-1
@@ -340,6 +348,47 @@ portions:
       of Matthew: Go ye into all the world and teach all nations, baptizing
       them in the name of the Father and of the Son and of the Holy Ghost.
 
+  - id: baptism-2
+    title: "Holy Baptism: What Baptism Gives"
+    text: >-
+      What does Baptism give or profit?
+    meaning: >-
+      It works forgiveness of sins, delivers from death and the devil, and
+      gives eternal salvation to all who believe this, as the words and
+      promises of God declare. Which are such words and promises of God?
+      Christ, our Lord, says in the last chapter of Mark: He that believeth
+      and is baptized shall be saved; but he that believeth not shall be
+      damned.
+
+  - id: baptism-3
+    title: "Holy Baptism: How Water Does Such Great Things"
+    text: >-
+      How can water do such great things?
+    meaning: >-
+      It is not the water indeed that does them, but the word of God which is
+      in and with the water, and faith, which trusts such word of God in the
+      water. For without the word of God the water is simple water and no
+      baptism. But with the word of God it is a baptism, that is, a gracious
+      water of life and a washing of regeneration in the Holy Ghost, as St.
+      Paul says, Titus, chapter three: By the washing of regeneration and
+      renewing of the Holy Ghost, which He shed on us abundantly through
+      Jesus Christ, our Savior, that, being justified by His grace, we should
+      be made heirs according to the hope of eternal life. This is a faithful
+      saying.
+
+  - id: baptism-4
+    title: "Holy Baptism: What Baptizing with Water Signifies"
+    text: >-
+      What does such baptizing with water signify?
+    meaning: >-
+      It signifies that the old Adam in us should, by daily contrition and
+      repentance, be drowned and die with all sins and evil lusts, and,
+      again, a new man daily come forth and arise, who shall live before God
+      in righteousness and purity forever. Where is this written? St. Paul
+      says in Romans, chapter six: We are buried with Christ by Baptism into
+      death, that, like as He was raised up from the dead by the glory of the
+      Father, even so we also should walk in newness of life.
+
   # --- The Fifth Chief Part: Confession -------------------------------
   # VERIFIED: transcribed word for word from the English column of Concordia
   # Triglotta (CPH, 1921), "V. How the Unlearned Should Be Taught to Confess",
@@ -408,6 +457,38 @@ portions:
   # cached path the daily lectionary readings use). `citation` is a short
   # spoken form read aloud before the passage.
 
+  - id: lords-supper-2
+    title: "The Sacrament of the Altar: The Benefit of Eating and Drinking"
+    text: >-
+      What is the benefit of such eating and drinking?
+    meaning: >-
+      That is shown us in these words: Given, and shed for you, for the
+      remission of sins; namely, that in the Sacrament forgiveness of sins,
+      life, and salvation are given us through these words. For where there
+      is forgiveness of sins, there is also life and salvation.
+
+  - id: lords-supper-3
+    title: "The Sacrament of the Altar: How Bodily Eating Does Such Things"
+    text: >-
+      How can bodily eating and drinking do such great things?
+    meaning: >-
+      It is not the eating and drinking, indeed, that does them, but the
+      words which stand here, namely: Given, and shed for you, for the
+      remission of sins. Which words are, beside the bodily eating and
+      drinking, as the chief thing in the Sacrament; and he that believes
+      these words has what they say and express, namely, the forgiveness of
+      sins.
+
+  - id: lords-supper-4
+    title: "The Sacrament of the Altar: Who Receives It Worthily"
+    text: >-
+      Who, then, receives such Sacrament worthily?
+    meaning: >-
+      Fasting and bodily preparation is, indeed, a fine outward training; but
+      he is truly worthy and well prepared who has faith in these words:
+      Given, and shed for you, for the remission of sins. But he that does
+      not believe these words, or doubts, is unworthy and unfit; for the
+      words For you require altogether believing hearts.
   - id: table-of-duties-pastors
     title: "The Table of Duties: To Bishops, Pastors, and Preachers"
     reference: "1 Timothy 3:2-4"
