@@ -119,3 +119,148 @@ def church_day(date: dt.date) -> ChurchDay:
         easter=e,
         day_of_church_year=(date - start).days + 1,
     )
+
+
+# --------------------------------------------------------------------------
+# Proper-day resolution
+#
+# The historic one-year lectionary is keyed by *proper*, not by date: the
+# Sunday and festival propers in docs/lectionary-migration/temporale.yaml
+# carry ids like "advent-1" and "trinity-5", and the daily Table of Lessons
+# is keyed by the week those propers name. Both counts flex with Easter — the
+# Sundays after Epiphany run 1..6 and those after Trinity 22..27, because the
+# Gesima Sundays are reckoned back from Easter while Epiphany is fixed.
+# --------------------------------------------------------------------------
+
+# Holy Saturday is deliberately absent: the Common Service Book appoints no
+# proper for it (its Propers run Good Friday straight into Easter Day), so
+# emitting one would name a proper the lectionary cannot supply.
+_HOLY_WEEK_IDS = {
+    -6: "holy-monday", -5: "holy-tuesday", -4: "holy-wednesday",
+    -3: "maundy-thursday", -2: "good-friday",
+}
+
+# Festivals of the temporale that fall on fixed dates rather than Sundays.
+_FIXED = {
+    (12, 25): "christmas-day",   # two services; see christmas_service()
+    (12, 26): "christmas-day-second",
+    (1, 1): "new-year",
+    (1, 6): "epiphany",
+}
+
+
+def _sundays_between(a: dt.date, b: dt.date) -> int:
+    """Number of Sundays strictly after `a` and on or before `b`."""
+    if b < a:
+        return 0
+    first = a + dt.timedelta(days=(7 - a.isoweekday()) % 7 or 7)
+    return 0 if first > b else (b - first).days // 7 + 1
+
+
+def proper_for(date: dt.date) -> str | None:
+    """The temporale proper governing `date`, or None if it names no proper.
+
+    Returns the id used in temporale.yaml. Every day gets an answer for the
+    *week* it belongs to (see `week_for`); this returns a proper only for the
+    days the historic lectionary actually appoints one to — Sundays, the
+    festivals of the temporale, and Holy Week.
+    """
+    year = date.year
+    e = easter(year)
+    delta = (date - e).days
+
+    # Easter cycle — checked first, since these are movable and outrank the
+    # fixed-date reckoning below.
+    if delta == 0:
+        return "easter-day"
+    if delta == 1:
+        return "easter-monday"
+    if delta in _HOLY_WEEK_IDS:
+        return _HOLY_WEEK_IDS[delta]
+    if delta == -7:
+        return "palm-sunday"
+    if delta == 39:
+        return "ascension"
+    if delta == 49:
+        return "pentecost"
+    if delta == 50:
+        return "pentecost-monday"
+    if delta == 56:
+        return "trinity-sunday"
+
+    ash = e - dt.timedelta(days=46)
+    if date == ash:
+        return "ash-wednesday"
+
+    fixed = _FIXED.get((date.month, date.day))
+    if fixed:
+        return fixed
+
+    if date.weekday() != 6:          # only Sundays name a proper from here on
+        return None
+
+    # The Trinity season runs until Advent, so Advent must be known before it
+    # can be bounded — otherwise late-November Sundays keep counting upward
+    # and yield propers ("trinity-29") the lectionary does not contain.
+    adv = advent_start(year if date >= advent_start(year) else year - 1)
+    advent_next = advent_start(year)
+
+    # Sundays inside the Easter cycle.
+    if 0 < delta < 39:
+        return f"easter-{delta // 7}"
+    if 39 < delta < 49:
+        return "ascension-sunday"    # Exaudi
+    if delta > 56 and date < advent_next:
+        return f"trinity-{(delta - 56) // 7}"
+
+    # Pre-Lent and Lent, reckoned back from Easter.
+    if -63 <= delta <= -50:
+        return {-63: "septuagesima", -56: "sexagesima", -49: "quinquagesima"}.get(
+            delta, {-63: "septuagesima"}.get(delta))
+    if delta == -49:
+        return "quinquagesima"
+    if -42 <= delta <= -14:
+        return f"lent-{(delta + 49) // 7}"
+
+    # Advent and Christmastide.
+    if 0 <= (date - adv).days < 28:
+        return f"advent-{(date - adv).days // 7 + 1}"
+
+    christmas = dt.date(adv.year, 12, 25)
+    if christmas < date <= christmas + dt.timedelta(days=6):
+        return "christmas-sunday"
+    new_year = dt.date(adv.year + 1, 1, 1)
+    if new_year < date < dt.date(adv.year + 1, 1, 6):
+        return "new-year-sunday"
+
+    # Sundays after Epiphany, however many the year affords.
+    epiph = dt.date(year, 1, 6)
+    if date > epiph and delta < -63:
+        n = _sundays_between(epiph, date)
+        if n >= 1:
+            return f"epiphany-{n}"
+    return None
+
+
+def proper_for_office(date: dt.date, office: str) -> str | None:
+    """`proper_for`, resolved to a single proper for a given office.
+
+    Christmas Day is the one day the Common Service Book appoints two complete
+    sets of propers — "I. For the Early Service" and "II. For the Later
+    Service" — which map onto the morning and evening offices exactly.
+    """
+    p = proper_for(date)
+    if p == "christmas-day":
+        return "christmas-day-early" if office == "matins" else "christmas-day-later"
+    return p
+
+
+def week_for(date: dt.date) -> tuple[str, str]:
+    """(week id, weekday name) — the key into the daily Table of Lessons.
+
+    The table appoints readings by the week a day falls in, named for the
+    Sunday that begins it, so a Tuesday in the week after Trinity 5 is
+    ("trinity-5", "Tuesday").
+    """
+    sunday = date - dt.timedelta(days=(date.weekday() + 1) % 7)
+    return proper_for(sunday) or "", date.strftime("%A")

@@ -208,3 +208,52 @@ def test_phrase_units_bounds_drift():
     assert all(len(u) <= 60 for u in units)
     # ...and no words are lost or reordered.
     assert " ".join(units).split() == creed.split()
+
+
+def test_proper_for_resolves_the_historic_one_year_lectionary():
+    """Every date must name a proper the CSB actually supplies, and every
+    proper in the table must be reachable — checked across 41 years so both
+    the early- and late-Easter extremes are covered."""
+    import datetime as dt
+    import pathlib
+    import yaml
+    from luckylutheran import churchyear as cy
+
+    data = pathlib.Path("docs/lectionary-migration/temporale.yaml")
+    known = {p["id"] for p in yaml.safe_load(data.read_text())["propers"]}
+
+    seen = set()
+    for year in range(2020, 2061):
+        day = dt.date(year, 1, 1)
+        while day.year == year:
+            for office in ("matins", "vespers"):
+                p = cy.proper_for_office(day, office)
+                if p is not None:
+                    assert p in known, f"{day} {office} -> unknown proper {p!r}"
+                    seen.add(p)
+            day += dt.timedelta(days=1)
+    assert seen == known, f"unreachable propers: {sorted(known - seen)}"
+
+
+def test_proper_for_anchors():
+    import datetime as dt
+    from luckylutheran import churchyear as cy
+
+    e = cy.easter(2026)
+    assert cy.proper_for(e) == "easter-day"
+    assert cy.proper_for(e - dt.timedelta(days=7)) == "palm-sunday"
+    assert cy.proper_for(e - dt.timedelta(days=46)) == "ash-wednesday"
+    assert cy.proper_for(e + dt.timedelta(days=39)) == "ascension"
+    assert cy.proper_for(e + dt.timedelta(days=56)) == "trinity-sunday"
+    assert cy.proper_for(cy.advent_start(2026)) == "advent-1"
+    # The Trinity season must stop at Advent rather than counting past the
+    # 27 propers the lectionary contains.
+    assert cy.proper_for(cy.advent_start(2026) - dt.timedelta(days=7)).startswith("trinity-")
+    # Christmas Day carries two sets of propers, one per office.
+    xmas = dt.date(2026, 12, 25)
+    assert cy.proper_for_office(xmas, "matins") == "christmas-day-early"
+    assert cy.proper_for_office(xmas, "vespers") == "christmas-day-later"
+    # Ordinary weekdays name no proper, but do name a week.
+    wed = e + dt.timedelta(days=59)
+    assert cy.proper_for(wed) is None
+    assert cy.week_for(wed) == ("trinity-sunday", "Wednesday")
