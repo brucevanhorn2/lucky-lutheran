@@ -19,9 +19,11 @@ from xml.sax.saxutils import escape
 PODCAST = {
     "title": "The Daily Office",
     "description": (
-        "A short daily service of Matins and Vespers after the historic "
-        "Lutheran liturgy, with the day's psalm, scripture reading, and a "
-        "portion of Luther's Small Catechism."
+        "A ten-minute daily office after the historic Lutheran liturgy — "
+        "Matins in the morning, Vespers or Compline at evening — with the "
+        "psalm appointed for the day, a lesson, a portion of Luther's Small "
+        "Catechism, and the collect of the season. Drawn entirely from "
+        "public-domain sources. Read by synthetic voices."
     ),
     # Where episodes are hosted. Enclosure URLs must be absolute and
     # reachable by the podcast app, so this cannot be a relative path or
