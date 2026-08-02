@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+import os
 from email.utils import format_datetime
 from pathlib import Path
 from xml.sax.saxutils import escape
@@ -22,7 +23,13 @@ PODCAST = {
         "Lutheran liturgy, with the day's psalm, scripture reading, and a "
         "portion of Luther's Small Catechism."
     ),
-    "base_url": "https://example.com/daily-office",  # where episodes are hosted
+    # Where episodes are hosted. Enclosure URLs must be absolute and
+    # reachable by the podcast app, so this cannot be a relative path or
+    # localhost — a phone fetching the feed needs to resolve it too. Override
+    # with LUCKY_BASE_URL; for serving off the LAN that is the machine's
+    # address, e.g. http://192.168.1.51:8080
+    "base_url": os.environ.get("LUCKY_BASE_URL",
+                               "https://example.com/daily-office").rstrip("/"),
     "language": "en-us",
     "author": "Bruce Van Horn",
     "category": "Religion & Spirituality",
