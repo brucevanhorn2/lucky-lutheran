@@ -277,3 +277,37 @@ def test_proper_for_anchors():
     wed = e + dt.timedelta(days=59)
     assert cy.proper_for(wed) is None
     assert cy.week_for(wed) == ("trinity-sunday", "Wednesday")
+
+
+def test_cli_build_writes_metadata_without_audio(tmp_path):
+    """Exercise the CLI's build path end to end.
+
+    Regression guard: lectionary.py's rewrite removed DailyReadings.optional
+    while cli.py still read it, so a full render succeeded and then crashed
+    writing metadata. No unit test touched cli.py, so nothing caught it.
+    """
+    import json
+    from luckylutheran import cli
+
+    engine = cli._get_engine("null")
+    mp3 = cli._build_one(dt.date(2026, 8, 2), "matins", tmp_path, engine)
+    assert mp3 is None or mp3.exists()
+
+    meta = json.loads((tmp_path / "2026-08-02-matins.json").read_text())
+    assert meta["reading_source"] in ("proper", "course")
+    assert meta["psalm"].startswith("Psalm ")
+    # A Sunday must be governed by a proper and name it.
+    assert meta["proper"] == "trinity-9"
+    assert meta["proper_title"]
+    assert (tmp_path / "2026-08-02-matins.md").exists()
+
+
+def test_cli_build_on_a_course_day(tmp_path):
+    import json
+    from luckylutheran import cli
+
+    cli._build_one(dt.date(2026, 7, 15), "vespers", tmp_path,
+                   cli._get_engine("null"))
+    meta = json.loads((tmp_path / "2026-07-15-vespers.json").read_text())
+    assert meta["reading_source"] == "course"
+    assert meta["proper"] is None
