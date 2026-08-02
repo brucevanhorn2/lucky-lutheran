@@ -52,11 +52,18 @@ class Episode:
 
     def transcript(self) -> str:
         """Human-readable transcript (also the podcast show notes)."""
+        # "proper" days name the appointed day; "course" days are read in
+        # course through the books and have no proper to name.
+        if self.readings.source == "proper":
+            appointed = self.readings.title or self.readings.proper
+            provenance = f"Appointed for {appointed}"
+        else:
+            provenance = "Read in course"
         lines = [f"# {self.episode_title}", "",
                  f"*Season: {self.day.season_name}. "
                  f"Psalm: {self.readings.psalm}. "
                  f"Reading: {self.readings.reading}"
-                 f" ({self.readings.source} plan).*", ""]
+                 f" ({provenance}).*", ""]
         current = None
         for seg in self.segments:
             if seg.section_title != current:

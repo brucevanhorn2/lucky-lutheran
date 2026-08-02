@@ -1,0 +1,331 @@
+seasons:
+  advent:
+    psalms:
+    - 5
+    - 8
+    - 19
+    - 21
+    - 24
+    - 25
+    - 42
+    - 93
+    - 96
+    - 98
+    - 110
+    - 111
+    - 122
+    - 143
+    - 145
+  christmas:
+    psalms:
+    - 2
+    - 19
+    - 45
+    - 72
+    - 89
+    - 93
+    - 98
+    - 110
+    - 132
+    - 147
+    - 148
+  new-year:
+    psalms:
+    - 8
+    - 40
+    - 65
+    - 72
+    - 90
+    - 103
+    - 122
+    - 147
+  epiphany:
+    psalms:
+    - 19
+    - 46
+    - 47
+    - 48
+    - 66
+    - 67
+    - 72
+    - 84
+    - 86
+    - 87
+    - 96
+    - 97
+    - 100
+    - 135
+  transfiguration:
+    psalms:
+    - 8
+    - 27
+    - 47
+    - 61
+    - 84
+    - 93
+  pre-lent:
+    psalms:
+    - 18
+    - 27
+    - 31
+    - 67
+    - 116
+    - 143
+    - 145
+    note: Septuagesima, Sexagesima and Quinquagesima.
+  ash-wednesday:
+    psalms:
+    - 6
+    - 32
+    - 34
+    - 38
+    - 51
+    - 57
+    - 102
+    - 130
+    - 143
+  lent:
+    psalms:
+    - 25
+    - 34
+    - 38
+    - 43
+    - 86
+    - 90
+    - 91
+    - 121
+    - 122
+    - 130
+    - 139
+    note: Also any of the Psalms for Ash Wednesday or Holy Week.
+  palm-sunday:
+    psalms:
+    - 24
+    - 61
+    - 97
+    - 110
+    - 138
+    - 143
+  holy-week:
+    psalms:
+    - 27
+    - 42
+    - 43
+    - 51
+    - 57
+    - 67
+    - 71
+    - 116
+    - 141
+    - 142
+    note: Also any of the Psalms for Ash Wednesday or Good Friday.
+  good-friday:
+    psalms:
+    - 22
+    - 40
+    - 54
+    - 69
+    - 102
+    - 116
+    - 143
+  holy-saturday:
+    psalms:
+    - 4
+    - 16
+    - 30
+    - 31
+    - 91
+  easter-day:
+    psalms:
+    - 2
+    - 8
+    - 57
+    - 98
+    - 110
+    - 111
+    - 118
+  eastertide:
+    psalms:
+    - 23
+    - 30
+    - 33
+    - 66
+    - 98
+    - 100
+    - 111
+    - 118
+    - 124
+    - 146
+    - 148
+    - 150
+  ascension:
+    psalms:
+    - 8
+    - 21
+    - 24
+    - 27
+    - 47
+    - 93
+    - 97
+    - 110
+    - 111
+    - 148
+    - 150
+  whitsunday:
+    psalms:
+    - 19
+    - 48
+    - 68
+    - 104
+    - 113
+    - 145
+  trinity-sunday:
+    psalms:
+    - 8
+    - 29
+    - 33
+    - 93
+    - 96
+    - 97
+    - 111
+    - 148
+    - 150
+  reformation:
+    psalms:
+    - 46
+    - 48
+    - 87
+    - 116
+    - 125
+  apostles-evangelists-martyrs:
+    psalms:
+    - 1
+    - 15
+    - 19
+    - 34
+    - 112
+    - 121
+    - 139
+    - 146
+    - 148
+  st-michael:
+    psalms:
+    - 34
+    - 91
+    - 103
+    - 148
+  christian-life:
+    psalms:
+    - 1
+    - 15
+    - 23
+    - 25
+    - 32
+    - 34
+    - 40
+    - 42
+    - 46
+    - 84
+    - 91
+    - 119
+    - 121
+    - 139
+    - 143
+  cross-and-comfort:
+    psalms:
+    - 13
+    - 23
+    - 25
+    - 27
+    - 30
+    - 34
+    - 40
+    - 62
+    - 91
+    - 121
+    - 130
+    - 139
+    - 143
+  death-and-burial:
+    psalms:
+    - 23
+    - 27
+    - 39
+    - 42
+    - 90
+    - 116
+    - 121
+    - 126
+    - 130
+    - 139
+    - 146
+  missions:
+    psalms:
+    - 2
+    - 46
+    - 47
+    - 67
+    - 72
+    - 96
+    - 97
+    - 115
+    - 126
+    - 132
+    - 138
+  christian-education:
+    psalms:
+    - 1
+    - 25
+    - 91
+    - 119
+    - 143
+  harvest:
+    psalms:
+    - 65
+    - 67
+    - 104
+    - 118
+  thanksgiving:
+    psalms:
+    - 65
+    - 67
+    - 92
+    - 100
+    - 103
+    - 145
+    - 147
+    - 148
+    - 150
+  humiliation-and-prayer:
+    psalms:
+    - 6
+    - 20
+    - 51
+    - 56
+    - 80
+    - 90
+    - 130
+    - 143
+  national-occasions:
+    psalms:
+    - 46
+    - 47
+    - 48
+    - 65
+    - 66
+    - 67
+    - 68
+    - 100
+    - 144
+    - 145
+    - 146
+    - 148
+  penitential:
+    psalms:
+    - 6
+    - 32
+    - 38
+    - 51
+    - 102
+    - 130
+    - 143

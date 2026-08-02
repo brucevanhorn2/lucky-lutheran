@@ -1,33 +1,38 @@
-"""Daily readings: the LSB daily lectionary, with a deterministic fallback.
+"""Daily readings and psalms, entirely from public-domain sources.
 
-The official table (data/daily_lectionary.yaml, transcribed from the
-Lutheran Service Book's Daily Lectionary, pp. 299-304) keys days two ways,
-per the lectionary's own design:
+Everything here derives from the *Common Service Book of the Lutheran Church*
+(1917) — the same edition already used for Matins, Vespers, the collects and
+the Compline confession — plus, for weekdays, a reading *method* rather than
+any table at all. See SOURCES.md.
 
-  movable: "ash+N" — N days after Ash Wednesday; covers Ash Wednesday
-           through the Saturday after Pentecost (N = 0..101), so the
-           Lent/Easter readings follow the movable church year.
-  days:    "MM-DD" — the civil calendar; covers Nov 27 (the earliest
-           possible eve of Advent) until the beginning of Lent. When both
-           schemes could apply (Lent reaching into the civil range), the
-           movable table wins, as in the book.
+Three parts:
 
-Each day appoints a first (Old Testament) and second (New Testament)
-reading, plus an occasional optional third covering material otherwise
-passed over. Matins reads the first lesson; Vespers/Compline the second.
+  Sundays and festivals
+      The historic one-year lectionary: an Epistle and a Gospel appointed to
+      each proper. data/temporale.yaml carries the 71 propers of the church
+      year (Advent 1 through Trinity 27), data/sanctorale.yaml the 23 fixed
+      festivals. churchyear.proper_for_office() resolves a date to a proper.
+      The Gospel is read in the morning and the Epistle in the evening,
+      matching the weekday arrangement below.
 
-Psalms come from the Table of Psalms for Daily Prayer (LSB p. 304):
-weekday tables for Lent, Easter, and Advent; date-keyed Christmastide;
-and four "general" weeks repeating through Epiphany and the Time of the
-Church. Evening rows appoint two psalms ("42; 32").
+  Weekdays
+      Continuous course reading — the Gospels in the morning, Acts and the
+      Epistles in the evening, advancing a chapter a day. This is a *method*,
+      not a compilation, and 17 USC 102(b) excludes methods from copyright
+      outright, so it needs no source at all. It is also close to Luther's own
+      practice in the Deutsche Messe (1526), which assigned books to weekdays
+      and worked through them in course.
 
-Dates outside both reading blocks fall back to a deterministic plan —
-mornings sequentially through the Gospels, evenings through Acts and the
-Epistles — labeled "fallback", never "official". This is not a gap in the
-transcription: the LSB Daily Lectionary supplies no daily readings for the
-long Time of the Church (roughly Mar 10 - Nov 26); its own rubric covers
-that season with the four "General" psalm weeks only. Psalms therefore stay
-official year-round; only the readings fall back over the summer.
+  Psalms
+      data/proper_psalms.yaml, the CSB's Table of Proper Psalms for Festivals
+      and Seasons. Note this is a *pool per season*, not a day-keyed table:
+      the book appoints a set and leaves the choice open. We choose from the
+      pool deterministically by day-of-year, so a given date always yields the
+      same psalm and episodes stay reproducible.
+
+The LSB daily lectionary this replaced was transcribed from a current
+commercial product on an untested "facts aren't copyrightable" argument, and
+supplied the psalm tables as well as the readings. Both are now gone.
 """
 
 from __future__ import annotations
@@ -39,7 +44,7 @@ from importlib import resources
 
 import yaml
 
-from luckylutheran.churchyear import advent_start, easter
+from luckylutheran.churchyear import church_day, proper_for_office
 
 GOSPEL_CHAPTERS = [("Matthew", 28), ("Mark", 16), ("Luke", 24), ("John", 21)]
 EPISTLE_CHAPTERS = [
@@ -51,59 +56,83 @@ EPISTLE_CHAPTERS = [
     ("2 John", 1), ("3 John", 1), ("Jude", 1), ("Revelation", 22),
 ]
 
-# Indexed by date.weekday() (Monday = 0), matching the psalm-table keys.
-WEEKDAYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
+# Season -> key in proper_psalms.yaml. The psalm table is organised by
+# festival and season rather than by the season names churchyear.py uses.
+_PSALM_SEASON = {
+    "advent": "advent", "christmas": "christmas", "epiphany": "epiphany",
+    "pre_lent": "pre-lent", "lent": "lent", "holy_week": "holy-week",
+    "easter": "eastertide", "ascension": "ascension",
+    "pentecost": "whitsunday", "trinity": "christian-life",
+}
+
+# Propers with a psalm pool of their own, overriding the season.
+_PSALM_PROPER = {
+    "ash-wednesday": "ash-wednesday", "palm-sunday": "palm-sunday",
+    "good-friday": "good-friday", "easter-day": "easter-day",
+    "ascension": "ascension", "pentecost": "whitsunday",
+    "trinity-sunday": "trinity-sunday", "reformation": "reformation",
+    "new-year": "new-year", "epiphany": "epiphany",
+    "christmas-day-early": "christmas", "christmas-day-later": "christmas",
+    "christmas-day-second": "christmas", "all-saints": "apostles-evangelists-martyrs",
+    "st-michael-all-angels": "st-michael", "thanksgiving": "thanksgiving",
+    "harvest": "harvest", "humiliation-prayer": "humiliation-and-prayer",
+}
 
 
 @dataclass(frozen=True)
 class DailyReadings:
     psalm: str
     reading: str
-    source: str  # "official" or "fallback"
-    optional: str | None = None  # the italic third reading (show notes)
+    source: str            # "proper" (appointed) or "course" (read in course)
+    proper: str | None = None   # the proper's id, when one governs the day
+    title: str | None = None    # its human-readable name, for show notes
 
 
-@cache
-def _tables() -> dict:
-    ref = resources.files("luckylutheran") / "data" / "daily_lectionary.yaml"
+def _load(name: str) -> dict:
+    ref = resources.files("luckylutheran") / "data" / name
     return yaml.safe_load(ref.read_text(encoding="utf-8")) or {}
 
 
-def _days_since_ash_wednesday(date: dt.date) -> int:
-    return (date - (easter(date.year) - dt.timedelta(days=46))).days
+@cache
+def _propers() -> dict[str, dict]:
+    out = {}
+    for f in ("temporale.yaml", "sanctorale.yaml"):
+        for p in _load(f).get("propers", []):
+            out[p["id"]] = p
+    return out
 
 
-def _official_entry(date: dt.date) -> dict | None:
-    tables = _tables()
-    n = _days_since_ash_wednesday(date)
-    if 0 <= n <= 101:
-        return (tables.get("movable") or {}).get(f"ash+{n}")
-    return (tables.get("days") or {}).get(date.strftime("%m-%d"))
+@cache
+def _psalm_pools() -> dict[str, list[int]]:
+    return {k: v["psalms"] for k, v in _load("proper_psalms.yaml")["seasons"].items()}
 
 
-def _psalm_row(date: dt.date) -> dict:
-    """The day's row {morning, evening} from the Table of Psalms."""
-    psalms = _tables()["psalms"]
-    row = psalms["christmas"].get(date.strftime("%m-%d"))
-    if row:
-        return row
-    weekday = WEEKDAYS[date.weekday()]
-    n = _days_since_ash_wednesday(date)
-    if 0 <= n <= 45:  # Ash Wednesday through Holy Saturday
-        return psalms["lent"][weekday]
-    if 46 <= n <= 101:  # Easter through the Saturday after Pentecost
-        return psalms["easter"][weekday]
-    if date >= advent_start(date.year):
-        return psalms["advent"][weekday]
-    # Epiphany and the Time of the Church: the four General weeks repeat,
-    # Sunday-aligned so the row changes at the start of the liturgical week.
-    week = (date.toordinal() - date.isoweekday() % 7) // 7 % 4 + 1
-    return psalms[f"general-{week}"][weekday]
+def _festival_for(date: dt.date) -> str | None:
+    """A fixed-date festival falling on `date`, if the sanctorale has one."""
+    stamp = date.strftime("%B %-d")
+    for pid, p in _propers().items():
+        if p.get("date") == stamp:
+            return pid
+    return None
 
 
-def _format_psalms(spec: str) -> str:
-    """Table entry to citation(s): "42; 32" -> "Psalm 42; Psalm 32"."""
-    return "; ".join(f"Psalm {part.strip()}" for part in str(spec).split(";"))
+def _psalm_for(date: dt.date, proper: str | None) -> str:
+    """Choose deterministically from the pool the CSB appoints.
+
+    The table gives a set per season and leaves the choice open, so the
+    choice is ours; keying it to the day of the year keeps a given date
+    always yielding the same psalm.
+    """
+    pools = _psalm_pools()
+    key = _PSALM_PROPER.get(proper or "")
+    if key is None:
+        season = church_day(date).season
+        key = _PSALM_SEASON.get(season, "christian-life")
+        if proper and proper.startswith(("st-", "all-", "conversion", "annunciation",
+                                         "presentation", "visitation", "nativity-")):
+            key = "apostles-evangelists-martyrs"
+    pool = pools.get(key) or pools["christian-life"]
+    return f"Psalm {pool[date.timetuple().tm_yday % len(pool)]}"
 
 
 def _nth_chapter(books: list[tuple[str, int]], n: int) -> str:
@@ -119,18 +148,28 @@ def _nth_chapter(books: list[tuple[str, int]], n: int) -> str:
 def readings_for(date: dt.date, office: str) -> DailyReadings:
     """Readings for a date and office ('matins' morning, else evening)."""
     morning = office == "matins"
-    psalm = _format_psalms(_psalm_row(date)["morning" if morning else "evening"])
 
-    entry = _official_entry(date)
+    # A fixed festival outranks an ordinary Sunday, but yields to the Sundays
+    # of Advent, Lent and Eastertide, which keep their own propers.
+    proper = proper_for_office(date, office)
+    festival = _festival_for(date)
+    if festival and (proper is None
+                     or not proper.startswith(("advent-", "lent-", "easter-"))):
+        proper = festival
+
+    entry = _propers().get(proper or "")
+    psalm = _psalm_for(date, proper)
+
     if entry:
         return DailyReadings(
             psalm=psalm,
-            reading=entry["first"] if morning else entry["second"],
-            source="official",
-            optional=entry.get("optional"),
+            reading=entry["gospel"] if morning else entry["epistle"],
+            source="proper",
+            proper=proper,
+            title=entry.get("title"),
         )
 
     doy = date.timetuple().tm_yday
     books = GOSPEL_CHAPTERS if morning else EPISTLE_CHAPTERS
     return DailyReadings(psalm=psalm, reading=_nth_chapter(books, doy - 1),
-                         source="fallback")
+                         source="course")

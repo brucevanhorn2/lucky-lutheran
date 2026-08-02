@@ -29,37 +29,57 @@ def test_lectionary_deterministic():
     b = lectionary.readings_for(d, "matins")
     assert a == b
     evening = lectionary.readings_for(d, "vespers")
-    assert evening.psalm != a.psalm  # morning/evening get different psalms
+    assert evening.reading != a.reading  # morning Gospels, evening Epistles
 
 
-def test_official_lectionary_movable():
-    ash_wednesday = dt.date(2026, 2, 18)
-    r = lectionary.readings_for(ash_wednesday, "matins")
-    assert (r.reading, r.source) == ("Genesis 1:1-19", "official")
-    assert r.psalm == "Psalm 5"  # Lent table, Wednesday morning
-    ev = lectionary.readings_for(ash_wednesday, "vespers")
-    assert ev.reading == "Mark 1:1-13"
-    assert ev.psalm == "Psalm 27; Psalm 51"
+def test_propers_govern_sundays_and_festivals():
+    """Appointed days draw on the historic one-year lectionary; the Gospel is
+    read in the morning and the Epistle in the evening."""
+    easter = dt.date(2026, 4, 5)
+    r = lectionary.readings_for(easter, "matins")
+    assert (r.source, r.proper, r.reading) == ("proper", "easter-day", "Mark 16:1-8")
+    assert lectionary.readings_for(easter, "vespers").reading == "1 Corinthians 5:6-8"
 
-    easter_sunday = dt.date(2026, 4, 5)  # ash+46
-    r = lectionary.readings_for(easter_sunday, "matins")
-    assert r.reading == "Exodus 14:10-31"
-    assert r.psalm == "Psalm 93"  # Easter table, Sunday morning
+    # Christmas Day is the one day with two full sets of propers.
+    xmas = dt.date(2026, 12, 25)
+    assert lectionary.readings_for(xmas, "matins").proper == "christmas-day-early"
+    assert lectionary.readings_for(xmas, "vespers").proper == "christmas-day-later"
 
-
-def test_official_lectionary_civil():
-    r = lectionary.readings_for(dt.date(2026, 12, 25), "matins")
-    assert (r.reading, r.source) == ("Isaiah 49:1-18", "official")
-    assert r.psalm == "Psalm 2"  # Christmastide is date-keyed
-    # The day before Ash Wednesday still resolves via the civil table.
-    r = lectionary.readings_for(dt.date(2026, 2, 17), "matins")
-    assert (r.reading, r.source) == ("Job 13:1-12", "official")
+    # A fixed festival outranks an ordinary day.
+    andrew = lectionary.readings_for(dt.date(2026, 11, 30), "matins")
+    assert (andrew.proper, andrew.reading) == ("st-andrew", "Matthew 4:18-22")
 
 
-def test_summer_gap_falls_back():
-    r = lectionary.readings_for(dt.date(2026, 7, 11), "matins")
-    assert r.source == "fallback"
-    assert r.psalm.startswith("Psalm ")  # psalms are official year-round
+def test_weekdays_read_in_course():
+    r = lectionary.readings_for(dt.date(2026, 7, 15), "matins")
+    assert r.source == "course"
+    assert r.proper is None
+    # Consecutive weekdays advance through the books a chapter at a time.
+    nxt = lectionary.readings_for(dt.date(2026, 7, 16), "matins")
+    assert nxt.reading != r.reading
+
+
+def test_every_reading_of_a_year_resolves_in_scripture():
+    from luckylutheran import kjv
+    unresolved = []
+    for i in range(366):
+        day = dt.date(2028, 1, 1) + dt.timedelta(days=i)
+        if day.year != 2028:
+            break
+        for office in ("matins", "vespers"):
+            r = lectionary.readings_for(day, office)
+            for ref in (r.reading, r.psalm):
+                if not any(_resolves(kjv, c) for c in
+                           (ref, ref.rsplit("-", 1)[0], ref.split(":")[0])):
+                    unresolved.append((day, office, ref))
+    assert not unresolved, unresolved[:5]
+
+
+def _resolves(kjv, ref):
+    try:
+        return bool(kjv.passage(ref))
+    except Exception:
+        return False
 
 
 def test_expand_reference():
