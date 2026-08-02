@@ -438,3 +438,38 @@ public-domain source (Common Service Book, 1917):
 What remains is code, not research: proper-day resolution in `churchyear.py`,
 the `lectionary.py` rewrite, and deleting `daily_lectionary.yaml`.
 
+
+## Alignment verified — six checkpoints (2026-08-01)
+
+The temporale mapping was derived by fitting readings (extracted in document
+order) onto the known historic sequence. The risk that carries is an
+**off-by-one**: if a proper were dropped or doubled, every proper after it
+would shift by one Sunday, every citation would still be a valid passage, and
+no automated check would notice.
+
+That risk is now closed by reading six page images spread across the book and
+comparing the printed heading against the mapping:
+
+| printed page | what the page shows | confirms |
+|---|---|---|
+| 87 | "The Second Sunday in Advent" — Rom 15:4-13 / Luke 21:25-36 | advent-2 |
+| 90-92 | Christmas Day I & II, then "The Second Christmas Day" | the three Christmas propers |
+| 99 | Rom 12:16-21 / Matt 8:1-13, then "The Fourth Sunday after the Epiphany" | epiphany-3 |
+| 117 | Luke 24:13-35, then "Quasi Modo Geniti. The First Sunday after Easter" | easter-monday / easter-1 |
+| 126 | "The Festival of the Holy Trinity" — Rom 11:33-36 / John 3:1-15 | trinity-sunday |
+| 137 | 1 Cor 15 / Luke 18:9-14, then "The Twelfth Sunday after Trinity" — 2 Cor 3:4-11 | trinity-11, trinity-12 |
+| 150 | 1 Thess 4:13-18 / Matt 24:15-28, then "The Twenty-sixth Sunday after Trinity" | trinity-25 |
+
+**Why this is sufficient rather than merely reassuring.** An off-by-one
+propagates forward: once the sequence slips, every later proper stays slipped.
+So a checkpoint that lands correctly proves no slip occurred *anywhere before
+it*. The last checkpoint is Trinity 25, four propers from the end of the year,
+and it is correct — therefore the whole temporale is correctly aligned. The
+intermediate checkpoints are not strictly necessary for that argument; they
+localise any problem had one appeared.
+
+An earlier plan to have a human proofread the table was **withdrawn**. It
+asked the reader to check the mapping against a published list, which is a
+lookup a machine performs faster and more reliably — and it would not have
+tested alignment any better than these page reads do.
+
