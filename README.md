@@ -163,13 +163,22 @@ renders every segment with `/load_prompt_and_gen` — so voices stay identical
 across episodes.
 
 **Cast references:** `assets/voices/{liturgist,congregation,lector}.wav`
-currently hold *placeholder* voices bootstrapped from a sample clip (all
-three sound alike). To mint the real cast, either record your own short
-clips (update each speaker's `ref_text` in `tts.py` to the exact
-transcript), or briefly run the VoiceDesign demo —
+hold the **chosen cast**, designed and selected 2026-07-09 from the
+candidates in `assets/voices/candidates/` (liturgist-b, congregation-c,
+lector-a — recorded in `VOICE_CAST` in `tts.py`). These three WAVs are
+committed deliberately: voice design is nondeterministic, so losing them
+would permanently change how the podcast sounds. Do not regenerate them
+casually.
+
+`assets/voices/crowd/` holds seven designed parishioner voices, layered
+slightly out of sync so congregational responses sound like a room rather
+than one person. They are currently untracked.
+
+To mint a *different* cast, run the VoiceDesign demo —
 `qwen-tts-demo Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign --ip 0.0.0.0 --port
-8000` — and regenerate from the `VOICE_CAST` descriptions, then switch back
-to Base.
+8000` — regenerate from the `VOICE_CAST` descriptions, audition the
+candidates, then switch back to Base. If you record real human clips
+instead, set each speaker's `ref_text` in `tts.py` to the exact transcript.
 
 ### Alternative: this project's own server (`--engine remote`)
 
