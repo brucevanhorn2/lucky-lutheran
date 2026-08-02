@@ -112,7 +112,7 @@ def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path) -> Path |
     out_path = out_dir / f"{episode.slug}.mp3"
     print(f"stitching {len(rendered)} clips → {out_path.name} "
           f"(loudness normalize)…", flush=True)
-    result = _stitch(rendered, out_path, bumper=bumper)
+    result = _stitch(rendered, out_path, bumper=bumper, tags=id3_tags(episode))
     print(f"done: {result}", flush=True)
     return result
 
@@ -251,8 +251,38 @@ def _mix_crowd(parts: list[Path], chunk: str, out_path: Path) -> Path:
     return out_path
 
 
+def id3_tags(episode: Episode) -> dict[str, str]:
+    """ID3 tags for the episode, so the MP3 is self-describing off the feed.
+
+    Podcast apps read these when a file is sideloaded or downloaded rather
+    than played through the RSS feed, and they are what a car stereo or a
+    plain music player shows. Kept consistent with feed.py's PODCAST block.
+    """
+    from luckylutheran import feed
+
+    day = episode.day
+    readings = episode.readings
+    appointed = (readings.title or readings.proper) if readings.source == "proper" else None
+    comment = (f"{episode.title} for {day.date.strftime('%B %-d, %Y')}. "
+               f"{readings.psalm}; {readings.reading}"
+               + (f". Appointed for {appointed}." if appointed else ". Read in course."))
+    return {
+        "title": episode.episode_title,
+        "artist": feed.PODCAST["author"],
+        "album_artist": feed.PODCAST["author"],
+        "album": feed.PODCAST["title"],
+        "date": day.date.isoformat(),
+        "year": str(day.date.year),
+        "genre": "Religion & Spirituality",
+        "comment": comment,
+        "TIT3": day.season_name,          # subtitle
+        "language": "eng",
+    }
+
+
 def _stitch(rendered: list[tuple[Path, float]], out_path: Path,
-            bumper: Path | None = None) -> Path:
+            bumper: Path | None = None,
+            tags: dict[str, str] | None = None) -> Path:
     """Concatenate WAVs with per-segment trailing silence, normalize, encode.
     A bumper tune, when given, opens the episode (fading down into the
     greeting) and closes it after the benediction (fading up, then out)."""
@@ -283,10 +313,15 @@ def _stitch(rendered: list[tuple[Path, float]], out_path: Path,
         f"loudnorm=I=-16:TP=-1.5:LRA=11[out]"
     )
 
+    meta: list[str] = []
+    for key, value in (tags or {}).items():
+        meta += ["-metadata", f"{key}={value}"]
+
     cmd = ["ffmpeg", "-y", *inputs,
            "-filter_complex", ";".join(filters),
            "-map", "[out]", "-ar", "44100",
            "-codec:a", "libmp3lame", "-b:a", "96k",
+           *meta, "-id3v2_version", "3", "-write_id3v1", "1",
            str(out_path)]
     subprocess.run(cmd, check=True, capture_output=True)
     return out_path

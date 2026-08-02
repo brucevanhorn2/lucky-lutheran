@@ -311,3 +311,23 @@ def test_cli_build_on_a_course_day(tmp_path):
     meta = json.loads((tmp_path / "2026-07-15-vespers.json").read_text())
     assert meta["reading_source"] == "course"
     assert meta["proper"] is None
+
+
+def test_id3_tags_describe_the_episode():
+    """The MP3 must be self-describing when sideloaded rather than played
+    through the feed — a car stereo shows these, not the RSS."""
+    from luckylutheran import assemble, audio, feed
+
+    ep = assemble.build_episode(dt.date(2026, 8, 2), "matins")   # Trinity 9, a Sunday
+    tags = audio.id3_tags(ep)
+    assert tags["title"] == ep.episode_title
+    assert tags["album"] == feed.PODCAST["title"]
+    assert tags["artist"] == feed.PODCAST["author"]
+    assert tags["date"] == "2026-08-02"
+    # A proper day names the day it is appointed to.
+    assert "Trinity 9" in tags["comment"]
+    assert tags["TIT3"] == "Trinity Season"
+
+    # A course day says so instead of naming a proper.
+    course = audio.id3_tags(assemble.build_episode(dt.date(2026, 7, 15), "vespers"))
+    assert "Read in course" in course["comment"]
