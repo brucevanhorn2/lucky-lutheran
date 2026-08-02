@@ -36,18 +36,19 @@
 # scripture.get_passage — the same fetch-and-cache path the daily lectionary
 # readings use — so no scripture text is hand-quoted from memory here.
 #
-# Covers: all Ten Commandments + their Close, the Creed, the whole of the
-# Lord's Prayer (introduction, seven petitions, conclusion), one article
-# each on Baptism and the Sacrament of the Altar, the full Table of Duties,
-# and the Christian Questions with Their Answers — 48 portions, comfortably
-# more than the 30 needed for a batch with no repeats. catechism.py indexes
-# by day-of-year modulo len(portions), so the count is free to grow.
+# Covers FOUR of the six chief parts complete — the Ten Commandments with
+# their Close, the Creed, the whole Lord's Prayer (introduction, seven
+# petitions, conclusion), and Confession — plus one article each on Baptism
+# and the Sacrament of the Altar, the full Table of Duties, and the Words of
+# Institution. 43 portions, comfortably more than the 30 needed for a batch
+# with no repeats. catechism.py indexes by day-of-year modulo len(portions),
+# so the count is free to grow.
 #
-# STILL MISSING: the Confession / Office of the Keys chief part, and the
-# remaining catechetical questions under Baptism and the Sacrament of the
-# Altar (benefits, "how can water/eating do such things", etc.). Both are
-# available in the same verified Triglotta English column — a good next
-# batch.
+# STILL MISSING: the remaining catechetical questions under Baptism and the
+# Sacrament of the Altar (their benefits, "how can water do such great
+# things", "how can bodily eating and drinking do such great things", who
+# receives worthily). All are in the same verified Triglotta English column —
+# a good next batch, and pure transcription with no rights question.
 
 portions:
   - id: commandment-1
@@ -339,6 +340,55 @@ portions:
       of Matthew: Go ye into all the world and teach all nations, baptizing
       them in the name of the Father and of the Son and of the Holy Ghost.
 
+  # --- The Fifth Chief Part: Confession -------------------------------
+  # VERIFIED: transcribed word for word from the English column of Concordia
+  # Triglotta (CPH, 1921), "V. How the Unlearned Should Be Taught to Confess",
+  # pp. 551-553 — the same verified source as the rest of this file.
+  #
+  # Only the CATECHETICAL questions are included. Luther's chief part
+  # continues into a Brief Form of Confession — a dialogue with a confessor
+  # ending "And by the command of our Lord Jesus Christ I forgive thee thy
+  # sins" — which is the declarative absolution reserved to a called and
+  # ordained minister (AC XIV). A layman leading his household cannot speak
+  # it, and neither can a recording, so it is deliberately omitted on the
+  # same principle that governs Compline's absolution. See the README's
+  # household-office section.
+  #
+  # Note how directly the third question addresses a household: "whether you
+  # are a father, mother, son, daughter, master, mistress, a man-servant or
+  # maid-servant".
+
+  - id: confession-1
+    title: "Confession: What Confession Is"
+    text: >-
+      What is Confession?
+    meaning: >-
+      Confession embraces two parts: the one is, that we confess our sins;
+      the other, that we receive absolution, or forgiveness, from the
+      confessor, as from God Himself, and in no wise doubt, but firmly
+      believe, that our sins are thereby forgiven before God in heaven.
+
+  - id: confession-2
+    title: "Confession: What Sins to Confess"
+    text: >-
+      What sins should we confess?
+    meaning: >-
+      Before God we should plead guilty of all sins, even of those which we
+      do not know, as we do in the Lord's Prayer. But before the confessor we
+      should confess those sins alone which we know and feel in our hearts.
+
+  - id: confession-3
+    title: "Confession: Considering Your Station"
+    text: >-
+      Which are these?
+    meaning: >-
+      Here consider your station according to the Ten Commandments, whether
+      you are a father, mother, son, daughter, master, mistress, a
+      man-servant or maid-servant; whether you have been disobedient,
+      unfaithful, slothful; whether you have grieved any one by words or
+      deeds; whether you have stolen, neglected, or wasted aught, or done
+      other injury.
+
   - id: lords-supper-1
     title: "The Sacrament of the Altar: The Nature of the Sacrament"
     text: >-
@@ -435,76 +485,23 @@ portions:
   # `reference` there), not hand-transcribed, for the same reason as the
   # Table of Duties above.
   #
-  # !!!! COPYRIGHT RISK — DO NOT PUBLISH THESE EIGHT PORTIONS AS THEY STAND.
+  # The eight hand-transcribed "Christian Questions" portions were REMOVED on
+  # 2026-08-01. Their English was a modern CPH rendering — second person where
+  # this repo is Thou throughout — and it added material absent from Luther's
+  # German ("as my conscience tells me", "in the one Godhead", "according to
+  # His human nature"). No pre-1930 English printing was found in the
+  # Triglotta, the 1881 Missouri Synod Church Liturgy, the 1912 ELHB and its
+  # 1905/1909 printings, Crull's 1879/1884 hymn books, or five pre-1930 English
+  # Small Catechism editions. A public-domain GERMAN text does exist (1894
+  # Bayerische Staatsbibliothek scan `11581004bsb`, corroborated by 1878
+  # `drmartinluthersk0000mart`) if a fresh translation is ever wanted.
   #
-  # These could NOT be verified, and the reason matters. The Concordia
-  # Triglotta does NOT contain the Christian Questions at all — it discusses
-  # them in its historical introduction (p. 88, noting they first appeared
-  # in 1549 and were attributed to Luther in an edition of 1551) but prints
-  # no text: its Small Catechism runs straight from the Sacrament of the
-  # Altar into Appendix I (the Morning and Evening Blessings). So the file
-  # header's old claim that everything here follows the Triglotta was simply
-  # wrong for this section.
-  #
-  # Worse, the wording below is in the modern second person ("Do you believe
-  # that you are a sinner?"), which is the register of the CURRENT CPH
-  # translation — the very thing this project refuses to use. Any pre-1930
-  # English printing would read "Dost thou believe...", matching the Thou
-  # register used everywhere else in this repo. That mismatch is the tell:
-  # this text was recalled from a modern copyrighted source, not a PD one.
-  #
-  # Searched without success: the Triglotta, the 1881 Missouri Synod Church
-  # Liturgy, the 1912 Evangelical Lutheran Hymn-Book (and its 1905/1909
-  # printings), Crull's 1879/1884 hymn books, and five pre-1930 English
-  # Small Catechism editions on archive.org.
-  #
-  # Until a pre-1930 English printing is found, either drop these eight from
-  # the rotation or retranslate them into the Thou register from the German,
-  # which the Triglotta does print. Everything above this line is verified
-  # and safe to publish; this block is not.
-
-  - id: christian-questions-1
-    title: "Christian Questions: Of Sin"
-    text: >-
-      Do you believe that you are a sinner? Yes, I believe it; I am a
-      sinner.
-    meaning: >-
-      How do you know this? From the Ten Commandments, which I have not
-      kept, as my conscience tells me.
-
-  - id: christian-questions-2
-    title: "Christian Questions: Of Sorrow and What Is Deserved"
-    text: >-
-      Are you sorry for your sins? Yes, I am sorry that I have sinned
-      against God.
-    meaning: >-
-      What have you deserved from God because of your sins? His wrath and
-      displeasure, temporal death, and eternal condemnation.
-
-  - id: christian-questions-3
-    title: "Christian Questions: Of Hope"
-    text: >-
-      Do you hope to be saved? Yes, that is my hope.
-    meaning: >-
-      In whom, then, do you trust? In my dear Lord Jesus Christ.
-
-  - id: christian-questions-4
-    title: "Christian Questions: Of Christ"
-    text: >-
-      Who is Christ? The Son of God, true God and man.
-    meaning: >-
-      How many gods are there? Only one; but there are three persons in the
-      one Godhead: the Father, the Son, and the Holy Ghost.
-
-  - id: christian-questions-5
-    title: "Christian Questions: What Christ Has Done"
-    text: >-
-      What has Christ done for you that you trust in Him? He died for me
-      and shed His blood for me on the cross for the forgiveness of sins.
-    meaning: >-
-      Did the Father also die for you? He is God only, not man; hence He
-      could not die. But since Christ is true God and also true man, He
-      died for me according to His human nature.
+  # The Questions are in any case an appendix, not a chief part: first printed
+  # 1549, three years after Luther's death, attributed to him only from a 1551
+  # edition, and the Triglotta does not print them at all. Their content
+  # largely restates the Creed and Sacrament portions already in the rotation.
+  # The Words of Institution below is kept — it resolves from scripture and
+  # was never hand-transcribed.
 
   - id: christian-questions-6
     title: "Christian Questions: The Words of Institution"
@@ -514,38 +511,3 @@ portions:
       How do you know this? From the holy Gospel, and from the words of
       Saint Paul, by which the Sacrament was instituted by Christ Himself.
 
-  - id: christian-questions-7
-    title: "Christian Questions: Believing the Sacrament"
-    text: >-
-      Do you believe, then, that the true body and blood of Christ are in
-      the Sacrament? Yes, I believe it.
-    meaning: >-
-      What convinces you to believe this? The word of Christ: Take, eat;
-      this is My body. Drink ye all of it; this is My blood.
-
-  - id: christian-questions-8
-    title: "Christian Questions: Remembering His Death"
-    text: >-
-      What should we do when we eat His body and drink His blood in the
-      Sacrament? We should remember and proclaim His death and the
-      shedding of His blood, as He taught us.
-    meaning: >-
-      Why should we remember and proclaim His death? That we may learn to
-      believe that no creature could make satisfaction for our sins except
-      Christ, true God and man; and that we may take to heart what a great
-      thing it cost Him to redeem us from sin, death, and the power of the
-      devil.
-
-  - id: christian-questions-9
-    title: "Christian Questions: Self-Examination"
-    text: >-
-      What should move a Christian to receive the Sacrament frequently?
-      Both the command and the promise of Christ should move him, and also
-      his own pressing need, on account of which the command, invitation,
-      and promise are given.
-    meaning: >-
-      What ought those to consider who go carelessly and without any
-      preparation? They should heed the warning of Saint Paul, that
-      whosoever shall eat this bread and drink this cup of the Lord
-      unworthily shall be guilty concerning the body and blood of the
-      Lord.

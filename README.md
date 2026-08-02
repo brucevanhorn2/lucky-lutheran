@@ -67,7 +67,7 @@ of every piece of content — summary:
 | Scripture | King James Version, local index built from Project Gutenberg eBook #10 (bible-api.com kept only as network fallback) | verified |
 | Daily lectionary & psalms | historic one-year lectionary + Table of Proper Psalms, Common Service Book (1917); weekdays read in course | verified — LSB dependency removed entirely |
 | Catechism core (commandments, Creed, sacraments) | Concordia Triglotta (CPH, 1921), English column — archive.org `concordiatriglot00unse` | verified word-for-word; 6 of 16 portions corrected |
-| Catechism "Christian Questions" (8 portions) | none — not in the Triglotta; present wording matches the modern CPH translation | 🚨 **copyright risk — do not publish; see SOURCES.md** |
+| Catechism — Lord's Prayer, Confession | Concordia Triglotta (CPH, 1921), English column | verified; four of six chief parts complete |
 | Catechism Table of Duties / Words of Institution | resolved live from the local KJV, not hand-transcribed | verified |
 | Collects | Propers of the Common Service Book (1917) — archive.org `commonserviceboo00phil` | verified word-for-word; 7 of 10 corrected |
 
