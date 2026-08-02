@@ -14,7 +14,7 @@ from importlib import resources
 
 import yaml
 
-from luckylutheran import catechism, collects, lectionary, scripture
+from luckylutheran import catechism, collects, lectionary, scripture, speech
 from luckylutheran.churchyear import ChurchDay, church_day
 
 OFFICES = ("matins", "vespers", "compline")
@@ -115,7 +115,14 @@ def _passage_segments(section: dict, reference: str, kind: str) -> list[Segment]
                 f"[Text of {ref} unavailable — will be fetched at build "
                 f"time from the KJV.]", 1.0))
         else:
-            segs.append(Segment(sid, title, "lector", text, 1.5))
+            # "Selah" is a performance direction, not text to be read. Split
+            # the passage where it stood so a real silence falls there
+            # instead — doing what the rubric says rather than saying it.
+            chunks = speech.split_on_selah(text)
+            for i, chunk in enumerate(chunks):
+                last = i == len(chunks) - 1
+                segs.append(Segment(sid, title, "lector", chunk,
+                                    1.5 if last else speech.SELAH_PAUSE))
             any_text = True
     if kind == "psalm" and any_text:
         segs.append(Segment(

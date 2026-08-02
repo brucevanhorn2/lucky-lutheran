@@ -331,3 +331,29 @@ def test_id3_tags_describe_the_episode():
     # A course day says so instead of naming a proper.
     course = audio.id3_tags(assemble.build_episode(dt.date(2026, 7, 15), "vespers"))
     assert "Read in course" in course["comment"]
+
+
+def test_selah_becomes_a_pause_not_a_spoken_word():
+    """Selah is a performance direction, not text. It should leave a silence
+    where it stood rather than be read aloud."""
+    from luckylutheran import assemble, speech
+
+    assert speech.split_on_selah("A. Selah. B. Selah. C.") == ["A.", "B.", "C."]
+    assert speech.split_on_selah("No rubric here.") == ["No rubric here."]
+
+    # Psalm 32 carries three of them.
+    ep = assemble.build_episode(dt.date(2026, 8, 2), "matins")
+    assert not any("selah" in s.text.lower() for s in ep.segments)
+    psalm = [s for s in ep.segments
+             if s.section_id == "psalm" and s.speaker == "lector"]
+    assert sum(1 for s in psalm if s.pause_after == speech.SELAH_PAUSE) == 3
+
+
+def test_pronunciation_respelling_is_spoken_only():
+    """Respellings go to the synthesizer; transcripts keep the written word."""
+    from luckylutheran import assemble, speech
+
+    assert speech.for_speech("Matins") == "Mattins"      # MAT-ins, not MAY-tins
+    assert speech.for_speech("Compline") == "Complin"
+    transcript = assemble.build_episode(dt.date(2026, 8, 2), "matins").transcript()
+    assert "Mattins" not in transcript

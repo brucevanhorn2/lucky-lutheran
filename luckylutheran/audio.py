@@ -15,6 +15,7 @@ import subprocess
 from pathlib import Path
 
 from luckylutheran.assemble import Episode
+from luckylutheran import speech
 from luckylutheran.tts import TTSEngine
 
 
@@ -91,7 +92,8 @@ def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path) -> Path |
                 result = _render_crowd_chunk(engine, chunk, crowd, wav)
             else:
                 print(label, flush=True)
-                result = engine.synthesize(chunk, seg.speaker, wav)
+                result = engine.synthesize(speech.for_speech(chunk),
+                                           seg.speaker, wav)
 
             if result is not None:
                 last = j == len(chunks) - 1
@@ -197,7 +199,8 @@ def _render_crowd_unit(engine, chunk: str, crowd: list[str],
     for voice in voices:
         part = part_dir / f"{out_path.stem}-{voice.replace('/', '_')}.wav"
         if not (part.exists() and part.stat().st_size > 44):
-            if engine.synthesize(chunk, voice, part) is None:
+            if engine.synthesize(speech.for_speech(chunk), voice,
+                                 part) is None:
                 if label:
                     print(" (failed)", flush=True)
                 return None
