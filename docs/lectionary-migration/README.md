@@ -389,3 +389,52 @@ breaks monotonicity). The resolvability check alone caught `2 Peter 4:12-19` —
 - The **Table of Proper Psalms** (printed p.312) is **not yet extracted** — it
   is printed sideways as a landscape table and must be rotated before OCR.
 
+
+## Proper Psalms extracted (2026-08-01) — `proper_psalms.yaml`
+
+**30 seasons/occasions, 267 psalm references, all in range 1-150, no
+duplicates within a season.** Printed p.313 (scan n317).
+
+**Correction to an earlier note in this file:** the table is *not* printed
+sideways. It is upright and perfectly legible. The gibberish that suggested a
+rotation ("£9 6 ShL OSI ZOL...") was **show-through from the facing page** —
+visible as ghosting behind the text — which full-page OCR picked up along with
+the real content. Cropping the label column away (0.38 of page width) removes
+both the show-through artefacts and the dotted leaders, and the numbers then
+OCR cleanly. Two independent reads — the crop OCR and a direct visual read of
+the page — agree line for line.
+
+### This is a different shape from LSB's psalm scheme
+
+LSB gave a *day-keyed* table: look up the date, get the psalm. The CSB gives a
+**pool per season** — "Advent: 5, 8, 19, 21, 24, 25, 42, 93, 96, 98, 110, 111,
+122, 143, 145" — and leaves the choice open. Two rubrics widen the pool
+further: Lent may also draw on the Ash Wednesday or Holy Week psalms, and Holy
+Week on the Ash Wednesday or Good Friday psalms.
+
+So `lectionary.py` must *choose* rather than look up. Choose deterministically
+(day-of-year modulo pool size, or similar) so a given date always yields the
+same psalm and episodes stay reproducible.
+
+Beyond the seasons, the table also supplies pools for occasions the temporale
+does not cover — Apostles/Evangelists/Martyrs, St. Michael, the Christian
+Life, Cross and Comfort, Death and Burial, Missions, Christian Education,
+Harvest, Thanksgiving, Days of Humiliation and Prayer, National Occasions, and
+the seven Penitential Psalms. The festival pools pair naturally with
+`sanctorale.yaml`.
+
+## Research phase complete
+
+All four data sets are now extracted and validated, every one from the same
+public-domain source (Common Service Book, 1917):
+
+| file | contents | validation |
+|---|---|---|
+| `temporale.yaml` | 71 propers, Advent 1 - Trinity 27 | 142/142 citations resolve |
+| `sanctorale.yaml` | 23 festivals | 46/46 citations resolve |
+| `table_of_lessons_raw.json` | 295 weekday day-rows, morning + evening | 294/295 resolve |
+| `proper_psalms.yaml` | 30 seasonal psalm pools | 267 refs, all 1-150 |
+
+What remains is code, not research: proper-day resolution in `churchyear.py`,
+the `lectionary.py` rewrite, and deleting `daily_lectionary.yaml`.
+
