@@ -18,3 +18,7 @@ dist/
 csb_jp2.zip
 *_djvu.txt
 scans/
+
+# Primary sources mirrored by tools/fetch_sources.sh — large, re-fetchable,
+# and not ours to redistribute. Only derived citation data belongs in the repo.
+sources/

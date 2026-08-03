@@ -11,6 +11,33 @@ Legend: **✅ Verified** = checked word-for-word against a raw copy of the
 cited source. **⚠️ Unverified** = sourced/composited but not yet checked
 against a raw primary text; carries a `!! VERIFY` comment in the file itself.
 
+## Do we hold the sources, or only link them?
+
+**Both, as of 2026-08-02.** Run `bash tools/fetch_sources.sh` to mirror every
+cited text into `sources/` (gitignored — large, re-fetchable, and not ours to
+redistribute). The script verifies each download by grepping for a phrase this
+project actually quotes from that book, because archive.org answers a missing
+item with an HTML error page under HTTP 200 and a silent wrong-file is exactly
+the failure that would rot a citation.
+
+| What | Where it lives |
+|---|---|
+| **KJV** | **Committed** — `luckylutheran/data/kjv.txt` + `kjv_index.json`. The only source that ships with the code, because every episode reads from it at build time. |
+| CSB 1917 **page images** | `csb_jp2.zip` in the repo root, gitignored, 387 MB. Fetch commands in `docs/lectionary-migration/README.md`. Needed because the CSB's OCR layer is unusable on the Propers and unreliable on mixed-layout pages. |
+| CSB 1917, Triglotta 1921, ELHB 1909 + 1893, Missouri 1881, Rule of St Benedict ×3, 1928 BCP | `sources/*_djvu.txt`, gitignored. `tools/fetch_sources.sh`. |
+
+All nine identifiers resolved and passed their probes on 2026-08-02. A tenth,
+`bwb_T4-APS-822` (TLH 1941), is access-restricted — correctly so; it is listed
+in this document as *not consulted* and is deliberately not fetched.
+
+**Why this matters.** Before that script existed, the Triglotta behind all 49
+catechism portions and the ELHB behind most of Matins and Vespers were nothing
+but identifiers in a table here. The derived YAML would have stayed correct if
+those items went away, but nobody could have *re-checked* it — and "everything
+is cited" would have quietly become "everything was cited once, by someone who
+is no longer here." The first thing the mirror was used for found a real defect;
+see the Responsory row under Matins.
+
 ## Scripture (Psalms, Lessons, Table of Duties, Words of Institution)
 
 | Source | `luckylutheran/data/kjv.txt`, `kjv_index.json` |
@@ -103,11 +130,12 @@ for the account of the change.
 
 | Source | `luckylutheran/templates/matins.yaml` |
 |---|---|
-| Primary sources | *Evangelical Lutheran Hymn-Book* (Concordia Publishing House, 1912), via Project Wittenberg (public-domain release, explicitly stated on the source page); *Common Service Book of the Lutheran Church* (General Synod/General Council/United Synod South, 1917/1918), via archive.org, unrestricted scan (`commonserviceboo1917phil` et al.) |
+| Primary sources | *Evangelical Lutheran Hymn-Book* (Concordia Publishing House, 1912), via Project Wittenberg (public-domain release, explicitly stated on the source page) — **but Project Wittenberg records no stable locator for it**, so as of 2026-08-02 the citable substitutes are the archive.org printings `evangelicalluthe09evan` (1909) and `evangelicallu93evan` (1893), both unrestricted, both containing this liturgy; where they are quoted below it is those editions that were actually read. Plus *Common Service Book of the Lutheran Church* (General Synod/General Council/United Synod South, 1917/1918), via archive.org, unrestricted scan (`commonserviceboo00phil`, `commonserviceboo1917phil`). |
 | PD basis | Both are US publications from before 1930 — automatically public domain under the rolling PD cutoff. |
 | Status | ✅ Verified: opening versicles, invitatory, Venite, Te Deum, salutation, Lord's Prayer, Benedicamus, Collect for Grace, Benediction (fixed: "the Lord Jesus Christ" not "our Lord Jesus Christ", confirmed via 2 Cor. 13:14 KJV). |
 | | ✅ **Luther's Morning Prayer — now verified** against the English column of *Concordia Triglotta* (CPH, 1921), Small Catechism Appendix I, archive.org `concordiatriglot00unse`, unrestricted, pre-1930. The earlier flag was correct: fixed to "I pray Thee **to keep me**" (was "that Thou wouldst keep me") and "from sin and **all** evil" (was "every evil"). |
-| | ✅ **Responsory — no longer unverified, but a choice.** The disagreement is real and both sides are public domain: the 1912 ELHB's Vespers order has "But Thou, O Lord, have mercy upon us / Thanks be to Thee, O Lord", while the 1917 CSB prints "℣. O Lord, have mercy upon us. ℟. Thanks be to God." — and, checked directly on p. 42 (2026-08-02), the CSB uses that same form in **Vespers** as well as Matins. So the earlier guess that the wording might be office-specific is wrong for the CSB; it is a book-to-book recension difference. Ours follows the ELHB, which is a real PD source. Nothing to fix; the only open question is which book to follow, and that is a taste call, not a rights one. |
+| | ⚠️→✅ **Responsory — a real defect was found here and fixed.** The answer read **"Thanks be to Thee, O Lord!"**, which occurs **nowhere in any book this project cites**. Checked against the local mirrors: the ELHB of 1909 (`evangelicalluthe09evan`) and 1893 (`evangelicallu93evan`) both print "But Thou, O Lord, have mercy upon us. / *Answer.* **Thanks be to God.**", and the 1917 CSB prints "℣. O Lord, have mercy upon us. ℟. **Thanks be to God.**" (Vespers, p. 42, read directly off the page). Zero hits for "Thanks be to Thee" across all three. It was almost certainly TLH (1941) recalled from memory — the one book deliberately not consulted — and it survived because the earlier note framed the question as *which* PD source to follow, so nobody checked whether our line was in either of them. **Corrected in `matins.yaml` and `vespers.yaml` on 2026-08-02.** The versicle keeps the ELHB's "But Thou, O Lord"; only the answer changed. |
+| | The remaining difference is a genuine book-to-book one and is a taste call, not a rights question: the ELHB opens the versicle "But Thou, O Lord, have mercy upon us", the CSB "O Lord, have mercy upon us". Ours follows the ELHB. |
 | | ✅ **Kyrie — closed, and the question itself was wrong.** It was never "single vs. doubled". Checked directly on the page (2026-08-02), the 1917 CSB's order of **Vespers, p. 44**, sets the Kyrie as a *bid and a response*: "¶ The Minister shall say: Lord, have mercy upon us. ¶ The Congregation shall sing or say: Lord, have mercy upon us. Christ, have mercy upon us. Lord, have mercy upon us." The congregation's part is exactly what `matins.yaml` and `vespers.yaml` already carry, assigned to `all`; only the minister's single opening bid is absent. The line-by-line doubling in the Evening Suffrages is a **different form for a different office**, printed in the same book — the CSB uses both deliberately. So there is no inconsistency between the offices to fix, and importing the Suffrages form into Vespers would give Vespers a shape its own order does not use. An earlier revision of this file claimed the evidence favoured doubling everywhere; that compared across offices and was wrong. |
 | | The only defensible addition to Matins/Vespers would be the minister's bid before the congregation's Kyrie — optional, since these files follow the 1912 ELHB rather than the CSB, and the two books differ here as they do on the Responsory and on "our/the Lord Jesus Christ". |
 | Not consulted | TLH (1941) itself — only a copyright-restricted archive.org lending scan (`bwb_T4-APS-822`, `access-restricted-item: true`) was found; abandoned rather than circumvented. |
