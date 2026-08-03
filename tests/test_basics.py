@@ -507,3 +507,70 @@ def test_cached_audio_is_keyed_on_the_words():
     # ...but an individual voice's take on a phrase does not depend on the
     # rest of the room, so those stay reusable across roster changes.
     assert _key("Amen.") == _key("Amen.")
+
+
+def test_gradio_retries_a_null_result_then_reports_usefully():
+    """The demo server sometimes completes a call with a null payload instead
+    of audio, most often deep into a long run. That used to surface as
+    `TypeError: NoneType is not subscriptable` and kill an episode at 68%."""
+    from pathlib import Path
+    from luckylutheran import tts
+
+    engine = tts.GradioDemoTTS.__new__(tts.GradioDemoTTS)   # no server needed
+    engine._voice_files = {"congregation": "/tmp/ref.wav"}
+
+    calls = []
+
+    def flaky(endpoint, data):
+        calls.append(data[1])
+        return [None] if len(calls) < 3 else [{"url": "http://x/a.wav"}]
+
+    engine._call = flaky
+    written = {}
+    tts.SYNTH_BACKOFF, backoff = 0.0, tts.SYNTH_BACKOFF
+    try:
+        import urllib.request
+
+        class Fake:
+            def read(self): return b"R" * 500
+            def __enter__(self): return self
+            def __exit__(self, *a): return False
+
+        real_urlopen = urllib.request.urlopen
+        urllib.request.urlopen = lambda *a, **k: Fake()
+        real_write = Path.write_bytes
+        Path.write_bytes = lambda self, b: written.setdefault(str(self), b)
+        try:
+            out = engine.synthesize("Amen.", "congregation", Path("/tmp/o.wav"))
+        finally:
+            urllib.request.urlopen = real_urlopen
+            Path.write_bytes = real_write
+    finally:
+        tts.SYNTH_BACKOFF = backoff
+
+    assert out == Path("/tmp/o.wav")
+    assert len(calls) == 3          # two nulls retried, third succeeded
+
+
+def test_gradio_gives_up_with_the_text_in_the_message():
+    """When retries are exhausted the error must name the voice and the words,
+    so the bad chunk is findable without reading a traceback."""
+    from pathlib import Path
+    from luckylutheran import tts
+
+    engine = tts.GradioDemoTTS.__new__(tts.GradioDemoTTS)
+    engine._voice_files = {"congregation": "/tmp/ref.wav"}
+    engine._call = lambda endpoint, data: [None]
+
+    tts.SYNTH_BACKOFF, backoff = 0.0, tts.SYNTH_BACKOFF
+    try:
+        try:
+            engine.synthesize("Hallowed be Thy Name", "congregation",
+                              Path("/tmp/o.wav"))
+        except RuntimeError as exc:
+            assert "congregation" in str(exc)
+            assert "Hallowed be Thy Name" in str(exc)
+        else:
+            raise AssertionError("should have raised")
+    finally:
+        tts.SYNTH_BACKOFF = backoff

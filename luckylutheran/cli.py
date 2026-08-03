@@ -25,8 +25,11 @@ def _parse_date(value: str | None) -> dt.date:
 
 
 def cmd_script(args: argparse.Namespace) -> int:
-    episode = assemble.build_episode(_parse_date(args.date), args.office)
-    print(episode.transcript())
+    offices = _parse_offices(args.office)
+    if offices is None:
+        return 2
+    for office in offices:
+        print(assemble.build_episode(_parse_date(args.date), office).transcript())
     return 0
 
 
@@ -85,13 +88,32 @@ def _build_one(date: dt.date, office: str, out_dir: Path,
 
 def cmd_build(args: argparse.Namespace) -> int:
     date = _parse_date(args.date)
+    offices = _parse_offices(args.office)
+    if offices is None:
+        return 2
     engine = _get_engine(args.engine)
     if engine is None:
         return 1
-    mp3 = _build_one(date, args.office, Path(args.episodes), engine)
-    print(f"transcript: {Path(args.episodes)}/{date.isoformat()}-{args.office}.md")
-    print(f"audio:      {mp3 if mp3 else '(script-only: engine produced no audio)'}")
-    return 0
+
+    out_dir = Path(args.episodes)
+    failed = []
+    for n, office in enumerate(offices, 1):
+        prefix = f"[{n}/{len(offices)}] " if len(offices) > 1 else ""
+        try:
+            mp3 = _build_one(date, office, out_dir, engine, prefix=prefix)
+        except Exception as exc:
+            # Rendering is resumable — every chunk already rendered is cached
+            # on disk — so say that rather than dumping a traceback after an
+            # hour of GPU time and leaving it looking like lost work.
+            failed.append(office)
+            print(f"\n  {office} FAILED: {exc}", file=sys.stderr)
+            print("  Chunks already rendered are cached; re-run the same "
+                  "command to resume from where it stopped.", file=sys.stderr)
+            continue
+        print(f"  transcript: {out_dir}/{date.isoformat()}-{office}.md")
+        print(f"  audio:      "
+              f"{mp3 if mp3 else '(script-only: engine produced no audio)'}")
+    return 1 if failed else 0
 
 
 def _parse_offices(spec: str) -> list[str] | None:
@@ -247,8 +269,9 @@ def main(argv: list[str] | None = None) -> int:
     def common(p: argparse.ArgumentParser, office: bool = True) -> None:
         p.add_argument("--date", help="ISO date (default: today)")
         if office:
-            p.add_argument("--office", choices=assemble.OFFICES,
-                           default="matins", help="which office to build")
+            p.add_argument("--office", choices=(*assemble.OFFICES, "all"),
+                           default="matins",
+                           help="which office to build, or 'all' for every one")
 
     p = sub.add_parser("script", help="print the episode transcript")
     common(p)

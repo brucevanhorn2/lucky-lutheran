@@ -425,20 +425,51 @@ class GradioDemoTTS(TTSEngine):
         return sorted(k for k in self._voice_files if k.startswith("crowd/"))
 
     def synthesize(self, text: str, speaker: str, out_path: Path) -> Path | None:
+        """Render one chunk, retrying transient server failures.
+
+        The demo server intermittently completes a call with a null payload
+        instead of audio — most often after a long unbroken run, which is
+        exactly when a batch is in the middle of the night. That used to
+        surface as `TypeError: 'NoneType' object is not subscriptable` from
+        deep inside this method and take the whole episode down at 68%.
+
+        A null result is not a permanent failure, so it is retried. If the
+        retries are exhausted the error names the voice and the words, so the
+        offending chunk can be found without reading a traceback."""
+        import time
         import urllib.request
 
         key = speaker if speaker in self._voice_files else resolve_speaker(speaker)
-        result = self._call("/load_prompt_and_gen", [
-            {"path": self._voice_files[key],
-             "meta": {"_type": "gradio.FileData"}},
-            text,
-            "English",
-        ])
-        audio_url = result[0]["url"]
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        with urllib.request.urlopen(audio_url, timeout=120) as resp:
-            out_path.write_bytes(resp.read())
-        return out_path
+        last = ""
+        for attempt in range(1, SYNTH_ATTEMPTS + 1):
+            try:
+                result = self._call("/load_prompt_and_gen", [
+                    {"path": self._voice_files[key],
+                     "meta": {"_type": "gradio.FileData"}},
+                    text,
+                    "English",
+                ])
+                url = result[0]["url"] if result and result[0] else None
+                if not url:
+                    raise RuntimeError("server returned no audio")
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+                with urllib.request.urlopen(url, timeout=120) as resp:
+                    data = resp.read()
+                if len(data) <= 44:          # a WAV header and nothing else
+                    raise RuntimeError(f"server returned {len(data)} bytes")
+                out_path.write_bytes(data)
+                return out_path
+            except (RuntimeError, OSError, KeyError, IndexError, TypeError) as exc:
+                last = f"{type(exc).__name__}: {exc}"
+                if attempt < SYNTH_ATTEMPTS:
+                    print(f"\n  retry {attempt}/{SYNTH_ATTEMPTS - 1} "
+                          f"({key}): {last}", flush=True)
+                    time.sleep(SYNTH_BACKOFF * attempt)
+
+        raise RuntimeError(
+            f"TTS failed after {SYNTH_ATTEMPTS} attempts for voice {key!r}: "
+            f"{last}\n    text: {text[:90]!r}"
+        )
 
     def _upload(self, path: Path) -> str:
         return _gradio_upload(self.url, path)
@@ -496,6 +527,13 @@ def _gradio_call(url: str, endpoint: str, data: list) -> list:
                 raise RuntimeError(
                     f"Gradio {endpoint} failed: {line[5:].strip()}")
     raise RuntimeError(f"Gradio {endpoint}: stream ended without result")
+
+
+# A synthesis call that comes back empty is usually transient — the demo
+# server hiccups under sustained load rather than failing outright. Three
+# attempts with a growing pause costs seconds; not retrying costs an episode.
+SYNTH_ATTEMPTS = 3
+SYNTH_BACKOFF = 4.0          # seconds, multiplied by the attempt number
 
 
 ENGINES = {"null": NullTTS, "qwen3": Qwen3TTS, "remote": Qwen3RemoteTTS,
