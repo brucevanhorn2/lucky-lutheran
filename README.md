@@ -213,6 +213,14 @@ appointed days:
 # On wintermute, once a month while it's on:
 python3 -m luckylutheran batch --days 30            # matins+vespers per day
 python3 -m luckylutheran batch --days 30 --offices all   # all three offices
+
+# The congregation crowd is ~97% of all TTS calls — each phrase unit is
+# synthesized once per voice. Narrow the roster to trade room-size for
+# render time and intelligibility (the lead voice's share of the mix rises
+# as the roster shrinks):
+LUCKY_CROWD=parishioner-01,parishioner-02,parishioner-04 \
+  python3 -m luckylutheran build --office vespers --engine gradio
+LUCKY_CROWD=none python3 -m luckylutheran build ...   # congregation solo
 python3 -m luckylutheran feed --future              # QA feed (everything)
 
 # Anywhere/anytime (needs no GPU): republish the public feed, which only

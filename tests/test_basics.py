@@ -420,3 +420,36 @@ def test_offices_all_expands_to_every_office():
     # unknown names and empty specs are rejected, not silently dropped
     assert _parse_offices("matins,compline") is None
     assert _parse_offices(",") is None
+
+
+def test_crowd_roster_selects_without_deleting(monkeypatch=None):
+    """The crowd roster must narrow the mix by *selection*. The WAVs are
+    nondeterministic one-off designs and are not in git, so trimming the
+    room must never mean deleting a voice."""
+    import os
+    from luckylutheran import tts
+
+    def with_env(value):
+        prev = os.environ.get("LUCKY_CROWD")
+        if value is None:
+            os.environ.pop("LUCKY_CROWD", None)
+        else:
+            os.environ["LUCKY_CROWD"] = value
+        try:
+            return [w.stem for w in tts.crowd_reference_wavs()]
+        finally:
+            os.environ.pop("LUCKY_CROWD", None)
+            if prev is not None:
+                os.environ["LUCKY_CROWD"] = prev
+
+    everyone = with_env(None)
+    if not everyone:
+        return  # no crowd WAVs on this machine; nothing to select from
+
+    three = with_env(",".join(everyone[:3]))
+    assert three == everyone[:3]
+    assert with_env("none") == []
+    assert with_env("  ") == everyone          # blank falls back to the default
+    assert with_env("nobody-here") == []       # unknown names select nothing
+    # ...and selecting never removes anything from disk.
+    assert with_env(None) == everyone

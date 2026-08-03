@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import abc
 import os
+import sys
 from pathlib import Path
 
 ASSETS = Path(__file__).resolve().parent.parent / "assets" / "voices"
@@ -98,10 +99,48 @@ CROWD_DESIGNS = {
 }
 
 
+# Which designed parishioners actually sing. Empty = all of them.
+#
+# This is a roster, not a delete: the WAVs are nondeterministic one-off
+# designs and are not in git, so a removed one cannot be got back. Narrowing
+# the roster is also the single biggest lever on render time — congregation
+# lines are ~97% of all TTS calls, and each phrase unit is synthesized once
+# per voice.
+#
+# Clarity note: the mixer puts the lead (the `congregation` cast voice) at
+# gain 1.0 and every crowd voice at 0.55-0.85, then scales the sum by
+# 1.6/len(parts). So a shorter roster does not merely thin the room — it
+# raises the lead's share of the mix, which is where intelligibility
+# actually comes from.
+#
+# Override per-run without editing this file:
+#   LUCKY_CROWD=parishioner-01,parishioner-02,parishioner-04 python3 -m luckylutheran ...
+#   LUCKY_CROWD=none    # no crowd at all; congregation lines go solo
+CROWD_ROSTER: tuple[str, ...] = ()
+
+
+def crowd_roster() -> tuple[str, ...]:
+    env = os.environ.get("LUCKY_CROWD", "").strip()
+    if not env:
+        return CROWD_ROSTER
+    if env.lower() == "none":
+        return ("",)          # a roster that matches nothing
+    return tuple(s.strip() for s in env.split(",") if s.strip())
+
+
 def crowd_reference_wavs() -> list[Path]:
     if not CROWD_DIR.exists():
         return []
-    return sorted(CROWD_DIR.glob("*.wav"))
+    wavs = sorted(CROWD_DIR.glob("*.wav"))
+    roster = crowd_roster()
+    if not roster:
+        return wavs
+    chosen = [w for w in wavs if w.stem in roster]
+    missing = [n for n in roster if n and n not in {w.stem for w in wavs}]
+    if missing:
+        print(f"warning: crowd roster names no such voice: {', '.join(missing)}",
+              file=sys.stderr)
+    return chosen
 
 
 def resolve_speaker(speaker: str) -> str:
