@@ -1,3 +1,32 @@
+# ============================================================================
+# RETIRED 2026-08-02. This office is no longer built. It was replaced by
+# luckylutheran/templates/evening-suffrages.yaml — the Evening Suffrages of
+# the Common Service Book (1917), a genuinely Lutheran brief evening office.
+#
+# Why it was retired: roughly half of it was Anglican. The opening versicle,
+# both collects, the benediction and the Nunc Dimittis antiphon all came from
+# the 1928 English Deposited Book, because no Lutheran book of the period
+# contains a Compline office at all. That borrowing was defensible on its own
+# terms — the underlying prayers are ancient and public domain — but this
+# project's whole claim is that every word is cited to a Lutheran or
+# pre-Reformation source, and a borrowed office is the first thing an informed
+# critic would find.
+#
+# It is kept, not deleted, because the verification work in it is real and
+# worth preserving. Two pieces in particular:
+#
+#   - The Confession is Lutheran and verified word-for-word against the 1881
+#     Missouri Synod Church Liturgy. It could be carried into the Evening
+#     Suffrages if a confession is ever wanted there. The Anglican collects
+#     could not.
+#   - The reasoning about the absolution — why a layman and a recording must
+#     use the precatory form, not the declarative — is the principle the whole
+#     project runs on, and is restated in SOURCES.md and the README.
+#
+# Do not build from this file. See docs/replace-compline-with-evening-
+# suffrages.md for the full account.
+# ============================================================================
+#
 # The Order of Compline — prayer at the close of the day.
 #
 # No American Lutheran hymnal before TLH (1941) contains a Compline office —

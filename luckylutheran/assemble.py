@@ -17,7 +17,7 @@ import yaml
 from luckylutheran import catechism, collects, lectionary, scripture, speech
 from luckylutheran.churchyear import ChurchDay, church_day
 
-OFFICES = ("matins", "vespers", "compline")
+OFFICES = ("matins", "vespers", "evening-suffrages")
 
 # Default pause between lines within a section, seconds. Versicle and
 # response need room to breathe or the office sounds hard-edited.
@@ -53,10 +53,14 @@ class Episode:
     def transcript(self) -> str:
         """Human-readable transcript (also the podcast show notes)."""
         # "proper" days name the appointed day; "course" days are read in
-        # course through the books and have no proper to name.
+        # course through the books and have no proper to name. "ordinary" is
+        # the invariable office, which is neither — it says the same thing
+        # every night on purpose.
         if self.readings.source == "proper":
             appointed = self.readings.title or self.readings.proper
             provenance = f"Appointed for {appointed}"
+        elif self.readings.source == "ordinary":
+            provenance = "Said every night"
         else:
             provenance = "Read in course"
         lines = [f"# {self.episode_title}", "",
@@ -85,7 +89,8 @@ def _spoken_date(date: dt.date) -> str:
 
 
 def _greeting(office: str) -> str:
-    return "Good evening." if office in ("vespers", "compline") else "Good morning."
+    return ("Good evening." if office in ("vespers", "evening-suffrages")
+            else "Good morning.")
 
 
 def _passage_segments(section: dict, reference: str, kind: str) -> list[Segment]:
@@ -97,7 +102,10 @@ def _passage_segments(section: dict, reference: str, kind: str) -> list[Segment]
     sid, title = section["id"], section["title"]
     if kind == "psalm":
         refs = [r.strip() for r in reference.split(";")]
-        names = " and ".join(refs)
+        # "A and B" for two, "A, B, and C" for three — the night office says
+        # three psalms every time, and "A and B and C" reads as a stammer.
+        names = (" and ".join(refs) if len(refs) < 3
+                 else f"{', '.join(refs[:-1])}, and {refs[-1]}")
         plural = "psalms appointed for this day are" if len(refs) > 1 \
             else "psalm appointed for this day is"
         intro, outro = f"The {plural} {names}.", None

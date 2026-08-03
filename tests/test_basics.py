@@ -359,19 +359,46 @@ def test_pronunciation_respelling_is_spoken_only():
     assert "Mattins" not in transcript
 
 
-def test_compline_is_invariable():
-    """Compline does not take the day's propers. The same psalms are said
-    every night — that is the office's character, not an oversight."""
+def test_evening_suffrages_is_invariable():
+    """The Evening Suffrages does not take the day's propers. The same psalms
+    are said every night — that is the office's character, not an oversight.
+    Its rubric calls for "a Psalm" without appointing one; we appoint the
+    historic night psalms of the Rule of St Benedict, ch. 18."""
     from luckylutheran import lectionary
 
-    a = lectionary.readings_for(dt.date(2026, 1, 1), "compline")
-    b = lectionary.readings_for(dt.date(2026, 7, 4), "compline")
+    a = lectionary.readings_for(dt.date(2026, 1, 1), "evening-suffrages")
+    b = lectionary.readings_for(dt.date(2026, 7, 4), "evening-suffrages")
     assert (a.psalm, a.reading) == (b.psalm, b.reading)
     assert a.source == "ordinary"
     assert a.proper is None
     assert "Psalm 4" in a.psalm and "Psalm 91" in a.psalm and "Psalm 134" in a.psalm
 
-    # ...and it must differ from Vespers, which does take the propers.
+    # ...and it must differ from Vespers, which does take the propers. This is
+    # the whole reason it cannot simply reuse the day's psalm: `_psalm_for` is
+    # keyed on the date, so both offices would draw the same one every night.
     vespers = lectionary.readings_for(dt.date(2026, 1, 1), "vespers")
     assert vespers.reading != a.reading
     assert vespers.psalm != a.psalm
+
+
+def test_no_office_is_anglican_by_accident():
+    """Every built office must have a template that ships with the package.
+
+    The retired Compline order lives in docs/retired/ and must NOT be
+    loadable as an office — that borrowing is the thing this replacement
+    removed. See docs/replace-compline-with-evening-suffrages.md."""
+    from importlib import resources
+
+    from luckylutheran import assemble
+
+    templates = resources.files("luckylutheran") / "templates"
+    shipped = {p.name for p in templates.iterdir() if p.name.endswith(".yaml")}
+    assert shipped == {f"{o}.yaml" for o in assemble.OFFICES}
+    assert "compline" not in assemble.OFFICES
+
+    try:
+        assemble.build_episode(dt.date(2026, 8, 2), "compline")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("compline is still buildable")

@@ -1,0 +1,243 @@
+# The Evening Suffrages — the brief evening office of the Common Service Book
+# of the Lutheran Church (Philadelphia, 1917/18), pp. 190-191. archive.org item
+# `commonserviceboo00phil`, unrestricted scan; pre-1930 US publication, so
+# automatically public domain.
+#
+# This office REPLACES the former Compline order, which was roughly half
+# Anglican: no Lutheran book of the period contains a Compline office at all
+# (confirmed absent from the 1868/1893 Church Book, the 1917/18 Common Service
+# Book, and the 1881 Missouri Synod Church Liturgy), so its opening versicle,
+# both collects, benediction and Nunc Dimittis antiphon had been taken from
+# the 1928 English Deposited Book. The retired order is kept, with all its
+# citations, at docs/retired/compline.yaml.
+#
+# The Evening Suffrages needs no such borrowing. It is a complete, self-
+# contained Lutheran brief evening office, and its own rubric authorises
+# exactly the use this project makes of it:
+#
+#   ¶ The Evening Suffrages may be said at Vespers, or in the Evening Prayer
+#     of the Household, or alone as a brief Evening Office.
+#   ¶ When said at Vespers, the Evening Suffrages shall immediately follow the
+#     Canticle.
+#   ¶ When used as a special Evening Office, the Evening Suffrages shall
+#     begin: V. In the Name of the Father, and of the Son, and of the Holy
+#     Ghost. R. Amen. After the Creed shall follow a Psalm, a brief Lesson
+#     with the Response, and a Hymn; and after the Benedicamus shall be said
+#     this Benediction: The Blessing of Almighty God, the Father, the Son, and
+#     the Holy Ghost, be with you all. R. Amen.
+#
+# The order below is that third form — the special Evening Office — with the
+# Psalm, Lesson and Hymn placed after the Creed and the Benediction taken from
+# the rubric, exactly as directed. Every line is transcribed from the page,
+# including the book's own capitalization, which is why "Who art in heaven"
+# and "Hallowed be Thy Name" differ in case from the Vespers file: that file
+# follows the 1912 ELHB, this one follows the 1917 CSB.
+#
+# Two insertions are ours and are marked where they occur: the spoken welcome
+# (which no printed office has, and which every office in this project
+# carries) and the daily catechism portion. Nothing else is added, moved or
+# reworded.
+#
+# The Common Service Book prints the matching **Morning Suffrages** on p. 189
+# with the identical rubric, mutatis mutandis. If a brief morning office is
+# ever wanted, it is already sourced.
+
+office: evening-suffrages
+title: The Evening Suffrages
+tagline: "A brief evening office for the household"
+
+sections:
+  # OURS, not from the book — the spoken framing every office here carries.
+  # The phrase "a brief Evening Office" is the rubric's own.
+  - id: greeting
+    title: Welcome
+    lines:
+      - speaker: liturgist
+        text: >-
+          {greeting} These are the Evening Suffrages, a brief evening office,
+          for {date_spoken}, {season_phrase}.
+    pause_after: 2.0
+
+  # The rubric's appointed opening for the office said alone.
+  - id: opening
+    title: Opening
+    lines:
+      - speaker: liturgist
+        text: >-
+          In the Name of the Father, and of the Son, and of the Holy Ghost.
+      - {speaker: congregation, text: "Amen."}
+    pause_after: 1.5
+
+  # VERIFIED: the Kyrie is DOUBLED here — every line said twice. This settles
+  # the question SOURCES.md has carried since the first pass, where the 1912
+  # ELHB's Communion order says each line once while its Vespers order doubles
+  # them. The 1917 CSB is a third witness and doubles them, so doubling is the
+  # better-attested form for the evening offices.
+  - id: kyrie
+    title: The Kyrie
+    lines:
+      - {speaker: liturgist, text: "Lord, have mercy upon us."}
+      - {speaker: congregation, text: "Lord, have mercy upon us."}
+      - {speaker: liturgist, text: "Christ, have mercy upon us."}
+      - {speaker: congregation, text: "Christ, have mercy upon us."}
+      - {speaker: liturgist, text: "Lord, have mercy upon us."}
+      - {speaker: congregation, text: "Lord, have mercy upon us."}
+    pause_after: 1.5
+
+  # "¶ Then shall all say:" — the book gives the Lord's Prayer and the Creed
+  # together under that one rubric, both said by all.
+  - id: lords_prayer
+    title: The Lord's Prayer
+    lines:
+      - speaker: all
+        text: >-
+          Our Father, Who art in heaven; Hallowed be Thy Name; Thy kingdom
+          come; Thy will be done on earth as it is in heaven; Give us this day
+          our daily bread; And forgive us our trespasses, as we forgive those
+          who trespass against us; And lead us not into temptation; But
+          deliver us from evil; For Thine is the kingdom, and the power, and
+          the glory, for ever and ever. Amen.
+    pause_after: 1.5
+
+  # Note "the holy Christian Church" — the Lutheran rendering of *catholicam*,
+  # as the CSB prints it. Not changed to "catholic".
+  - id: creed
+    title: The Apostles' Creed
+    lines:
+      - speaker: all
+        text: >-
+          I believe in God the Father Almighty, Maker of heaven and earth.
+          And in Jesus Christ His only Son, our Lord; Who was conceived by the
+          Holy Ghost, Born of the Virgin Mary; Suffered under Pontius Pilate,
+          Was crucified, dead, and buried; He descended into hell; The third
+          day He rose again from the dead; He ascended into heaven, And
+          sitteth on the right hand of God the Father Almighty; From thence He
+          shall come to judge the quick and the dead. I believe in the Holy
+          Ghost; The holy Christian Church, the Communion of Saints; The
+          Forgiveness of sins; The Resurrection of the body; And the Life
+          everlasting. Amen.
+    pause_after: 2.0
+
+  # "After the Creed shall follow a Psalm, a brief Lesson with the Response,
+  # and a Hymn." The rubric appoints the slots but not their contents; see
+  # lectionary.NIGHT_PSALMS for what fills them and why.
+  - id: psalm
+    title: Psalmody
+    slot: psalm
+    pause_after: 2.0
+
+  - id: reading
+    title: The Lesson
+    slot: reading
+    pause_after: 1.0
+
+  # VERIFIED: "the Response" the rubric names is the one printed in the CSB's
+  # own order of Vespers, p. 42, under The Lesson: "¶ The Scripture Lessons
+  # shall then be read. After each Lesson shall be sung or said the Response.
+  # V. O Lord, have mercy upon us. R. Thanks be to God."
+  - id: response
+    title: The Response
+    lines:
+      - {speaker: liturgist, text: "O Lord, have mercy upon us."}
+      - {speaker: congregation, text: "Thanks be to God."}
+    pause_after: 2.0
+
+  - id: hymn
+    title: Office Hymn
+    slot: hymn
+    pause_after: 2.0
+
+  # OURS, not from the book — the same daily catechism portion the other two
+  # offices carry. Placed here, after the Hymn, where Vespers puts it.
+  - id: devotion
+    title: "Daily Catechism"
+    slot: catechism
+    pause_after: 2.0
+
+  # The Suffrages proper, from which the office takes its name.
+  - id: suffrages
+    title: The Suffrages
+    lines:
+      - {speaker: liturgist, text: "Blessed art Thou, O Lord God of our fathers:"}
+      - speaker: congregation
+        text: "And greatly to be praised and glorified, forever."
+      - speaker: liturgist
+        text: "Bless we the Father, and the Son, and the Holy Ghost:"
+      - {speaker: congregation, text: "We praise and magnify Him forever."}
+      - speaker: liturgist
+        text: "Blessed art Thou, O Lord, in the firmament of heaven:"
+      - speaker: congregation
+        text: >-
+          And greatly to be praised, and glorified, and highly exalted
+          forever.
+      - speaker: liturgist
+        text: "The Almighty and Merciful Lord, bless and preserve us."
+      - {speaker: congregation, text: "Amen."}
+      - {speaker: liturgist, text: "Vouchsafe, O Lord, this night:"}
+      - {speaker: congregation, text: "To keep us without sin."}
+      - {speaker: liturgist, text: "O Lord, have mercy upon us."}
+      - {speaker: congregation, text: "Have mercy upon us."}
+      - {speaker: liturgist, text: "O Lord, let Thy mercy be upon us:"}
+      - {speaker: congregation, text: "As our trust is in Thee."}
+      - {speaker: liturgist, text: "Hear my prayer, O Lord:"}
+      - {speaker: congregation, text: "And let my cry come unto Thee."}
+    pause_after: 1.5
+
+  - id: salutation
+    title: Salutation
+    lines:
+      - {speaker: liturgist, text: "The Lord be with you."}
+      - {speaker: congregation, text: "And with thy spirit."}
+      - {speaker: liturgist, text: "Let us pray."}
+    pause_after: 1.5
+
+  # "¶ Then shall be said the Collect for the Day, and any other suitable
+  # Collects; after which may be said the Prayer here following."
+  - id: collect_of_day
+    title: Collect of the Day
+    slot: collect_of_day
+    pause_after: 1.5
+
+  # The Prayer the book prints here is Luther's Evening Prayer from the Small
+  # Catechism, in the plural — "we", "us", "our bodies and souls" — as a
+  # household says it together. Vespers carries the same prayer in Luther's
+  # own singular, from the Concordia Triglotta (1921). The two are not a
+  # duplication to be resolved: they are the prayer as the catechism teaches
+  # it privately and as the office says it corporately, and this file follows
+  # its own source.
+  - id: evening_prayer
+    title: "The Evening Prayer"
+    lines:
+      - speaker: all
+        text: >-
+          We give thanks unto Thee, Heavenly Father, through Jesus Christ, Thy
+          dear Son, that Thou hast this day so graciously protected us, and we
+          beseech Thee to forgive us all our sins, and the wrong which we have
+          done, and by Thy great mercy defend us from all the perils and
+          dangers of this night. Into Thy hands we commend our bodies and
+          souls, and all that is ours. Let Thy holy angel have charge
+          concerning us, that the wicked one have no power over us. Amen.
+    pause_after: 2.0
+
+  - id: benedicamus
+    title: Benedicamus
+    lines:
+      - {speaker: liturgist, text: "Bless we the Lord."}
+      - {speaker: congregation, text: "Thanks be to God."}
+    pause_after: 1.0
+
+  # The book prints 2 Corinthians 13:14 ("The Grace of our Lord Jesus
+  # Christ...") as the benediction of the Suffrages said after Vespers, but
+  # the rubric appoints THIS blessing when the office is said alone — which is
+  # how it is said here. So the 2 Corinthians text does not appear in this
+  # office at all, and the "our Lord" / "the Lord" question it would have
+  # raised against Matins and Vespers does not arise.
+  - id: benediction
+    title: Benediction
+    lines:
+      - speaker: liturgist
+        text: >-
+          The Blessing of Almighty God, the Father, the Son, and the Holy
+          Ghost, be with you all.
+      - {speaker: congregation, text: "Amen."}
+    pause_after: 3.0

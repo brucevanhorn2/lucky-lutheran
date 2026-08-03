@@ -20,8 +20,8 @@ PODCAST = {
     "title": "The Daily Office",
     "description": (
         "A ten-minute daily office after the historic Lutheran liturgy — "
-        "Matins in the morning, Vespers at evening, and Compline at the "
-        "close of the day — with the "
+        "Matins in the morning, Vespers at evening, and the Evening "
+        "Suffrages at the close of the day — with the "
         "psalm appointed for the day, a lesson, a portion of Luther's Small "
         "Catechism, and the collect of the season. Drawn entirely from "
         "public-domain sources. Read by synthetic voices."
@@ -42,7 +42,7 @@ PODCAST = {
 # Episodes appear in the feed at these local times on their appointed day
 # (batches are rendered weeks ahead; pubDate must be the office's day, not
 # the render day).
-PUBLISH_HOUR = {"matins": 5, "vespers": 17, "compline": 20}
+PUBLISH_HOUR = {"matins": 5, "vespers": 17, "evening-suffrages": 20}
 
 
 def write_feed(episodes_dir: Path, include_future: bool = False) -> Path:

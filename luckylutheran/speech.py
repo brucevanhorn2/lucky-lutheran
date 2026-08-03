@@ -37,8 +37,12 @@ PRONUNCIATION = {
     # a spelling pronunciation and is not how the office is named by anyone
     # who prays it.
     r"\bMatins\b": "Mattins",
-    # "KOM-plin", not "com-PLINE".
+    # "KOM-plin", not "com-PLINE". The Compline office was retired in favour
+    # of the Evening Suffrages (see docs/retired/compline.yaml), but the word
+    # still occurs in show notes and prose, so the respelling stays.
     r"\bCompline\b": "Complin",
+    # "SUFF-ra-jez" — not "suff-RAY-ges", and not the voting sense.
+    r"\bSuffrages\b": "SUFF-ra-jez",
     # "BEN-eh-dih-site" / "beh-NED-ih-kah-mus" — Latin-derived office names a
     # general English voice reliably mangles.
     r"\bBenedicamus\b": "Beneh-DEE-kah-mus",

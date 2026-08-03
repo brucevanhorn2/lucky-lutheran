@@ -8,7 +8,7 @@ Apple Podcasts Connect and the show page, which allow more room.
 
 ## Short (feed `<description>`, ~50 words)
 
-A ten-minute daily office after the historic Lutheran liturgy — Matins in the morning, Vespers at evening, and Compline at the close of the day — with the psalm appointed for the day, a lesson, a portion of Luther's Small Catechism, and the collect of the season. Drawn entirely from public-domain sources. Read by synthetic voices.
+A ten-minute daily office after the historic Lutheran liturgy — Matins in the morning, Vespers at evening, and the Evening Suffrages at the close of the day — with the psalm appointed for the day, a lesson, a portion of Luther's Small Catechism, and the collect of the season. Drawn entirely from public-domain sources. Read by synthetic voices.
 
 ---
 
@@ -16,7 +16,7 @@ A ten-minute daily office after the historic Lutheran liturgy — Matins in the 
 
 Morning and evening prayer, for the household.
 
-Each day this feed carries a short office — Matins at the start of the day, Vespers at evening, and Compline last of all — following the historic Lutheran liturgy: the psalm appointed for the day, a lesson from the one-year lectionary, a portion of Luther's Small Catechism, and the collect of the season.
+Each day this feed carries a short office — Matins at the start of the day, Vespers at evening, and the Evening Suffrages last of all — following the historic Lutheran liturgy: the psalm appointed for the day, a lesson from the one-year lectionary, a portion of Luther's Small Catechism, and the collect of the season.
 
 **What this is.** Daily prayer as a layman leads it in his own house, with his family. It is not a church service and it is not a substitute for one.
 
@@ -25,10 +25,18 @@ That is not a limitation but the point. The Small Catechism was written for exac
 One consequence you will notice: there is no absolution here. Announcing forgiveness in the stead of Christ belongs to a called and ordained pastor, and neither a layman nor a recording can do it. Where the older books print the minister's declaration, this office keeps the ancient prayer form instead
 — *"The almighty and merciful Lord grant us pardon, forgiveness, and remission of all our sins."*
 
-Compline does not change. Where Matins and Vespers follow the day's psalm and
-lesson, Compline says the same psalms every night — 4, 91 and 134 — with the
-same short reading and the Song of Simeon. That is the character of the
-office: it is meant to be known by heart and said in the dark, without a book.
+The last office does not change. Where Matins and Vespers follow the day's
+psalm and lesson, the Evening Suffrages says the same psalms every night — 4,
+91 and 134, the set appointed in the Rule of St Benedict around the year 530 —
+with the same short reading. That is the character of an office said at the
+close of the day: it is meant to be known by heart and said in the dark,
+without a book.
+
+It is called the Evening Suffrages because that is its name in the book it
+comes from, the *Common Service Book of the Lutheran Church* of 1917, which
+prints it with this direction: *"The Evening Suffrages may be said at Vespers,
+or in the Evening Prayer of the Household, or alone as a brief Evening
+Office."* The last of those is how it is said here.
 
 **Why it sounds old.** Every word is drawn from public-domain sources: the King James Version for Bible verses, the *Common Service Book of the Lutheran Church* (1917), the *Concordia Triglotta* (1921), the Missouri Synod's *Church Liturgy* (1881), and the readings of the historic one-year lectionary. Nothing has been paraphrased or modernized.
 

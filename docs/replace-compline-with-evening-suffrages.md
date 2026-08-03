@@ -1,7 +1,10 @@
 # Replace Compline with the Evening Suffrages
 
-**Status: planned, not started.** `compline.yaml` is still the live third
-office. Read this before touching it.
+**Status: DONE, 2026-08-02.** The third office is now
+`luckylutheran/templates/evening-suffrages.yaml`. The retired Compline order
+is at `docs/retired/compline.yaml`. This file is kept as the record of why the
+change was made and how the text was obtained — see "How it was actually
+extracted" at the end, which supersedes the earlier progress notes.
 
 ## Why
 
@@ -64,93 +67,123 @@ book's words.
 10. The Benediction: "The Blessing of Almighty God, the Father, the Son, and
     the Holy Ghost, be with you all. ℟. Amen."
 
-## Steps
+## What was done
 
-1. **Extract the full order** from the page images. It begins around flat-text
-   offset ~found via `grep -o -i "evening suffrages may be said" csbA_flat.txt`;
-   locate the printed page, then use the hybrid OCR recipe (full page
-   `--psm 1` for blackletter headings, cropped columns `--psm 4` for body) as
-   documented in `lectionary-migration/README.md`. Verify every scripture
-   citation against the local KJV, as always.
-2. **Write `luckylutheran/templates/evening-suffrages.yaml`** in the same shape
-   as the existing templates. Keep the `psalm`, `reading` and `hymn` slots —
-   the rubric explicitly calls for a Psalm, a brief Lesson and a Hymn, so this
-   office *is* variable, unlike Compline.
-3. **Retire `compline.yaml`.** Do not delete it — move it to `docs/retired/`
-   with a header explaining why, so the work and its citations survive.
-4. **Update the code**: `assemble.OFFICES`, `feed.PUBLISH_HOUR`,
-   `churchyear`/`lectionary` office checks, and `lectionary.readings_for` —
-   note the invariable-Compline special case added 2026-08-02 must go, since
-   the Evening Suffrages take a psalm and lesson.
-5. **Update the prose**: `feed.PODCAST["description"]`, the artwork subtitle
-   ("MATINS · VESPERS · COMPLINE"), `docs/show-description.md`, the README, and
-   SOURCES.md.
-6. **Decide the name.** "The Evening Suffrages" is what the book calls it.
-   Do not call it Compline — that is the borrowing this change exists to
-   remove.
+All six steps below are complete. Two of them turned out differently than
+planned, and the differences are the interesting part.
 
-## Two things this also settles
+1. ✅ **Extracted the full order** from scan pages n193-n196 — but *not* with
+   the OCR recipe this plan called for. See the next section: OCR is the wrong
+   tool for this page layout, and the recipe here was the thing that stalled
+   the first attempt.
+2. ✅ **Wrote `luckylutheran/templates/evening-suffrages.yaml`.** The `psalm`,
+   `reading` and `hymn` slots are kept, but the guess in the original step —
+   "so this office *is* variable, unlike Compline" — was **wrong**. The rubric
+   calls for a Psalm and a brief Lesson without appointing either, so the
+   choice falls to us, and making it variable would have had Vespers and this
+   office drawing the identical psalm every single night (`_psalm_for` is
+   keyed on the date). The office is invariable, and now has a citation for
+   the set it says.
+3. ✅ **Retired `compline.yaml`** to `docs/retired/`, with a header explaining
+   why and what in it is worth keeping.
+4. ✅ **Updated the code**: `assemble.OFFICES`, `assemble._greeting`,
+   `feed.PUBLISH_HOUR`, `feed.PODCAST`, `lectionary.readings_for` and its
+   `NIGHT_PSALMS`/`NIGHT_LESSON` (the old invariable-Compline special case
+   was renamed and given a source, not removed — see step 2), plus a
+   `Suffrages` respelling in `speech.PRONUNCIATION`. Two transcript fixes fell
+   out of it: `source == "ordinary"` was printing "Read in course", and three
+   psalms read as "A and B and C".
+5. ✅ **Updated the prose**: `feed.PODCAST["description"]`, the artwork
+   subtitle (now "MATINS · VESPERS · SUFFRAGES"), `docs/show-description.md`,
+   the README and SOURCES.md. The artwork had **no generator script** — it was
+   built once by hand and nothing could rebuild it — so `tools/artwork_subtitle.py`
+   was written to re-letter the subtitle band in place, matching the sampled
+   colours, font and metrics rather than reconstructing the composition.
+6. ✅ **Named it "The Evening Suffrages"**, which is what the book calls it.
 
-**The Kyrie line-count.** SOURCES.md has carried a ⚠️ since the first pass
-because the 1912 ELHB's Communion order says each Kyrie line once while its
-Vespers order doubles them. The Evening Suffrages **doubles** them — "Lord,
-have mercy upon us. Lord, have mercy upon us. Christ, have mercy upon us…" —
-which is a third witness and resolves the flag for the evening offices.
+## How it was actually extracted — and the lesson
 
-**The noon office.** Already declined and recorded in SOURCES.md; this plan
-does not revive it.
+**OCR was the wrong tool and was abandoned.** These pages are two-column body
+text with a *full-width rubric band running underneath*, so every column crop
+spliced the two registers together and produced text that looked continuous
+but was not — e.g. "Che Hlorning : O Lord, let there be peace... The Morning
+Suffrages may be said ai Matins" is two different registers joined mid-
+sentence. The first attempt at this migration stalled there, trying to fix the
+crop geometry.
 
-## What to do about the retired Compline
+The fix was to stop cropping. The page images were downscaled 2:1 from the
+JP2s and **read directly** — at 1077×1600 the CSB's body type is comfortably
+legible, blackletter headings included, and a page read has no splice failure
+mode at all because nothing is being reassembled. The whole office came off
+four pages in two reads, with the rubrics, the italic responses and the
+paragraph marks all correctly attached to what they govern.
 
-Its Confession is genuinely Lutheran (1881 Missouri Synod, verified) and could
-be carried into the new office if a confession is wanted there. The Anglican
-collects should not be.
+    unzip -o -j csb_jp2.zip "commonserviceboo00phil_jp2/commonserviceboo00phil_0194.jp2"
+    python3 -c "from PIL import Image; im=Image.open('...0194.jp2'); \
+        im.resize((im.width//2, im.height//2), Image.LANCZOS).save('p194.png')"
+    # then read p194.png directly
 
----
+**Use this for any page whose layout is not a plain single column.** OCR earns
+its keep on long uniform tables — the Table of Lessons, the psalm table, the
+propers — where there is far too much text to read and the shape is regular.
+It is a liability on a page with mixed registers. The known-bad column crops
+from the first attempt were deleted rather than kept, so nobody trusts them
+later.
 
-## Extraction progress (2026-08-02) — page located, text not yet complete
+### Pages
 
-**The office is on scan pages n193-n196** (printed ~189-192). Running headers:
-n193 "The Morning Suffrages", n194 "General Prayers", n195 "The Bidding
-Prayer" — the Morning and Evening Suffrages sit adjacent, with the Evening
-rubric beginning on n194.
+| scan | printed | contents |
+|---|---|---|
+| n193 | 189 | end of the Morning Prayers; **The Morning Suffrages** begin |
+| n194 | 190 | Morning Suffrages continue; **The Evening Suffrages** begin — rubric, Kyrie, Lord's Prayer, Creed |
+| n195 | 191 | Creed concludes; **the Suffrages proper**, salutation, collect rubric, the Evening Prayer, Benedicamus, Benediction |
+| n196 | 192 | General Prayers — past the end of the office |
 
-Column crops of n193 and n194 are saved in `docs/evening-suffrages-extract/`.
+The Response the rubric names but does not print was taken from the CSB's own
+order of **Vespers, printed p. 42 (scan n47)**.
 
-### The layout trap on these pages
+## What the extraction settled
 
-Unlike the Propers, these pages are **two-column body text with a full-width
-rubric block running underneath**. A plain column crop therefore interleaves
-the rubric with the body and produces text that looks continuous but is not —
-e.g. "Che Hlorning : O Lord, let there be peace... The Morning Suffrages may
-be said ai Matins" is two different registers spliced together.
+**The Kyrie line-count.** The Evening Suffrages **doubles** every line. That is
+a third witness, joining the 1912 ELHB's Vespers order against the ELHB's
+Communion order. `evening-suffrages.yaml` doubles accordingly. Matins and
+Vespers still say each line once and were **not** changed — that alters two
+offices already rendered and heard, so it is recorded in SOURCES.md as the one
+open decision rather than made silently.
 
-Extract the rubric band and the body columns **separately**, by vertical
-position, before OCR. Do not trust a single-pass column crop here.
+**The benediction.** No reconciliation was needed after all. The book prints
+2 Corinthians 13:14 ("The Grace of **our** Lord Jesus Christ…") for the
+Suffrages said *after Vespers*, but the rubric appoints a different blessing
+when the office is said *alone* — "The Blessing of Almighty God, the Father,
+the Son, and the Holy Ghost, be with you all." That is the form used, so the
+"our Lord" / "the Lord" question against Matins and Vespers never arises here.
 
-### Confirmed so far
+**Two unrelated flags closed.** Reading CSB p. 42 for the Response also settled
+both remaining ⚠️ items in SOURCES.md: the **incense versicle** is printed
+**singular** there, exactly as `vespers.yaml` has it, and the **Responsory**
+turns out to be a book-to-book recension difference (CSB vs. 1912 ELHB) with
+both forms PD-attested, not an office-specific one as earlier guessed.
 
-The Morning Suffrages carry the identical rubric, mutatis mutandis — "may be
-said at Matins, or in the Morning Prayer of the Household, or alone as a brief
-Morning Office." So the Common Service Book provides a matched household pair,
-morning and evening. Worth knowing: if the Evening Suffrages replace Compline,
-the **Morning Suffrages** are the natural short-form Matins, should a brief
-option ever be wanted.
+**The Psalm and Lesson.** The rubric calls for "a Psalm, a brief Lesson with
+the Response, and a Hymn" and appoints none of them. It could not be the day's
+psalm — `_psalm_for` is keyed on the date, so Vespers and this office would
+draw the identical psalm every night. It takes the historic night psalms
+instead, cited to the **Rule of St Benedict, ch. 18** (verified against three
+independent PD English editions), which is pre-Reformation Western patrimony
+rather than an Anglican borrowing — the whole distinction this change exists
+to draw.
 
-Both end with the same Benedicamus and Benediction:
+## What was decided and not done
 
-> Bless we the Lord. / Thanks be to God.
->
-> The Grace of our Lord Jesus Christ, and the Love of God, and the Communion
-> of the Holy Ghost, be with you all. Amen.
+**The Morning Suffrages** (p. 189) carry the identical rubric, mutatis
+mutandis — "may be said at Matins, or in the Morning Prayer of the Household,
+or alone as a brief Morning Office." The CSB therefore supplies a matched
+household pair. If a brief morning office is ever wanted, it is already
+sourced and the extraction method above applies unchanged.
 
-Note that benediction is 2 Corinthians 13:14 — the same text already used in
-Matins and Vespers, and already verified. It reads "our Lord Jesus Christ"
-here; the Matins/Vespers files were corrected to "the Lord Jesus Christ" from
-the 1912 ELHB and the KJV. Reconcile deliberately rather than silently.
+**The retired Compline's Confession** is genuinely Lutheran (1881 Missouri
+Synod, verified) and could be carried into the Evening Suffrages if a
+confession is ever wanted there. The Anglican collects should not be.
 
-### Next step
-
-Re-OCR n193-n196 with the rubric band and body columns separated, assemble the
-full Evening Suffrages order, then proceed with steps 2-6 above.
-
+**The noon office** was already declined and recorded in SOURCES.md; this
+change did not revive it.

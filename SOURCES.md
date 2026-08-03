@@ -31,7 +31,7 @@ extraction record.
 
 | Part | Source | Status |
 |---|---|---|
-| Sundays & festivals | The historic one-year lectionary, from the Propers of the *Common Service Book of the Lutheran Church* (1917), archive.org `commonserviceboo00phil` — already this repo's verified source for Matins, Vespers, the collects and the Compline confession. `data/temporale.yaml` (71 propers, Advent 1 – Trinity 27) and `data/sanctorale.yaml` (23 fixed festivals). | ✅ Verified — all 188 citations resolve against the local KJV; alignment confirmed against page scans at four points across the book. |
+| Sundays & festivals | The historic one-year lectionary, from the Propers of the *Common Service Book of the Lutheran Church* (1917), archive.org `commonserviceboo00phil` — already this repo's verified source for Matins, Vespers, the collects and the Evening Suffrages. `data/temporale.yaml` (71 propers, Advent 1 – Trinity 27) and `data/sanctorale.yaml` (23 fixed festivals). | ✅ Verified — all 188 citations resolve against the local KJV; alignment confirmed against page scans at four points across the book. |
 | Weekdays | Continuous course reading — Gospels in the morning, Acts and the Epistles in the evening, a chapter a day. **No source needed:** this is a *method*, and 17 USC 102(b) excludes methods from copyright outright. It also mirrors Luther's own practice in the *Deutsche Messe* (1526), which assigned books to weekdays and worked through them in course. | ✅ Not a compilation at all — a stronger footing than any "facts aren't copyrightable" claim. |
 | Psalms | `data/proper_psalms.yaml`, the CSB's **Table of Proper Psalms for Festivals and Seasons** (printed p.313). 30 seasons and occasions, 267 references. | ✅ Verified — all in range 1–150, cross-read twice (cropped OCR and a direct read of the page). |
 
@@ -78,22 +78,26 @@ hand: the Small Catechism's table of daily prayers, whose blessing before meat
 devotion. That would be a Lutheran table prayer, not a monastic hour, and
 should be described as such.
 
-### 🚧 Compline is being replaced — it is half Anglican
+## ✅ Compline was replaced — the third office is now Lutheran
 
-**Compline's opening versicle, both collects, benediction and Nunc Dimittis
-antiphon come from the 1928 Deposited Book, which is Anglican.** They were
-taken because no Lutheran book of the period contains a Compline office at all.
-The prayers are ancient Western texts predating the Reformation, so the
-borrowing is defensible — but this project's whole claim is that everything is
-cited, and a borrowed office is the first thing an informed critic would find.
+**Done 2026-08-02.** Compline's opening versicle, both collects, benediction
+and Nunc Dimittis antiphon came from the 1928 Deposited Book, which is
+Anglican. They were taken because no Lutheran book of the period contains a
+Compline office at all. The prayers are ancient Western texts predating the
+Reformation, so the borrowing was defensible — but this project's whole claim
+is that everything is cited, and a borrowed office is the first thing an
+informed critic would find.
 
-A Lutheran replacement exists in the book already used for everything else: the
-Common Service Book's **Evening Suffrages**, whose own rubric appoints it "in
-the Evening Prayer of the Household, or alone as a brief Evening Office."
+The replacement was in the book already used for everything else: the Common
+Service Book's **Evening Suffrages** (1917, pp. 190-191), whose own rubric
+appoints it "at Vespers, or in the Evening Prayer of the Household, or alone
+as a brief Evening Office" — this project's premise stated in the source
+book's words. It is now `luckylutheran/templates/evening-suffrages.yaml`; the
+retired order is kept, with all its citations, at `docs/retired/compline.yaml`.
 
-See **[docs/replace-compline-with-evening-suffrages.md](docs/replace-compline-with-evening-suffrages.md)**
-for the full order and the migration steps. Until that lands, `compline.yaml`
-is still live and still carries the borrowing.
+See the **Evening Suffrages** section below, and
+**[docs/replace-compline-with-evening-suffrages.md](docs/replace-compline-with-evening-suffrages.md)**
+for the account of the change.
 
 ## Matins
 
@@ -103,7 +107,8 @@ is still live and still carries the borrowing.
 | PD basis | Both are US publications from before 1930 — automatically public domain under the rolling PD cutoff. |
 | Status | ✅ Verified: opening versicles, invitatory, Venite, Te Deum, salutation, Lord's Prayer, Benedicamus, Collect for Grace, Benediction (fixed: "the Lord Jesus Christ" not "our Lord Jesus Christ", confirmed via 2 Cor. 13:14 KJV). |
 | | ✅ **Luther's Morning Prayer — now verified** against the English column of *Concordia Triglotta* (CPH, 1921), Small Catechism Appendix I, archive.org `concordiatriglot00unse`, unrestricted, pre-1930. The earlier flag was correct: fixed to "I pray Thee **to keep me**" (was "that Thou wouldst keep me") and "from sin and **all** evil" (was "every evil"). |
-| | ⚠️ Unverified: the Responsory ("But Thou, O Lord, have mercy upon us...") — the Vespers-order and Matins-order predecessor texts disagree with each other. The Kyrie line-count (single vs. doubled) — the Communion order and Vespers order in the 1912 ELHB disagree with each other. |
+| | ✅ **Responsory — no longer unverified, but a choice.** The disagreement is real and both sides are public domain: the 1912 ELHB's Vespers order has "But Thou, O Lord, have mercy upon us / Thanks be to Thee, O Lord", while the 1917 CSB prints "℣. O Lord, have mercy upon us. ℟. Thanks be to God." — and, checked directly on p. 42 (2026-08-02), the CSB uses that same form in **Vespers** as well as Matins. So the earlier guess that the wording might be office-specific is wrong for the CSB; it is a book-to-book recension difference. Ours follows the ELHB, which is a real PD source. Nothing to fix; the only open question is which book to follow, and that is a taste call, not a rights one. |
+| | ⚠️ **Kyrie line-count — evidence now favours doubling, and our files do not.** The 1917 CSB's Evening Suffrages (p. 190) doubles every line, joining the 1912 ELHB's Vespers order against the ELHB's Communion order. That is two witnesses to one for the evening offices. `evening-suffrages.yaml` doubles them accordingly; `matins.yaml` and `vespers.yaml` still say each line once. **This is a live inconsistency awaiting a decision** — not a copyright question, and not changed unilaterally, because it alters two offices already rendered and heard. |
 | Not consulted | TLH (1941) itself — only a copyright-restricted archive.org lending scan (`bwb_T4-APS-822`, `access-restricted-item: true`) was found; abandoned rather than circumvented. |
 
 ## Vespers
@@ -113,20 +118,29 @@ is still live and still carries the borrowing.
 | Primary sources | Same two predecessor editions as Matins (1912 ELHB, 1917/18 Common Service Book). |
 | Status | ✅ Verified: opening versicles, Magnificat (fixed: "holpen" not "helped", confirmed via Luke 1:54 KJV + both period sources), Nunc Dimittis, Lord's Prayer, salutation, Benedicamus, Collect for Peace (fixed ending, confirmed against the Common Service Book's own text), Benediction (same fix as Matins). |
 | | ✅ **Luther's Evening Prayer — now verified** against the same Triglotta Appendix I. The earlier flag was correct: fixed to "I pray Thee **to forgive** me all my sins" (was "that Thou wouldst forgive"). |
-| | ⚠️ Unverified: Responsory, Kyrie line-count (same cross-office disagreement as Matins), the incense versicle ("prayer" singular vs. "prayers" plural — kept singular since it matches Psalm 141:2 KJV exactly). |
+| | ✅ **The incense versicle — now verified.** Read directly off the 1917 CSB's order of Vespers, p. 42 (2026-08-02): "℣. Let my prayer be set forth before Thee as incense. ℟. And the lifting up of my hands as the evening sacrifice." **Singular**, exactly as this file has it. The 1912 ELHB's plural "prayers" is the variant, not ours. The earlier flag is closed. |
+| | Responsory and Kyrie line-count: see the Matins rows above — same two questions, same evidence, and the Kyrie remains the one open decision. |
 | Not consulted | TLH (1941) — same restricted-scan issue as Matins. |
 
-## Compline
+## The Evening Suffrages
 
-| Source | `luckylutheran/templates/compline.yaml` |
+*Replaced the former Compline order on 2026-08-02. The retired file, with all
+of its own citations and the reasoning behind them, is at
+`docs/retired/compline.yaml`; the account of the change is in
+[docs/replace-compline-with-evening-suffrages.md](docs/replace-compline-with-evening-suffrages.md).*
+
+| Source | `luckylutheran/templates/evening-suffrages.yaml` |
 |---|---|
-| Primary sources | No *Lutheran* Compline office found — confirmed absent from the 1868/1893 Church Book (General Council), the 1917/1918 Common Service Book, and the 1881 Missouri Synod Church Liturgy (all three checked directly). No American Lutheran hymnal had a Compline order until well into the 20th century (LBW 1978, LW 1982, ELW 2006 — all copyrighted; not used). A complete public-domain Compline office does exist outside the Lutheran books, and is now the source for the collects and benediction: the Order for Compline in *The Book of Common Prayer with the Additions and Deviations Proposed in 1928* (the English "Deposited Book"), archive.org `bookofcommonpray00chur_20`, unrestricted scan released **CC0**. |
-| PD basis | The underlying prayers are the ancient Western monastic Compline (pre-1200s Latin origin), commonly rendered into English by many hands since the 19th century — the *tradition* is unambiguously PD, but for most pieces no single citable pre-1930 scan of this exact English wording has been located. |
-| Status | ✅ Verified (shared with Vespers): Nunc Dimittis, Lord's Prayer, "Our help is in the name of the Lord / Who made heaven and earth" (matches the Common Service Book's own Confession-of-Sins preface verbatim). Fixed: "apple of the eye" not "apple of Thine eye" (confirmed via the Common Service Book's Trinity-season Gradual and KJV Psalm 17:8, both read "the eye"). |
-| | ✅ **Verified — the Confession.** Transcribed word-for-word from *Church Liturgy for Evangelical Lutheran Congregations of the Unaltered Augsburg Confession* (Evangelical Lutheran Synod of Missouri, Concordia Publishing House, 1881), archive.org `churchliturgyfor00evan`, unrestricted scan; pre-1930 US publication, automatically PD. The text appears twice in that book, identically: as the general confession after the sermon in the Morning Service, and in the Communion of the Sick. This is the Saxon confession recorded in 16th-century Dresden practice (Sehling I:557) and the direct ancestor of TLH's p.15 wording — so the singular "I, a poor, miserable sinner" form is retained and now cited from the PD original rather than the copyrighted 1941 reprint. Fixes applied: restored two dropped clauses ("and justly deserved Thy punishment in time and eternity" / "but I am heartily sorry for them and greatly repent of them"), "by Thy boundless mercy" not "of Thy boundless mercy", "suffering" singular. The corporate CSB confession ("we poor sinners") was considered and **rejected** — it is from the Order of Public Confession before the chief service, not a Compline text, and its plural voice clashes with the office's singular register. |
-| | ✅ **Verified — both collects and the closing benediction.** Transcribed word-for-word from the 1928 Deposited Book's Order for Compline (CC0 scan, above). Published 1928 → public domain in the US under the pre-1930 rule; the CC0 dedication on the scan also disposes of any residual UK Crown-copyright question, the same reasoning already applied to the KJV. The benediction was an **exact match** with no change needed. The collects took four small corrections: collect 1 now reads "this place" (was "this habitation"), "drive from it all the snares", "may Thy blessing"; collect 2 restores "silent hours", "this fleeting world" (was "of life"), and "repose upon" (was "rest in"). "Habitation" is itself PD-attested (St Dominic's Hymn-Book, 1885, `StDominicsHymnBook`) but its neighbouring clauses differ, so adopting the word alone would rebuild a hybrid; the 1928 recension was taken whole instead. Pronoun capitalization normalized to house style; no words changed. |
-| | ⚠️ Unverified, minor and all flagged inline: the **opening versicle** — not a rights problem, but a conflation: the 1928 Compline reads "a quiet night and **a perfect end**", while "peace at the last" comes from Newman's evening prayer elsewhere in the same book. Both halves are PD; the join quotes neither. Changing four words would make it citable. The **Nunc Dimittis antiphon's opening** — 1928 reads "Preserve us, O Lord, while waking", ours "Guide us waking"; the second half matches verbatim. The **absolution** (the precatory *Indulgentiam*; the 1881 book's own absolution is the declarative ministerial form, deliberately not adopted — a recorded voice must not purport to absolve). The **bidding** before the confession (the 1881 bidding is sermon-specific and does not fit Compline's order). |
-| **Recommendation** | No longer the blocker it was. Every substantial text in the office — confession, both collects, benediction, canticle — is now cited to a public-domain source. What remains is four short lines, none of which carries a copyright risk: each is either a conflation of PD texts or a recension variant. Compline can be published; the open items are polish, and two of them (versicle, antiphon) close with a handful of word changes if exact quotation is wanted. |
+| Primary source | *Common Service Book of the Lutheran Church* (Philadelphia, 1917/18), **The Evening Suffrages**, pp. 190-191. archive.org `commonserviceboo00phil`, unrestricted scan. Pre-1930 US publication, so automatically public domain. This is the same book that already supplies Matins, Vespers, the collects, the one-year lectionary and the psalm table. |
+| Why this office | Its own rubric authorises exactly this use: "¶ The Evening Suffrages may be said at Vespers, or in the Evening Prayer of the Household, **or alone as a brief Evening Office**." A second rubric gives the complete order for that standalone form — the trinitarian opening, the Psalm/Lesson/Hymn after the Creed, and the closing Benediction — so nothing had to be assembled or inferred. The office is used in that third form here. |
+| Status | ✅ **Verified — the whole order**, read directly off the page images rather than OCR'd (the page carries two-column body text with a full-width rubric band beneath it, which defeats column-crop OCR by splicing the two registers together; see the migration doc). Opening versicle, doubled Kyrie, Lord's Prayer, Apostles' Creed, the Suffrages proper, salutation, the Evening Prayer, Benedicamus and Benediction are all transcribed from pp. 190-191 word for word, including the book's own capitalization. |
+| | ✅ **Verified — the Response** the rubric names but does not print. It is in the CSB's own order of Vespers, p. 42, under The Lesson: "¶ The Scripture Lessons shall then be read. After each Lesson shall be sung or said the Response. ℣. O Lord, have mercy upon us. ℟. Thanks be to God." |
+| | ✅ **Verified — the Psalm and the Lesson.** The rubric calls for "a Psalm, a brief Lesson with the Response, and a Hymn" but appoints none of them, the same open hand the CSB's psalm table shows — so the choice is ours and had to be made on a principle. It could not be the day's psalm: `_psalm_for` is keyed on the date, so Vespers and this office would draw the identical psalm every night. It takes the historic night psalms instead, which is what an office at the close of day is for. The set is appointed in the **Rule of St Benedict (c. 530), ch. 18** — *"Ad Completorium vero quotidie iidem Psalmi repetantur; id est quartus, nonagesimus, et centesimus trigesimus tertius"* — Vulgate numbering, which is KJV 4, 91 and 134. Checked against three independent PD English editions on archive.org, all agreeing word for word: `TheRuleOfStBenedict` (1907, prints the Latin alongside), `TheRuleOfOurMostHolyFather` (1875), `rulestbenedictf00benegoog` (1875, from the English edition of 1638). The brief Lesson is 1 Peter 5:8-9, the traditional short chapter of the night office, read from the KJV. |
+| | This is pre-Reformation Western patrimony, **not** an Anglican borrowing — the distinction that retired the old order. The Lutheran confessions claim it explicitly (Ap. XV; cf. AC XXIV, "we keep the ancient rites"). No 1928 Deposited Book text survives anywhere in the office. |
+| Ours, not the book's | Two insertions, both marked in the file: the spoken **welcome** (no printed office has one; every office in this project carries one) and the **daily catechism portion**, placed after the Hymn where Vespers puts it. Nothing else is added, moved or reworded. |
+| Note — the benediction | The book prints 2 Corinthians 13:14 ("The Grace of **our** Lord Jesus Christ…") as the benediction of the Suffrages said *after Vespers*, but the rubric appoints a different blessing when the office is said *alone*: "The Blessing of Almighty God, the Father, the Son, and the Holy Ghost, be with you all." That is the form used here, so the "our Lord" / "the Lord" discrepancy against Matins and Vespers never arises in this office. |
+| Note — the Evening Prayer | The prayer the book prints after the collect is Luther's Evening Prayer from the Small Catechism **in the plural** ("we", "us", "our bodies and souls"), as a household says it together. Vespers carries the same prayer in Luther's own singular, from the 1921 Concordia Triglotta. These are not a duplication to be resolved — they are the prayer as the catechism teaches it privately and as the office says it corporately, and each file follows its own source. |
+| Note — the Morning Suffrages | The CSB prints the matching **Morning Suffrages** on p. 189 with the identical rubric, mutatis mutandis: "may be said at Matins, or in the Morning Prayer of the Household, or alone as a brief Morning Office." So the book supplies a matched household pair. If a brief morning office is ever wanted, it is already sourced. |
 
 ## Catechism
 
@@ -151,10 +165,10 @@ is still live and still carries the borrowing.
 ## Summary: what's left before "proof of PD" is complete
 
 0. ✅ **The daily lectionary — resolved.** The LSB file is deleted; readings and psalms now come from the 1917 Common Service Book and from course reading, which is a method rather than a compilation. There is no longer any rights question outstanding in this project. Optional future work: finish keying the CSB's own weekday Table of Lessons (extracted, validated, not yet wired in).
-1. Compline is **substantially closed out**: the Confession is verified against the 1881 Missouri Synod Church Liturgy, and both collects plus the benediction against the 1928 Deposited Book's Order for Compline. Four short lines remain flagged (opening versicle, Nunc Dimittis antiphon opening, absolution, pre-confession bidding) — all are PD in substance; none blocks publication.
+1. ✅ **The third office is resolved.** Compline — which was roughly half Anglican, its versicle, collects, benediction and antiphon all from the 1928 Deposited Book — has been **replaced** by the Common Service Book's Evening Suffrages, whose own rubric appoints it for household use. Every line of the new office is transcribed from the 1917 CSB; the night psalms are cited to the Rule of St Benedict, ch. 18. No Anglican text remains anywhere in the project. The retired order is preserved at `docs/retired/compline.yaml`.
 2. `small_catechism.yaml`'s 16 chief-part portions are **verified** against the 1921 Concordia Triglotta (six corrected). The **8 Christian Questions portions are a live copyright risk** and are the single highest-priority item on this list — see the Catechism section above. Everything else in the file is safe.
 3. `collects.yaml`'s ten seasonal collects are **verified** against the 1917 Common Service Book's Propers (seven corrected, two of them materially — restored trinitarian conclusions). Remaining work here is additive, not corrective: per-Sunday collects, which the same source supplies.
-4. Matins/Vespers: Luther's Morning and Evening Prayers are **verified** against the Triglotta (both earlier flags were correct and are fixed). Two ambiguous items remain (Responsory, Kyrie line-count) plus the incense versicle — sources disagree with each other; these need a judgment call or a tie-breaking source, not more searching.
+4. Matins/Vespers: Luther's Morning and Evening Prayers are **verified** against the Triglotta (both earlier flags were correct and are fixed). Of the three items that were ambiguous, two are now closed by direct page reads of the 1917 CSB (2026-08-02): the **incense versicle** is verified singular, as we have it, and the **Responsory** turns out to be a book-to-book recension difference with both forms PD-attested, ours following the 1912 ELHB. The **Kyrie line-count** is the one item left, and it is now a decision rather than a search: two witnesses to one favour doubling, `evening-suffrages.yaml` doubles, and Matins/Vespers do not.
 
 Everything else — all of scripture, and the bulk of Matins/Vespers liturgy —
 is checked word-for-word against confirmed-PD raw source text.

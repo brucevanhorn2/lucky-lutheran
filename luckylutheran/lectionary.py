@@ -2,7 +2,7 @@
 
 Everything here derives from the *Common Service Book of the Lutheran Church*
 (1917) — the same edition already used for Matins, Vespers, the collects and
-the Compline confession — plus, for weekdays, a reading *method* rather than
+the Evening Suffrages — plus, for weekdays, a reading *method* rather than
 any table at all. See SOURCES.md.
 
 Three parts:
@@ -145,27 +145,48 @@ def _nth_chapter(books: list[tuple[str, int]], n: int) -> str:
     raise AssertionError("unreachable")
 
 
-# Compline is deliberately *invariable*. Unlike Matins and Vespers it does not
-# take the day's propers: the same psalms are said every night, which is the
-# point of the office — it is meant to be known by heart and said in the dark
-# without a book. The historic set is Psalms 4, 91 and 134, with a short fixed
-# lesson (1 Peter 5:8-9, the "be sober, be vigilant" warning that the 1928
-# Deposited Book's Compline also appoints) and the Nunc Dimittis as its
-# canticle, which the template already carries.
-COMPLINE_PSALMS = "Psalm 4; Psalm 91; Psalm 134"
-COMPLINE_LESSON = "1 Peter 5:8-9"
+# The Evening Suffrages is deliberately *invariable*. Its rubric calls for "a
+# Psalm, a brief Lesson with the Response, and a Hymn" but appoints none of
+# them — the same open hand the CSB's psalm table shows, so the choice is ours
+# and has to be made on some principle.
+#
+# It cannot be the day's psalm. `_psalm_for` is keyed on the date, so Vespers
+# and this office would draw the identical psalm every single night, and the
+# feed would carry it twice in three hours.
+#
+# So it takes the historic night psalms instead, which is what an office at
+# the close of the day is *for*: it is meant to be known by heart and said in
+# the dark without a book, and that only works if it does not change. The set
+# is appointed in the Rule of St Benedict (c. 530), ch. 18 — "Ad Completorium
+# vero quotidie iidem Psalmi repetantur; id est quartus, nonagesimus, et
+# centesimus trigesimus tertius", Vulgate numbering, which is KJV 4, 91 and
+# 134. Verified against three independent public-domain English editions on
+# archive.org (`TheRuleOfStBenedict` 1907, which prints the Latin alongside;
+# `TheRuleOfOurMostHolyFather` 1875; `rulestbenedictf00benegoog` 1875, from
+# the English edition of 1638), all agreeing word for word.
+#
+# This is pre-Reformation Western patrimony, not an Anglican borrowing — the
+# distinction that retired the old Compline order. The Lutheran confessions
+# claim it explicitly: "we keep the ancient rites" (Ap. XV; cf. AC XXIV).
+#
+# The brief Lesson is 1 Peter 5:8-9, the "be sober, be vigilant" warning that
+# is the traditional short chapter of the night office. It is Scripture read
+# from the KJV, so no permission question arises about the text itself; only
+# the choice is ours, and the rubric leaves the choice open.
+NIGHT_PSALMS = "Psalm 4; Psalm 91; Psalm 134"
+NIGHT_LESSON = "1 Peter 5:8-9"
 
 
 def readings_for(date: dt.date, office: str) -> DailyReadings:
     """Readings for a date and office.
 
-    Matins takes the morning reading and Vespers the evening; Compline takes
-    neither, being invariable (see COMPLINE_PSALMS).
+    Matins takes the morning reading and Vespers the evening; the Evening
+    Suffrages takes neither, being invariable (see NIGHT_PSALMS).
     """
-    if office == "compline":
-        return DailyReadings(psalm=COMPLINE_PSALMS, reading=COMPLINE_LESSON,
+    if office == "evening-suffrages":
+        return DailyReadings(psalm=NIGHT_PSALMS, reading=NIGHT_LESSON,
                              source="ordinary", proper=None,
-                             title="Compline (invariable)")
+                             title="The Evening Suffrages (invariable)")
 
     morning = office == "matins"
 

@@ -2,7 +2,8 @@
 
 An automated daily-office podcast generator. Twice a day it builds a short
 (~10 minute) personal worship service — **Matins** in the morning, **Vespers**
-or **Compline** in the evening — after the historic Lutheran liturgy, with the
+at evening, and **the Evening Suffrages** at the close of the day — after the
+historic Lutheran liturgy, with the
 day's psalm, scripture reading, a rotating portion of Luther's Small
 Catechism, and the collect of the day resolved from the church calendar.
 
@@ -31,7 +32,8 @@ has a genuine vocation — Luther's three estates make the household a
 divine station — but it is not the *Predigtamt*, and the language marks the
 difference. Concretely:
 
-- **No declarative absolution.** Compline uses the precatory form, *"The
+- **No declarative absolution.** Where the older books print the minister's
+  declaration, this project keeps the ancient prayer form instead — *"The
   almighty and merciful Lord grant us pardon, forgiveness, and remission of
   all our sins."* The 1881 Missouri Synod liturgy's own absolution — *"I,
   by virtue of my office, as a called and ordained servant of the Word...
@@ -63,7 +65,7 @@ of every piece of content — summary:
 | Content | Source | Status |
 |---|---|---|
 | Liturgy (Matins, Vespers) | 1912 Evangelical Lutheran Hymn-Book + 1917/18 Common Service Book (verified PD predecessors of TLH 1941, which was not directly consulted) | mostly verified, a few items flagged `!! VERIFY` |
-| Compline | ancient office components; no PD Lutheran predecessor office found. Confession verified from the 1881 Missouri Synod Church Liturgy | partly verified — versicle, collects, benediction still flagged; see SOURCES.md |
+| The Evening Suffrages | *Common Service Book* (1917), pp. 190-191 — a complete Lutheran brief evening office whose own rubric appoints it for the household. Night psalms cited to the Rule of St Benedict, ch. 18 | verified word-for-word; **replaced Compline**, which was half Anglican (retired to `docs/retired/`) |
 | Scripture | King James Version, local index built from Project Gutenberg eBook #10 (bible-api.com kept only as network fallback) | verified |
 | Daily lectionary & psalms | historic one-year lectionary + Table of Proper Psalms, Common Service Book (1917); weekdays read in course | verified — LSB dependency removed entirely |
 | Catechism core (commandments, Creed, sacraments) | Concordia Triglotta (CPH, 1921), English column — archive.org `concordiatriglot00unse` | verified word-for-word; 6 of 16 portions corrected |
@@ -91,7 +93,7 @@ python3 -m luckylutheran script --office matins
 
 # Build an episode (transcript + metadata; audio once a TTS engine is wired)
 python3 -m luckylutheran build --office matins
-python3 -m luckylutheran build --office compline --date 2026-12-24
+python3 -m luckylutheran build --office evening-suffrages --date 2026-12-24
 
 # Regenerate the podcast RSS feed from built episodes
 python3 -m luckylutheran feed
@@ -214,7 +216,7 @@ python3 -m luckylutheran feed --future              # QA feed (everything)
 
 # Anywhere/anytime (needs no GPU): republish the public feed, which only
 # includes episodes whose day has arrived (matins 05:00, vespers 17:00,
-# compline 20:00 local):
+# evening-suffrages 20:00 local):
 python3 -m luckylutheran feed
 ```
 
