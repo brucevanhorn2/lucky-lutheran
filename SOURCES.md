@@ -78,14 +78,22 @@ hand: the Small Catechism's table of daily prayers, whose blessing before meat
 devotion. That would be a Lutheran table prayer, not a monastic hour, and
 should be described as such.
 
-### A related open question
+### 🚧 Compline is being replaced — it is half Anglican
 
-**Compline's collects and benediction come from the 1928 Deposited Book, which
-is Anglican.** This was accepted deliberately: no Lutheran book of the period
-contains a Compline office at all, and the underlying prayers (*Visita
-quaesumus*, *Adesto*) are ancient Western texts long predating the Reformation.
-The reasoning holds, but it is a borrowing and should be a known one rather
-than an inherited accident. Revisit if a Lutheran source ever surfaces.
+**Compline's opening versicle, both collects, benediction and Nunc Dimittis
+antiphon come from the 1928 Deposited Book, which is Anglican.** They were
+taken because no Lutheran book of the period contains a Compline office at all.
+The prayers are ancient Western texts predating the Reformation, so the
+borrowing is defensible — but this project's whole claim is that everything is
+cited, and a borrowed office is the first thing an informed critic would find.
+
+A Lutheran replacement exists in the book already used for everything else: the
+Common Service Book's **Evening Suffrages**, whose own rubric appoints it "in
+the Evening Prayer of the Household, or alone as a brief Evening Office."
+
+See **[docs/replace-compline-with-evening-suffrages.md](docs/replace-compline-with-evening-suffrages.md)**
+for the full order and the migration steps. Until that lands, `compline.yaml`
+is still live and still carries the borrowing.
 
 ## Matins
 
