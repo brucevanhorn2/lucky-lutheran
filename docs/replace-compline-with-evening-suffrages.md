@@ -144,12 +144,17 @@ order of **Vespers, printed p. 42 (scan n47)**.
 
 ## What the extraction settled
 
-**The Kyrie line-count.** The Evening Suffrages **doubles** every line. That is
-a third witness, joining the 1912 ELHB's Vespers order against the ELHB's
-Communion order. `evening-suffrages.yaml` doubles accordingly. Matins and
-Vespers still say each line once and were **not** changed — that alters two
-offices already rendered and heard, so it is recorded in SOURCES.md as the one
-open decision rather than made silently.
+**The Kyrie — the question was mis-posed.** The Evening Suffrages doubles every
+line, and this was first written up as a third witness for doubling everywhere.
+That was wrong: it compared across offices. Checked directly afterwards, the
+CSB's own order of **Vespers, p. 44**, sets the Kyrie as a bid and a response —
+"¶ The Minister shall say: Lord, have mercy upon us. ¶ The Congregation shall
+sing or say: Lord, have mercy upon us. Christ, have mercy upon us. Lord, have
+mercy upon us." The congregation's part is exactly what `matins.yaml` and
+`vespers.yaml` already carry. The same book uses both shapes deliberately, so
+`evening-suffrages.yaml` doubling is right for the Suffrages and Matins/Vespers
+not doubling is right for them. Nothing to reconcile. The lesson: check the
+office you are actually changing, not the one on the facing page.
 
 **The benediction.** No reconciliation was needed after all. The book prints
 2 Corinthians 13:14 ("The Grace of **our** Lord Jesus Christ…") for the
