@@ -145,8 +145,28 @@ def _nth_chapter(books: list[tuple[str, int]], n: int) -> str:
     raise AssertionError("unreachable")
 
 
+# Compline is deliberately *invariable*. Unlike Matins and Vespers it does not
+# take the day's propers: the same psalms are said every night, which is the
+# point of the office — it is meant to be known by heart and said in the dark
+# without a book. The historic set is Psalms 4, 91 and 134, with a short fixed
+# lesson (1 Peter 5:8-9, the "be sober, be vigilant" warning that the 1928
+# Deposited Book's Compline also appoints) and the Nunc Dimittis as its
+# canticle, which the template already carries.
+COMPLINE_PSALMS = "Psalm 4; Psalm 91; Psalm 134"
+COMPLINE_LESSON = "1 Peter 5:8-9"
+
+
 def readings_for(date: dt.date, office: str) -> DailyReadings:
-    """Readings for a date and office ('matins' morning, else evening)."""
+    """Readings for a date and office.
+
+    Matins takes the morning reading and Vespers the evening; Compline takes
+    neither, being invariable (see COMPLINE_PSALMS).
+    """
+    if office == "compline":
+        return DailyReadings(psalm=COMPLINE_PSALMS, reading=COMPLINE_LESSON,
+                             source="ordinary", proper=None,
+                             title="Compline (invariable)")
+
     morning = office == "matins"
 
     # A fixed festival outranks an ordinary Sunday, but yields to the Sundays

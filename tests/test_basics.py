@@ -357,3 +357,21 @@ def test_pronunciation_respelling_is_spoken_only():
     assert speech.for_speech("Compline") == "Complin"
     transcript = assemble.build_episode(dt.date(2026, 8, 2), "matins").transcript()
     assert "Mattins" not in transcript
+
+
+def test_compline_is_invariable():
+    """Compline does not take the day's propers. The same psalms are said
+    every night — that is the office's character, not an oversight."""
+    from luckylutheran import lectionary
+
+    a = lectionary.readings_for(dt.date(2026, 1, 1), "compline")
+    b = lectionary.readings_for(dt.date(2026, 7, 4), "compline")
+    assert (a.psalm, a.reading) == (b.psalm, b.reading)
+    assert a.source == "ordinary"
+    assert a.proper is None
+    assert "Psalm 4" in a.psalm and "Psalm 91" in a.psalm and "Psalm 134" in a.psalm
+
+    # ...and it must differ from Vespers, which does take the propers.
+    vespers = lectionary.readings_for(dt.date(2026, 1, 1), "vespers")
+    assert vespers.reading != a.reading
+    assert vespers.psalm != a.psalm

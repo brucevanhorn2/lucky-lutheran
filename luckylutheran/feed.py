@@ -20,7 +20,8 @@ PODCAST = {
     "title": "The Daily Office",
     "description": (
         "A ten-minute daily office after the historic Lutheran liturgy — "
-        "Matins in the morning, Vespers or Compline at evening — with the "
+        "Matins in the morning, Vespers at evening, and Compline at the "
+        "close of the day — with the "
         "psalm appointed for the day, a lesson, a portion of Luther's Small "
         "Catechism, and the collect of the season. Drawn entirely from "
         "public-domain sources. Read by synthetic voices."
