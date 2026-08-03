@@ -15,7 +15,7 @@ import subprocess
 from pathlib import Path
 
 from luckylutheran.assemble import Episode
-from luckylutheran import speech
+from luckylutheran import progress, speech
 from luckylutheran.tts import TTSEngine
 
 
@@ -48,7 +48,8 @@ def _chunk_text(text: str, max_chars: int = MAX_CHUNK_CHARS) -> list[str]:
     return chunks
 
 
-def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path) -> Path | None:
+def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path,
+                   prog: progress.Render | None = None) -> Path | None:
     """Render all segments and stitch them. Returns the MP3 path, or None in
     script-only mode (engine produced no audio).
 
@@ -64,10 +65,14 @@ def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path) -> Path |
     crowd = engine.crowd_voices() if ffmpeg_available() else []
 
     total = len(episode.segments)
-    header = f"rendering {total} segments for {episode.slug}"
+    voices = len(crowd) + 1
+    bar = prog or progress.Render(
+        title=episode.slug,
+        total=count_voice_renders(episode, crowd),
+        prefix="")
     if crowd:
-        header += f"  (crowd: {len(crowd) + 1} voices on congregation lines)"
-    print(header, flush=True)
+        bar.title += f"  ·  crowd of {voices} on congregation lines"
+    bar.start()
 
     rendered: list[tuple[Path, float]] = []
     for i, seg in enumerate(episode.segments):
@@ -75,48 +80,68 @@ def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path) -> Path |
         in_crowd = crowd and resolve_speaker(seg.speaker) == "congregation"
         for j, chunk in enumerate(chunks):
             suffix = "" if len(chunks) == 1 else f"-{j:02d}"
-            kind = "crowd" if in_crowd else seg.speaker
             name = (f"{i:03d}{suffix}-{seg.section_id}-crowd.wav" if in_crowd
                     else f"{i:03d}{suffix}-{seg.section_id}-{seg.speaker}.wav")
             wav = work / name
-            label = f"[{i + 1:>2}/{total}] {seg.section_id[:24]:<24} {kind}"
+            label = f"{seg.section_title[:22]:<22} {seg.speaker}"
             if len(chunks) > 1:
                 label += f" ({j + 1}/{len(chunks)})"
+            cost = (len(_phrase_units(chunk)) * voices) if in_crowd else 1
 
             if wav.exists() and wav.stat().st_size > 44:
-                print(f"{label}  (cached)", flush=True)
+                bar.step(cost, f"{label}  (cached)", cached=True)
                 result: Path | None = wav
             elif in_crowd:
-                print(f"{label}  {len(_phrase_units(chunk))} phrase(s)"
-                      f" × {len(crowd) + 1} voices", flush=True)
-                result = _render_crowd_chunk(engine, chunk, crowd, wav)
+                result = _render_crowd_chunk(engine, chunk, crowd, wav,
+                                             bar=bar, label=label)
             else:
-                print(label, flush=True)
+                bar.step(0, label)
                 result = engine.synthesize(speech.for_speech(chunk),
                                            seg.speaker, wav)
+                bar.step(1, label)
 
             if result is not None:
                 last = j == len(chunks) - 1
                 rendered.append((result, seg.pause_after if last else CHUNK_PAUSE))
 
     if not rendered:
+        bar.finish("no audio (script-only)")
         return None
     if not ffmpeg_available():
-        print("ffmpeg not found — stitching to WAV with the pure-python "
-              "fallback (install ffmpeg for MP3 + loudness normalization; "
-              "bumper music requires ffmpeg and is skipped)")
-        return _stitch_wave(rendered, out_dir / f"{episode.slug}.wav")
+        bar.note("ffmpeg not found — stitching to WAV with the pure-python "
+                 "fallback (install ffmpeg for MP3 + loudness normalization; "
+                 "bumper music requires ffmpeg and is skipped)")
+        out = _stitch_wave(rendered, out_dir / f"{episode.slug}.wav")
+        bar.finish(out.name)
+        return out
 
     from luckylutheran import music
     tune = music.tune_for(episode.day.season)
-    print(f"rendering organ bumper ({tune})…", flush=True)
+    bar.note(f"organ bumper ({tune})")
     bumper = music.render_tune(tune)
     out_path = out_dir / f"{episode.slug}.mp3"
-    print(f"stitching {len(rendered)} clips → {out_path.name} "
-          f"(loudness normalize)…", flush=True)
+    bar.note(f"stitching {len(rendered)} clips, normalizing loudness")
     result = _stitch(rendered, out_path, bumper=bumper, tags=id3_tags(episode))
-    print(f"done: {result}", flush=True)
+    bar.finish(result.name)
     return result
+
+
+def count_voice_renders(episode: Episode, crowd: list[str]) -> int:
+    """How many TTS calls this episode costs — the honest unit of progress.
+
+    A congregation line is synthesized once per voice per phrase unit, so an
+    eight-voice crowd over five phrases is forty calls against one for a
+    liturgist line of the same length. Counting segments instead makes the
+    bar lurch and the ETA meaningless."""
+    from luckylutheran.tts import resolve_speaker
+
+    voices = len(crowd) + 1
+    calls = 0
+    for seg in episode.segments:
+        in_crowd = bool(crowd) and resolve_speaker(seg.speaker) == "congregation"
+        for chunk in _chunk_text(seg.text):
+            calls += len(_phrase_units(chunk)) * voices if in_crowd else 1
+    return calls
 
 
 def _phrase_units(text: str, max_chars: int = 60) -> list[str]:
@@ -157,7 +182,7 @@ def _concat_wavs(parts: list[Path], out_path: Path) -> Path:
 
 
 def _render_crowd_chunk(engine, chunk: str, crowd: list[str],
-                        out_path: Path) -> Path | None:
+                        out_path: Path, bar=None, label: str = "") -> Path | None:
     """Render a congregation chunk as several short phrase units, mixing each
     unit's voices independently and concatenating them. Mixing per phrase
     keeps the crowd tight: onset drift resets at every phrase boundary instead
@@ -165,25 +190,29 @@ def _render_crowd_chunk(engine, chunk: str, crowd: list[str],
 
     Per-unit mixes are cached beside the output, so retries are cheap."""
     units = _phrase_units(chunk)
+    voices = len(crowd) + 1
     if len(units) <= 1:
-        return _render_crowd_unit(engine, chunk, crowd, out_path, label="        ")
+        return _render_crowd_unit(engine, chunk, crowd, out_path,
+                                  bar=bar, label=label)
 
     unit_dir = out_path.parent / "crowd-units"
     unit_dir.mkdir(parents=True, exist_ok=True)
     parts: list[Path] = []
     for k, unit in enumerate(units):
         part = unit_dir / f"{out_path.stem}-u{k:02d}.wav"
-        label = f"        phrase {k + 1}/{len(units)} "
+        phrase = f"{label}  phrase {k + 1}/{len(units)}"
         if part.exists() and part.stat().st_size > 44:
-            print(f"{label}(cached)", flush=True)
-        elif _render_crowd_unit(engine, unit, crowd, part, label=label) is None:
+            if bar:
+                bar.step(voices, f"{phrase}  (cached)", cached=True)
+        elif _render_crowd_unit(engine, unit, crowd, part,
+                                bar=bar, label=phrase) is None:
             return None
         parts.append(part)
     return _concat_wavs(parts, out_path)
 
 
 def _render_crowd_unit(engine, chunk: str, crowd: list[str],
-                       out_path: Path, label: str = "") -> Path | None:
+                       out_path: Path, bar=None, label: str = "") -> Path | None:
     """Render one congregation phrase with every voice (the chosen
     congregation cast member leads, parishioners join) and layer them
     slightly out of sync, like a real roomful of people praying.
@@ -193,22 +222,21 @@ def _render_crowd_unit(engine, chunk: str, crowd: list[str],
     render visibly progresses instead of looking hung."""
     voices = ["congregation", *crowd]
     part_dir = out_path.parent / "crowd-parts"
-    if label:
-        print(label, end="", flush=True)
     parts: list[Path] = []
-    for voice in voices:
+    for n, voice in enumerate(voices, 1):
         part = part_dir / f"{out_path.stem}-{voice.replace('/', '_')}.wav"
-        if not (part.exists() and part.stat().st_size > 44):
+        hit = part.exists() and part.stat().st_size > 44
+        if not hit:
             if engine.synthesize(speech.for_speech(chunk), voice,
                                  part) is None:
-                if label:
-                    print(" (failed)", flush=True)
+                if bar:
+                    bar.note(f"FAILED {label} — {voice}")
                 return None
-        if label:
-            print(".", end="", flush=True)
+        # One tick per voice, so a slow crowd visibly advances rather than
+        # looking hung for the length of eight synthesis calls.
+        if bar:
+            bar.step(1, f"{label}  voice {n}/{len(voices)}", cached=hit)
         parts.append(part)
-    if label:
-        print(" ✓", flush=True)
     return _mix_crowd(parts, chunk, out_path)
 
 

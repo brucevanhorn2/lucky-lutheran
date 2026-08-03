@@ -229,6 +229,27 @@ python3 -m luckylutheran feed --future              # QA feed (everything)
 python3 -m luckylutheran feed
 ```
 
+While it runs you get a live progress bar per episode — position in the run,
+percent, elapsed and time remaining, and the section and voice currently
+being synthesized:
+
+```
+  6 episodes to render   02 Aug 2026 – 03 Aug 2026   matins, vespers, evening-suffrages
+
+[2/6] Vespers · Sun 02 Aug 2026  ·  crowd of 8 on congregation lines  (724 voice renders)
+  ███████████·················  41.2%  04:18 / 06:09 left  The Kyrie   congregation  phrase 2/5  voice 3/8
+```
+
+Progress is weighted by **TTS calls, not segments** — a congregation line is
+synthesized once per voice per phrase unit, so an eight-voice crowd over five
+phrases costs forty calls against one for a liturgist line of the same length.
+Counting segments makes the bar lurch and the estimate meaningless. The
+estimate is computed from *uncached* work only, so a resumed build doesn't
+predict a finish time it can't hit.
+
+Redirect the output and it degrades to periodic plain lines — no carriage
+returns, no escape codes — so overnight logs stay readable and greppable.
+
 `batch` is resumable: episodes that already exist are skipped, and one
 failed episode doesn't stop the run. Publish by syncing `episodes/` (MP3s +
 `feed.xml`) to any static host — S3, Cloudflare R2, GitHub Pages — with a

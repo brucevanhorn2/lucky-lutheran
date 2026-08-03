@@ -453,3 +453,38 @@ def test_crowd_roster_selects_without_deleting(monkeypatch=None):
     assert with_env("nobody-here") == []       # unknown names select nothing
     # ...and selecting never removes anything from disk.
     assert with_env(None) == everyone
+
+
+def test_progress_never_writes_escapes_when_redirected():
+    """Overnight batches run with stdout redirected to a log. A log full of
+    carriage returns and ANSI escapes is worse than plain lines, so the live
+    bar must only ever appear on a real terminal."""
+    import io
+    from luckylutheran import progress
+
+    buf = io.StringIO()                 # StringIO has no isatty() -> not live
+    bar = progress.Render("Vespers", total=10, prefix="[3/90] ", stream=buf)
+    bar.start()
+    for i in range(10):
+        bar.step(1, f"segment {i}")
+    bar.note("organ bumper")
+    bar.finish("out.mp3")
+
+    out = buf.getvalue()
+    assert "\r" not in out and "\x1b" not in out
+    assert "[3/90] Vespers" in out and "organ bumper" in out
+    assert "out.mp3" in out
+
+
+def test_progress_counts_voice_renders_not_segments():
+    """The bar is driven by TTS calls, because a congregation line costs one
+    call per voice per phrase unit and a liturgist line costs one. Counting
+    segments makes the bar lurch and the ETA meaningless."""
+    import datetime as dt
+    from luckylutheran import assemble, audio
+
+    ep = assemble.build_episode(dt.date(2026, 8, 2), "vespers")
+    solo = audio.count_voice_renders(ep, crowd=[])
+    crowded = audio.count_voice_renders(ep, crowd=["a", "b", "c"])
+    assert solo >= len(ep.segments)      # long segments split into chunks
+    assert crowded > solo * 2            # the crowd dominates the work

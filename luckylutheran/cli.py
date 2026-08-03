@@ -13,9 +13,10 @@ import argparse
 import datetime as dt
 import json
 import sys
+import time
 from pathlib import Path
 
-from luckylutheran import assemble, audio, feed, tts
+from luckylutheran import assemble, audio, feed, progress, tts
 from luckylutheran.churchyear import church_day
 
 
@@ -43,7 +44,7 @@ def _get_engine(name: str) -> tts.TTSEngine | None:
 
 
 def _build_one(date: dt.date, office: str, out_dir: Path,
-               engine: tts.TTSEngine) -> Path | None:
+               engine: tts.TTSEngine, prefix: str = "") -> Path | None:
     """Build one episode (transcript + metadata + audio); return audio path."""
     episode = assemble.build_episode(date, office)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -51,7 +52,12 @@ def _build_one(date: dt.date, office: str, out_dir: Path,
     transcript_path = out_dir / f"{episode.slug}.md"
     transcript_path.write_text(episode.transcript(), encoding="utf-8")
 
-    mp3 = audio.render_episode(episode, engine, out_dir)
+    crowd = engine.crowd_voices() if audio.ffmpeg_available() else []
+    bar = progress.Render(
+        title=f"{episode.title} · {date.strftime('%a %d %b %Y')}",
+        total=audio.count_voice_renders(episode, crowd),
+        prefix=prefix)
+    mp3 = audio.render_episode(episode, engine, out_dir, prog=bar)
 
     meta = {
         "slug": episode.slug,
@@ -128,7 +134,12 @@ def cmd_batch(args: argparse.Namespace) -> int:
         return 1
 
     out_dir = Path(args.episodes)
-    built, skipped, failed = 0, 0, []
+
+    # Work out the whole run up front so each episode can say where it sits
+    # in it. An overnight batch that only ever says "building X" gives no way
+    # to tell hour two of six from hour five.
+    todo = []
+    skipped = 0
     for day_offset in range(args.days):
         date = start + dt.timedelta(days=day_offset)
         for office in offices:
@@ -137,17 +148,38 @@ def cmd_batch(args: argparse.Namespace) -> int:
                                    or (out_dir / f"{slug}.wav").exists()):
                 skipped += 1
                 continue
-            print(f"=== building {slug}")
-            try:
-                _build_one(date, office, out_dir, engine)
-                built += 1
-            except Exception as exc:  # keep the batch going overnight
-                failed.append(slug)
-                print(f"FAILED {slug}: {exc}", file=sys.stderr)
+            todo.append((date, office, slug))
+
+    span = f"{start:%d %b %Y}"
+    if args.days > 1:
+        span += f" – {start + dt.timedelta(days=args.days - 1):%d %b %Y}"
+    print(f"\n  {len(todo)} episodes to render   {span}   "
+          f"{', '.join(offices)}")
+    if skipped:
+        print(f"  {skipped} already rendered (use --force to redo them)")
+    print()
+
+    began = time.monotonic()
+    built, failed = 0, []
+    for n, (date, office, slug) in enumerate(todo, 1):
+        try:
+            _build_one(date, office, out_dir, engine,
+                       prefix=f"[{n}/{len(todo)}] ")
+            built += 1
+        except Exception as exc:  # keep the batch going overnight
+            failed.append(slug)
+            print(f"  FAILED {slug}: {exc}", file=sys.stderr)
 
     feed.write_feed(out_dir, include_future=args.future)
-    print(f"\nbatch done: {built} built, {skipped} already existed, "
-          f"{len(failed)} failed{': ' + ', '.join(failed) if failed else ''}")
+    elapsed = time.monotonic() - began
+    print(f"\n  batch done in {progress._fmt(elapsed)}   "
+          f"{built} built"
+          + (f", {skipped} already existed" if skipped else "")
+          + (f", {len(failed)} FAILED" if failed else ""))
+    if built:
+        print(f"  {progress._fmt(elapsed / built)} per episode average")
+    if failed:
+        print(f"  failed: {', '.join(failed)}", file=sys.stderr)
     return 1 if failed else 0
 
 
