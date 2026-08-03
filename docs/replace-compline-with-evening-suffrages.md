@@ -105,3 +105,52 @@ does not revive it.
 Its Confession is genuinely Lutheran (1881 Missouri Synod, verified) and could
 be carried into the new office if a confession is wanted there. The Anglican
 collects should not be.
+
+---
+
+## Extraction progress (2026-08-02) — page located, text not yet complete
+
+**The office is on scan pages n193-n196** (printed ~189-192). Running headers:
+n193 "The Morning Suffrages", n194 "General Prayers", n195 "The Bidding
+Prayer" — the Morning and Evening Suffrages sit adjacent, with the Evening
+rubric beginning on n194.
+
+Column crops of n193 and n194 are saved in `docs/evening-suffrages-extract/`.
+
+### The layout trap on these pages
+
+Unlike the Propers, these pages are **two-column body text with a full-width
+rubric block running underneath**. A plain column crop therefore interleaves
+the rubric with the body and produces text that looks continuous but is not —
+e.g. "Che Hlorning : O Lord, let there be peace... The Morning Suffrages may
+be said ai Matins" is two different registers spliced together.
+
+Extract the rubric band and the body columns **separately**, by vertical
+position, before OCR. Do not trust a single-pass column crop here.
+
+### Confirmed so far
+
+The Morning Suffrages carry the identical rubric, mutatis mutandis — "may be
+said at Matins, or in the Morning Prayer of the Household, or alone as a brief
+Morning Office." So the Common Service Book provides a matched household pair,
+morning and evening. Worth knowing: if the Evening Suffrages replace Compline,
+the **Morning Suffrages** are the natural short-form Matins, should a brief
+option ever be wanted.
+
+Both end with the same Benedicamus and Benediction:
+
+> Bless we the Lord. / Thanks be to God.
+>
+> The Grace of our Lord Jesus Christ, and the Love of God, and the Communion
+> of the Holy Ghost, be with you all. Amen.
+
+Note that benediction is 2 Corinthians 13:14 — the same text already used in
+Matins and Vespers, and already verified. It reads "our Lord Jesus Christ"
+here; the Matins/Vespers files were corrected to "the Lord Jesus Christ" from
+the 1912 ELHB and the KJV. Reconcile deliberately rather than silently.
+
+### Next step
+
+Re-OCR n193-n196 with the rubric band and body columns separated, assemble the
+full Evening Suffrages order, then proceed with steps 2-6 above.
+
