@@ -212,6 +212,7 @@ appointed days:
 ```bash
 # On wintermute, once a month while it's on:
 python3 -m luckylutheran batch --days 30            # matins+vespers per day
+python3 -m luckylutheran batch --days 30 --offices all   # all three offices
 python3 -m luckylutheran feed --future              # QA feed (everything)
 
 # Anywhere/anytime (needs no GPU): republish the public feed, which only

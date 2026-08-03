@@ -402,3 +402,21 @@ def test_no_office_is_anglican_by_accident():
         pass
     else:
         raise AssertionError("compline is still buildable")
+
+
+def test_offices_all_expands_to_every_office():
+    """`--offices all` must pick up a newly added office on its own — the
+    third office was renamed once already and the batch default did not
+    follow it."""
+    from luckylutheran import assemble
+    from luckylutheran.cli import _parse_offices
+
+    assert _parse_offices("all") == list(assemble.OFFICES)
+    assert _parse_offices("matins,vespers") == ["matins", "vespers"]
+    # mixable, order-preserving, and duplicates collapse
+    assert _parse_offices("vespers,all") == [
+        "vespers", *(o for o in assemble.OFFICES if o != "vespers")]
+    assert _parse_offices(" matins , matins ") == ["matins"]
+    # unknown names and empty specs are rejected, not silently dropped
+    assert _parse_offices("matins,compline") is None
+    assert _parse_offices(",") is None

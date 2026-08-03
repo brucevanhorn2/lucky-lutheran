@@ -88,15 +88,40 @@ def cmd_build(args: argparse.Namespace) -> int:
     return 0
 
 
+def _parse_offices(spec: str) -> list[str] | None:
+    """Resolve a --offices spec to a list, or None if any name is unknown.
+
+    "all" expands to every office in assemble.OFFICES, so a batch picks up a
+    newly added office without anyone remembering to update the command line.
+    It expands in order, and may be mixed with names (duplicates collapse).
+    """
+    names: list[str] = []
+    for raw in spec.split(","):
+        name = raw.strip()
+        if not name:
+            continue
+        for office in (assemble.OFFICES if name == "all" else (name,)):
+            if office not in names:
+                names.append(office)
+
+    unknown = [n for n in names if n not in assemble.OFFICES]
+    if unknown:
+        print(f"unknown office {unknown[0]!r} — choose from "
+              f"{', '.join(assemble.OFFICES)}, or 'all'", file=sys.stderr)
+        return None
+    if not names:
+        print("no offices given", file=sys.stderr)
+        return None
+    return names
+
+
 def cmd_batch(args: argparse.Namespace) -> int:
     """Render a run of daily episodes ahead of time (wintermute is only
     powered on occasionally, so a month is rendered in one sitting)."""
     start = _parse_date(args.start)
-    offices = [o.strip() for o in args.offices.split(",")]
-    for office in offices:
-        if office not in assemble.OFFICES:
-            print(f"unknown office {office!r}", file=sys.stderr)
-            return 2
+    offices = _parse_offices(args.offices)
+    if offices is None:
+        return 2
 
     engine = _get_engine(args.engine)
     if engine is None:
@@ -209,7 +234,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--start", help="first date, ISO (default: today)")
     p.add_argument("--days", type=int, default=30, help="how many days ahead")
     p.add_argument("--offices", default="matins,vespers",
-                   help="comma-separated offices per day")
+                   help="comma-separated offices per day, or 'all' for "
+                        f"every office ({', '.join(assemble.OFFICES)})")
     p.add_argument("--episodes", default="episodes", help="output directory")
     p.add_argument("--engine", default="gradio", choices=list(tts.ENGINES))
     p.add_argument("--force", action="store_true",
