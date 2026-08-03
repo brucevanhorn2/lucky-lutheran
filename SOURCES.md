@@ -50,6 +50,43 @@ A mis-keyed lectionary serves wrong readings silently, every day, so it was
 deliberately left out. Finishing that keying would upgrade weekdays from course
 reading to the CSB's own seasonal weekday lessons.
 
+## Why there is no noon office
+
+Considered and **declined**, 2026-08-02. Recorded here because the idea is
+likely to recur.
+
+LCMS practice today knows Matins, Vespers and Compline; LSB also prints brief
+household orders for Morning, Noon, Early Evening and the Close of Day — but
+those are 2006 CPH text and unavailable to this project.
+
+The historic noon hour is **Sext**, one of the monastic little hours. It is
+not a Lutheran office in any meaningful sense: the Reformation church orders
+kept Matins and Vespers for congregational use and let the little hours lapse,
+and Luther criticised the monastic hours directly. No Lutheran service book has
+carried Sext.
+
+The 1928 Deposited Book was proposed as a source and turns out **not to contain
+the little hours** at all — it added Compline but not Prime, Terce, Sext or
+None. The books that do carry them (*The Day Hours of the Church of England*,
+the Sarum lesser hours) are Anglican, with an Anglican calendar and Anglican
+propers. Importing Sext from them would dress a Lutheran office in another
+tradition's vestments.
+
+If a midday devotion is ever wanted, the honest Lutheran material is already to
+hand: the Small Catechism's table of daily prayers, whose blessing before meat
+("The eyes of all wait upon Thee, O Lord") is a genuine household noon
+devotion. That would be a Lutheran table prayer, not a monastic hour, and
+should be described as such.
+
+### A related open question
+
+**Compline's collects and benediction come from the 1928 Deposited Book, which
+is Anglican.** This was accepted deliberately: no Lutheran book of the period
+contains a Compline office at all, and the underlying prayers (*Visita
+quaesumus*, *Adesto*) are ancient Western texts long predating the Reformation.
+The reasoning holds, but it is a borrowing and should be a known one rather
+than an inherited accident. Revisit if a Lutheran source ever surfaces.
+
 ## Matins
 
 | Source | `luckylutheran/templates/matins.yaml` |
