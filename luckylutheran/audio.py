@@ -80,8 +80,13 @@ def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path,
         in_crowd = crowd and resolve_speaker(seg.speaker) == "congregation"
         for j, chunk in enumerate(chunks):
             suffix = "" if len(chunks) == 1 else f"-{j:02d}"
-            name = (f"{i:03d}{suffix}-{seg.section_id}-crowd.wav" if in_crowd
-                    else f"{i:03d}{suffix}-{seg.section_id}-{seg.speaker}.wav")
+            # The roster is part of the key for crowd lines: changing which
+            # parishioners sing changes the mix, so a cached mix from a
+            # different roster must not be reused.
+            key = _key(chunk, *crowd) if in_crowd else _key(chunk)
+            name = (f"{i:03d}{suffix}-{seg.section_id}-crowd-{key}.wav"
+                    if in_crowd else
+                    f"{i:03d}{suffix}-{seg.section_id}-{seg.speaker}-{key}.wav")
             wav = work / name
             label = f"{seg.section_title[:22]:<22} {seg.speaker}"
             if len(chunks) > 1:
@@ -142,6 +147,20 @@ def count_voice_renders(episode: Episode, crowd: list[str]) -> int:
         for chunk in _chunk_text(seg.text):
             calls += len(_phrase_units(chunk)) * voices if in_crowd else 1
     return calls
+
+
+def _key(*parts: str) -> str:
+    """Short content hash, used to make cached audio self-invalidating.
+
+    The cache used to be keyed on segment position + section id + speaker.
+    Nothing in that key is the *text*, so correcting a line silently reused
+    the old audio — and `--force` did not help, because it only bypasses the
+    "the MP3 already exists" check, never the per-chunk WAVs underneath it.
+    That is exactly how a fixed liturgical text can ship unfixed across a
+    90-episode batch. Keying on the words themselves makes a text edit
+    re-render precisely the chunks whose words changed, and nothing else."""
+    import hashlib
+    return hashlib.sha1("\x00".join(parts).encode("utf-8")).hexdigest()[:8]
 
 
 def _phrase_units(text: str, max_chars: int = 60) -> list[str]:
@@ -222,9 +241,13 @@ def _render_crowd_unit(engine, chunk: str, crowd: list[str],
     render visibly progresses instead of looking hung."""
     voices = ["congregation", *crowd]
     part_dir = out_path.parent / "crowd-parts"
+    # Addressed by text + voice, deliberately NOT by the output stem: a single
+    # voice's render of a given phrase is valid whatever else is in the room,
+    # so narrowing or widening the roster re-mixes without re-synthesizing.
+    stem = _key(chunk)
     parts: list[Path] = []
     for n, voice in enumerate(voices, 1):
-        part = part_dir / f"{out_path.stem}-{voice.replace('/', '_')}.wav"
+        part = part_dir / f"{stem}-{voice.replace('/', '_')}.wav"
         hit = part.exists() and part.stat().st_size > 44
         if not hit:
             if engine.synthesize(speech.for_speech(chunk), voice,

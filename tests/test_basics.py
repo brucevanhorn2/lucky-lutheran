@@ -488,3 +488,22 @@ def test_progress_counts_voice_renders_not_segments():
     crowded = audio.count_voice_renders(ep, crowd=["a", "b", "c"])
     assert solo >= len(ep.segments)      # long segments split into chunks
     assert crowded > solo * 2            # the crowd dominates the work
+
+
+def test_cached_audio_is_keyed_on_the_words():
+    """Correcting a liturgical text must re-render that chunk.
+
+    The cache was keyed on segment position + section id + speaker. None of
+    that is the text, so fixing a line silently reused the old audio, and
+    --force did not help — it only bypasses the "MP3 exists" check, never the
+    per-chunk WAVs beneath it. That is how a corrected text ships uncorrected
+    across a whole batch."""
+    from luckylutheran.audio import _key
+
+    assert _key("Thanks be to God.") != _key("Thanks be to Thee, O Lord!")
+    assert _key("Thanks be to God.") == _key("Thanks be to God.")
+    # A crowd mix also depends on who is singing, so the roster is keyed in...
+    assert _key("Amen.", "crowd/a", "crowd/b") != _key("Amen.", "crowd/a")
+    # ...but an individual voice's take on a phrase does not depend on the
+    # rest of the room, so those stay reusable across roster changes.
+    assert _key("Amen.") == _key("Amen.")
