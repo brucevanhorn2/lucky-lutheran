@@ -574,3 +574,59 @@ def test_gradio_gives_up_with_the_text_in_the_message():
             raise AssertionError("should have raised")
     finally:
         tts.SYNTH_BACKOFF = backoff
+
+
+def test_the_fixed_liturgy_is_synthesized_once_across_episodes(tmp_path, monkeypatch):
+    """The ordinary of the office must not be re-rendered every day.
+
+    Matins is mostly invariable — the greeting, the versicles, the Venite,
+    the Kyrie, the Lord's Prayer, the benediction are word for word the same
+    on every date. The render store used to be a directory per episode, so
+    a 90-day batch paid the TTS bill for all of that 90 times. Here two
+    different days share one store: the second day may synthesize its psalm
+    and its readings, and must synthesize nothing that the first day already
+    said."""
+    import wave
+
+    from luckylutheran import assemble, audio
+    from luckylutheran.tts import TTSEngine
+
+    class CountingTTS(TTSEngine):
+        name = "counting"
+
+        def __init__(self):
+            self.said: list[tuple[str, str]] = []
+
+        def synthesize(self, text, speaker, out_path):
+            self.said.append((speaker, text))
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            with wave.open(str(out_path), "wb") as w:
+                w.setnchannels(1)
+                w.setsampwidth(2)
+                w.setframerate(22050)
+                w.writeframes(b"\x00\x00" * 256)
+            return out_path
+
+    # Keep it offline and ffmpeg-free: the WAV fallback stitches, and an
+    # empty roster keeps congregation lines on the single-voice path.
+    monkeypatch.setattr(audio, "ffmpeg_available", lambda: False)
+
+    engine = CountingTTS()
+    first = assemble.build_episode(dt.date(2026, 8, 3), "matins")
+    audio.render_episode(first, engine, tmp_path)
+    day_one = set(engine.said)
+    assert day_one, "nothing was rendered at all"
+
+    engine.said.clear()
+    second = assemble.build_episode(dt.date(2026, 8, 4), "matins")
+    audio.render_episode(second, engine, tmp_path)
+
+    repeated = day_one & set(engine.said)
+    assert not repeated, f"re-synthesized {len(repeated)} lines already rendered"
+
+    # And the invariable parts really are shared, not merely absent: the
+    # second episode's ordered links point back into the one store.
+    links = sorted((tmp_path / "segments" / second.slug).glob("*greeting*"))
+    assert links and all(p.is_symlink() for p in links)
+    assert all(p.resolve().parent == (tmp_path / "cache" / "lines").resolve()
+               for p in links)

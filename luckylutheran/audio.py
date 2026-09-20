@@ -10,6 +10,7 @@ they will be mixed under the greeting/benediction and fill the hymn slots.
 
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -48,6 +49,52 @@ def _chunk_text(text: str, max_chars: int = MAX_CHUNK_CHARS) -> list[str]:
     return chunks
 
 
+def _cache_root(out_dir: Path) -> Path:
+    """The cross-episode render store, and its three content-addressed tiers.
+
+    `voices/`  one voice saying one phrase — the actual TTS calls
+    `phrases/` one phrase mixed across the whole crowd
+    `lines/`   one whole segment chunk, ready to stitch
+
+    Every name under it is a hash of the words (plus the roster, where the
+    mix depends on who is in the room), so nothing in a name refers to an
+    episode or a position in one. That matters because the offices are
+    mostly fixed text: the greeting, the versicles, the Venite, the Kyrie,
+    the Lord's Prayer and the benediction are word-for-word the same every
+    single day. Keyed per episode, a 90-day batch paid for all of them 90
+    times over; shared, it pays once and every later episode is a cache hit.
+    """
+    root = out_dir / "cache"
+    for tier in ("lines", "phrases", "voices"):
+        (root / tier).mkdir(parents=True, exist_ok=True)
+    return root
+
+
+def _safe(name: str) -> str:
+    return name.replace("/", "_")
+
+
+def _link(target: Path, link: Path) -> None:
+    """Point `link` at `target` with a relative symlink, replacing whatever
+    is there now.
+
+    The store is content-addressed and so unreadable at a glance; the
+    per-episode directory of numbered links is what still lets you `ls` an
+    episode and audition its segments in order. Best-effort: a filesystem
+    without symlinks costs only that convenience, not the render."""
+    rel = os.path.relpath(target, link.parent)
+    try:
+        if link.is_symlink():
+            if os.readlink(link) == rel:
+                return
+            link.unlink()
+        elif link.exists():
+            link.unlink()
+        link.symlink_to(rel)
+    except OSError:
+        pass
+
+
 def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path,
                    prog: progress.Render | None = None) -> Path | None:
     """Render all segments and stitch them. Returns the MP3 path, or None in
@@ -57,6 +104,7 @@ def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path,
     interrupted build only re-renders what's missing."""
     work = out_dir / "segments" / episode.slug
     work.mkdir(parents=True, exist_ok=True)
+    cache = _cache_root(out_dir)
 
     from luckylutheran.tts import resolve_speaker
 
@@ -84,10 +132,11 @@ def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path,
             # parishioners sing changes the mix, so a cached mix from a
             # different roster must not be reused.
             key = _key(chunk, *crowd) if in_crowd else _key(chunk)
-            name = (f"{i:03d}{suffix}-{seg.section_id}-crowd-{key}.wav"
-                    if in_crowd else
-                    f"{i:03d}{suffix}-{seg.section_id}-{seg.speaker}-{key}.wav")
-            wav = work / name
+            voice = "crowd" if in_crowd else _safe(seg.speaker)
+            # Shared store, not `work`: the same words in the same voice are
+            # the same audio whichever episode asks for them.
+            wav = cache / "lines" / f"{key}-{voice}.wav"
+            link = work / f"{i:03d}{suffix}-{seg.section_id}-{voice}-{key}.wav"
             label = f"{seg.section_title[:22]:<22} {seg.speaker}"
             if len(chunks) > 1:
                 label += f" ({j + 1}/{len(chunks)})"
@@ -97,7 +146,7 @@ def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path,
                 bar.step(cost, f"{label}  (cached)", cached=True)
                 result: Path | None = wav
             elif in_crowd:
-                result = _render_crowd_chunk(engine, chunk, crowd, wav,
+                result = _render_crowd_chunk(engine, chunk, crowd, wav, cache,
                                              bar=bar, label=label)
             else:
                 bar.step(0, label)
@@ -106,6 +155,7 @@ def render_episode(episode: Episode, engine: TTSEngine, out_dir: Path,
                 bar.step(1, label)
 
             if result is not None:
+                _link(result, link)
                 last = j == len(chunks) - 1
                 rendered.append((result, seg.pause_after if last else CHUNK_PAUSE))
 
@@ -193,37 +243,42 @@ def _concat_wavs(parts: list[Path], out_path: Path) -> Path:
     listfile = out_path.parent / f"{out_path.stem}-concat.txt"
     listfile.write_text(
         "".join(f"file '{p.resolve()}'\n" for p in parts), encoding="utf-8")
-    subprocess.run(
-        ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(listfile),
-         "-c:a", "pcm_s16le", str(out_path)],
-        check=True, capture_output=True)
+    try:
+        subprocess.run(
+            ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(listfile),
+             "-c:a", "pcm_s16le", str(out_path)],
+            check=True, capture_output=True)
+    finally:
+        listfile.unlink(missing_ok=True)
     return out_path
 
 
 def _render_crowd_chunk(engine, chunk: str, crowd: list[str],
-                        out_path: Path, bar=None, label: str = "") -> Path | None:
+                        out_path: Path, cache: Path,
+                        bar=None, label: str = "") -> Path | None:
     """Render a congregation chunk as several short phrase units, mixing each
     unit's voices independently and concatenating them. Mixing per phrase
     keeps the crowd tight: onset drift resets at every phrase boundary instead
     of accumulating across a long passage into an echo chamber.
 
-    Per-unit mixes are cached beside the output, so retries are cheap."""
+    Per-unit mixes go in the shared store keyed on the phrase and the
+    roster, so a phrase the liturgy repeats is mixed once for all time --
+    and a retry, or the same phrase surfacing at another position or in
+    another office, is free."""
     units = _phrase_units(chunk)
     voices = len(crowd) + 1
     if len(units) <= 1:
-        return _render_crowd_unit(engine, chunk, crowd, out_path,
+        return _render_crowd_unit(engine, chunk, crowd, out_path, cache,
                                   bar=bar, label=label)
 
-    unit_dir = out_path.parent / "crowd-units"
-    unit_dir.mkdir(parents=True, exist_ok=True)
     parts: list[Path] = []
     for k, unit in enumerate(units):
-        part = unit_dir / f"{out_path.stem}-u{k:02d}.wav"
+        part = cache / "phrases" / f"{_key(unit, *crowd)}.wav"
         phrase = f"{label}  phrase {k + 1}/{len(units)}"
         if part.exists() and part.stat().st_size > 44:
             if bar:
                 bar.step(voices, f"{phrase}  (cached)", cached=True)
-        elif _render_crowd_unit(engine, unit, crowd, part,
+        elif _render_crowd_unit(engine, unit, crowd, part, cache,
                                 bar=bar, label=phrase) is None:
             return None
         parts.append(part)
@@ -231,23 +286,25 @@ def _render_crowd_chunk(engine, chunk: str, crowd: list[str],
 
 
 def _render_crowd_unit(engine, chunk: str, crowd: list[str],
-                       out_path: Path, bar=None, label: str = "") -> Path | None:
+                       out_path: Path, cache: Path,
+                       bar=None, label: str = "") -> Path | None:
     """Render one congregation phrase with every voice (the chosen
     congregation cast member leads, parishioners join) and layer them
     slightly out of sync, like a real roomful of people praying.
 
-    Per-voice renders are cached beside the mix, so retries are cheap. When
-    `label` is given, prints one dot per voice as it lands, so a slow crowd
-    render visibly progresses instead of looking hung."""
+    Per-voice renders go in the shared store, so retries are cheap and no
+    voice ever says the same phrase twice for the whole corpus. When `label`
+    is given, prints one dot per voice as it lands, so a slow crowd render
+    visibly progresses instead of looking hung."""
     voices = ["congregation", *crowd]
-    part_dir = out_path.parent / "crowd-parts"
+    part_dir = cache / "voices"
     # Addressed by text + voice, deliberately NOT by the output stem: a single
     # voice's render of a given phrase is valid whatever else is in the room,
     # so narrowing or widening the roster re-mixes without re-synthesizing.
     stem = _key(chunk)
     parts: list[Path] = []
     for n, voice in enumerate(voices, 1):
-        part = part_dir / f"{stem}-{voice.replace('/', '_')}.wav"
+        part = part_dir / f"{stem}-{_safe(voice)}.wav"
         hit = part.exists() and part.stat().st_size > 44
         if not hit:
             if engine.synthesize(speech.for_speech(chunk), voice,
