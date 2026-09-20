@@ -1,0 +1,119 @@
+# EIN FESTE BURG — Martin Luther, 1529. Public domain.
+# "A Mighty Fortress Is Our God" / "Ein feste Burg ist unser Gott".
+#
+# SOURCE: the soprano line of J. S. Bach's chorale harmonization BWV 80/8 —
+# the closing chorale of Cantata BWV 80, which is itself named for this hymn —
+# read out of the music21 Bach corpus rather than transcribed by ear. Checked
+# against two further witnesses in the same corpus, BWV 302 and BWV 303. All
+# three agree on pitch throughout and differ only in a few passing eighths;
+# where they differ this file follows BWV 80/8.
+#
+# !! THIS IS THE ISOMETRIC ("smoothed") FORM, not Luther's original 1529
+# rhythm. The 1529 tune is syncopated — the form printed at TLH 262 and
+# LSB 656. Bach's era evened it out, and that evened form is what the
+# American hymnals of the Common Service Book period print, so it is the
+# period-correct choice for this project. The rhythmic form is a real
+# alternative but would need its own source; do not reconstruct it by ear.
+#
+# Bar form (AAB): Stollen, Stollen repeated, Abgesang. Bach writes the
+# Stollen once under a repeat sign; it is written out twice here.
+#
+# OURS, not from Bach: two note lengthenings for breath, both marked below —
+# the Stollen-final D4 held 2 beats between repeats, and the closing D4 held
+# 4. Everything else is the corpus reading.
+#
+# pitch: note name + octave (F#4 etc.); beats: quarter-note beats.
+
+name: ein-feste-burg
+title: EIN FESTE BURG
+composer: Martin Luther, 1529 (harm. J. S. Bach)
+key: D
+tempo_qpm: 100
+notes:
+  # ---- Stollen, first time -------------------------------------------
+  # "A mighty fortress is our God"
+  - [D5, 1]      # pickup
+  - [D5, 1]
+  - [D5, 1]
+  - [A4, 0.5]
+  - [B4, 0.5]
+  - [C#5, 1]
+  - [D5, 0.5]
+  - [C#5, 0.5]
+  - [B4, 1]
+  - [A4, 1]
+  # "a bulwark never failing"
+  - [D5, 1]
+  - [C#5, 1]
+  - [B4, 1]
+  - [A4, 1]
+  - [B4, 0.5]
+  - [A4, 0.5]
+  - [G4, 0.5]
+  - [F#4, 0.5]
+  - [E4, 1]
+  - [D4, 2]      # OURS: held 2 (Bach 1) — breath before the repeat
+
+  # ---- Stollen, repeated ---------------------------------------------
+  # "Our helper He amid the flood"
+  - [D5, 1]
+  - [D5, 1]
+  - [D5, 1]
+  - [A4, 0.5]
+  - [B4, 0.5]
+  - [C#5, 1]
+  - [D5, 0.5]
+  - [C#5, 0.5]
+  - [B4, 1]
+  - [A4, 1]
+  # "of mortal ills prevailing"
+  - [D5, 1]
+  - [C#5, 1]
+  - [B4, 1]
+  - [A4, 1]
+  - [B4, 0.5]
+  - [A4, 0.5]
+  - [G4, 0.5]
+  - [F#4, 0.5]
+  - [E4, 1]
+  - [D4, 2]      # OURS: held 2 (Bach 1) — breath into the Abgesang
+
+  # ---- Abgesang ------------------------------------------------------
+  # "For still our ancient foe"
+  - [D4, 1]
+  - [A4, 1]
+  - [B4, 1]
+  - [A4, 1]
+  - [G#4, 1]
+  - [A4, 2]
+  # "doth seek to work us woe"
+  - [D4, 1]
+  - [A4, 1]
+  - [B4, 1]
+  - [C#5, 1]
+  - [D5, 1]
+  - [C#5, 1]
+  - [D5, 1]
+  - [C#5, 1]
+  - [B4, 2]
+  # "His craft and power are great"
+  - [A4, 1]
+  - [B4, 1]
+  - [B4, 1]
+  - [A4, 1]
+  - [B4, 0.5]
+  - [A4, 0.5]
+  - [G4, 1]
+  - [F#4, 1]
+  # "and armed with cruel hate"
+  - [D5, 1]
+  - [C#5, 1]
+  - [B4, 1]
+  - [A4, 1]
+  # "on earth is not his equal"
+  - [B4, 0.5]
+  - [A4, 0.5]
+  - [G4, 0.5]
+  - [F#4, 0.5]
+  - [E4, 1]
+  - [D4, 4]      # OURS: held 4 (Bach 1) — the close

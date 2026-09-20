@@ -191,6 +191,23 @@ of its own citations and the reasoning behind them, is at
 | Minor corrections | Epiphany and Ascension: "Thy only-begotten" (was "Thine"); Ascension: "so may we also" (was "so we may also"); Easter: "through Jesus Christ, Thy Son, our Lord" (was "through the same Jesus Christ, our Lord"); Lent: "all those who are penitent" (was "all them that are penitent"); Pre-Lent: "offences"; Holy Week: "Saviour". Source spellings retained even where they differ from modern US usage. |
 | Still to come | One collect per *season* only. The historic propers assign one per *Sunday*, and the Common Service Book prints all of them — addable under a `sundays:` key with no code change. |
 
+## Music — bumper tunes (`luckylutheran/data/tunes/`)
+
+No text is sung and no recording is used; these are note lists we render
+ourselves through a General MIDI organ, so the only rights question is the
+melody itself, and both melodies here are centuries out of copyright.
+
+| Tune | `ein-feste-burg` — EIN FESTE BURG, Martin Luther, 1529. The opening and closing bumper for every episode. |
+| Primary source | The **soprano line of J. S. Bach's BWV 80/8**, the closing chorale of Cantata 80, which is itself named for this hymn — read programmatically out of the music21 Bach corpus, not transcribed by ear. |
+| Corroboration | Checked against two further harmonizations of the same tune in that corpus, **BWV 302** and **BWV 303**. All three agree on every pitch and differ only in a few passing eighths; where they differ this file follows BWV 80/8. Pitch and duration agreement with the source was re-verified programmatically after the YAML was written. |
+| Status | ✅ **Verified** against three witnesses. |
+| Form | This is the **isometric ("smoothed") form**, *not* Luther's original 1529 syncopated rhythm — the form printed at TLH 262 and LSB 656. Bach's era evened the tune out, and the evened form is what the American hymnals of the Common Service Book period print, so it is the period-correct choice here. The rhythmic form is a legitimate alternative but would need its own source; it must not be reconstructed by ear. |
+| Ours, not from Bach | Three note lengthenings for breath, each marked inline in the YAML: the two Stollen-final D4s held 2 beats instead of 1, and the closing D4 held 4. Bach writes the Stollen once under a repeat sign; it is written out twice in the YAML. |
+
+| Tune | `old-hundredth` — OLD HUNDREDTH, Louis Bourgeois, Genevan Psalter, 1551. No longer the default; kept and still renderable. |
+| Primary source | The LilyPond notation in the Wikipedia article "Old 100th" (original 1551 rhythm, G major). |
+| Status | Unverified against a period printing. It is not currently used in any episode, so nothing ships on it. |
+
 ## Summary: what's left before "proof of PD" is complete
 
 0. ✅ **The daily lectionary — resolved.** The LSB file is deleted; readings and psalms now come from the 1917 Common Service Book and from course reading, which is a method rather than a compilation. There is no longer any rights question outstanding in this project. Optional future work: finish keying the CSB's own weekday Table of Lessons (extracted, validated, not yet wired in).
@@ -198,6 +215,8 @@ of its own citations and the reasoning behind them, is at
 2. `small_catechism.yaml`'s 16 chief-part portions are **verified** against the 1921 Concordia Triglotta (six corrected). The **8 Christian Questions portions are a live copyright risk** and are the single highest-priority item on this list — see the Catechism section above. Everything else in the file is safe.
 3. `collects.yaml`'s ten seasonal collects are **verified** against the 1917 Common Service Book's Propers (seven corrected, two of them materially — restored trinitarian conclusions). Remaining work here is additive, not corrective: per-Sunday collects, which the same source supplies.
 4. Matins/Vespers: Luther's Morning and Evening Prayers are **verified** against the Triglotta (both earlier flags were correct and are fixed). All three items that were ambiguous are now closed by direct page reads of the 1917 CSB (2026-08-02). The **incense versicle** is verified singular, as we have it. The **Responsory** is a book-to-book recension difference with both forms PD-attested, ours following the 1912 ELHB. The **Kyrie** turned out to be a mis-posed question: the CSB's Vespers order sets it as a minister's bid answered by the congregation's threefold Kyrie — which is what our files already say — and the line-by-line doubling in the Evening Suffrages is a different form for a different office, not a correction to Matins and Vespers.
+
+5. Bumper music is **verified** and carries no rights question: the melody is Luther's 1529 EIN FESTE BURG, taken from Bach's BWV 80/8 soprano and corroborated against BWV 302 and 303. Nothing is sung and no recording is used — we render our own note list through a GM organ. See the Music section above.
 
 Everything else — all of scripture, and the bulk of Matins/Vespers liturgy —
 is checked word-for-word against confirmed-PD raw source text.

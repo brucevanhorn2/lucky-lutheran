@@ -16,7 +16,7 @@
 
 office: vespers
 title: Vespers
-tagline: "The evening office of the Church"
+tagline: "The evening office, for the household"
 
 sections:
   - id: greeting
@@ -24,7 +24,7 @@ sections:
     lines:
       - speaker: liturgist
         text: >-
-          {greeting} This is Vespers, the evening office of the Church, for
+          {greeting} This is Vespers, the evening office, for
           {date_spoken}, {season_phrase}. As the day draws to a close, let
           us come into the presence of God, in the name of the Father and of
           the Son and of the Holy Ghost.

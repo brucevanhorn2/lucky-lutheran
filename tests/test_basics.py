@@ -216,6 +216,14 @@ def test_render_tune_offline_and_midi_generation():
     os.environ.pop("LUCKY_SOUNDFONT")
 
 
+def test_default_tune_is_actually_renderable():
+    """tune_for() names the bumper every episode opens with. Pointing it at
+    a tune with no YAML behind it fails at render time, deep in a build."""
+    from luckylutheran import music
+    for season in ("Advent", "Christmas", "Lent", "Easter", "Trinity"):
+        assert music.tune_for(season) in music.available_tunes()
+
+
 def test_phrase_units_bounds_drift():
     from luckylutheran.audio import _phrase_units
     # A short response stays a single unit.

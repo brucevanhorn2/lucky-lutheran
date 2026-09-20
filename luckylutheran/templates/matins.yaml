@@ -20,7 +20,7 @@
 
 office: matins
 title: Matins
-tagline: "The morning office of the Church"
+tagline: "The morning office, for the household"
 
 sections:
   - id: greeting
@@ -28,7 +28,7 @@ sections:
     lines:
       - speaker: liturgist
         text: >-
-          {greeting} This is Matins, the morning office of the Church, for
+          {greeting} This is Matins, the morning office, for
           {date_spoken}, {season_phrase}. Let us quiet our hearts and begin
           in the name of the Father and of the Son and of the Holy Ghost.
       - speaker: congregation

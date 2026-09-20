@@ -101,7 +101,7 @@ def available_tunes() -> list[str]:
 def tune_for(season: str) -> str:
     """Season -> tune name. One tune for now; grow this map as tunes are
     added (e.g. Advent -> wachet-auf, Christmas -> vom-himmel-hoch)."""
-    return "old-hundredth"
+    return "ein-feste-burg"
 
 
 def _soundfont() -> Path | None:
