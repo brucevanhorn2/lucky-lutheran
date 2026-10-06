@@ -252,6 +252,36 @@ def cmd_serve(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_video(args: argparse.Namespace) -> int:
+    from luckylutheran import video
+    start = _parse_date(args.date)
+    offices = _parse_offices(args.office)
+    if offices is None:
+        return 2
+    out_dir = Path(args.episodes)
+    failed = 0
+    for n in range(args.days):
+        date = start + dt.timedelta(days=n)
+        for office in offices:
+            slug = f"{date.isoformat()}-{office}"
+            if not (out_dir / f"{slug}.mp3").exists():
+                print(f"{slug}: no audio yet, skipped")
+                continue
+            if (out_dir / f"{slug}.mp4").exists() and not args.force:
+                print(f"{slug}: video exists, skipped (--force to redo)")
+                continue
+            print(slug)
+            try:
+                out = video.build_video(
+                    assemble.build_episode(date, office), out_dir)
+            except Exception as exc:
+                failed += 1
+                print(f"  FAILED: {exc}", file=sys.stderr)
+                continue
+            print(f"  video: {out}")
+    return 1 if failed else 0
+
+
 def cmd_calendar(args: argparse.Namespace) -> int:
     day = church_day(_parse_date(args.date))
     print(f"date:    {day.date.strftime('%A, %B %d, %Y')}")
@@ -329,6 +359,16 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--ip", default="0.0.0.0")
     p.add_argument("--port", type=int, default=8765)
     p.set_defaults(func=cmd_serve)
+
+    p = sub.add_parser(
+        "video", help="read-along video from an already-built episode")
+    common(p)
+    p.add_argument("--days", type=int, default=1,
+                   help="how many days from --date")
+    p.add_argument("--episodes", default="episodes", help="episodes directory")
+    p.add_argument("--force", action="store_true",
+                   help="rebuild videos that already exist")
+    p.set_defaults(func=cmd_video)
 
     p = sub.add_parser("calendar", help="show church-year info for a date")
     common(p, office=False)

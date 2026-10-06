@@ -10,6 +10,8 @@ dependencies = [
 [project.optional-dependencies]
 # for --engine qwen3 / `lucky serve` (local GPU synthesis)
 tts = ["qwen-tts", "soundfile"]
+# for `lucky video` (read-along YouTube videos)
+video = ["Pillow"]
 
 [project.scripts]
 lucky = "luckylutheran.cli:main"
